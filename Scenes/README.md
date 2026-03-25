@@ -1,0 +1,2 @@
+- Folder untuk scene
+- Buat folder per minigame
