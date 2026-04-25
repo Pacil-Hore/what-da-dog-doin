@@ -1,0 +1,102 @@
+[gd_scene format=3 uid="uid://dgy4f1s322mnv"]
+
+[ext_resource type="Script" uid="uid://cplqkn3fsov70" path="res://Scripts/Untangle/untangle_stage.gd" id="1_stage"]
+[ext_resource type="Script" uid="uid://iidldyukbeg7" path="res://Scripts/Untangle/untangle_state_object.gd" id="2_state_object"]
+[ext_resource type="Script" uid="uid://c8hu466j2o10s" path="res://Scripts/Untangle/circular_motion_detector.gd" id="3_motion_detector"]
+[ext_resource type="Script" uid="uid://dybqpcu20o231" path="res://Scripts/Untangle/motion_guide.gd" id="4_motion_guide"]
+[ext_resource type="Script" uid="uid://6bk5d4wovt3r" path="res://Scripts/Untangle/untangle_background.gd" id="5_background"]
+[ext_resource type="Script" uid="uid://bnxd0bnyr3hkr" path="res://Scripts/Untangle/untangle_placeholder_state_visual.gd" id="6_placeholder_visual"]
+
+[node name="UntangleStage" type="Node2D" unique_id=1568640092]
+script = ExtResource("1_stage")
+
+[node name="Background" type="Node2D" parent="." unique_id=868099395]
+z_index = -100
+script = ExtResource("5_background")
+
+[node name="StateObject" type="Node2D" parent="." unique_id=2142597992]
+position = Vector2(576, 322)
+script = ExtResource("2_state_object")
+
+[node name="Visuals" type="Node2D" parent="StateObject" unique_id=1515389688]
+
+[node name="StateAVisual" type="Node2D" parent="StateObject/Visuals" unique_id=1673751879]
+script = ExtResource("6_placeholder_visual")
+
+[node name="StateBVisual" type="Node2D" parent="StateObject/Visuals" unique_id=1207757330]
+visible = false
+script = ExtResource("6_placeholder_visual")
+visual_state = 1
+accent_color = Color(0.96, 0.78, 0.26, 1)
+
+[node name="StateCVisual" type="Node2D" parent="StateObject/Visuals" unique_id=1245131410]
+visible = false
+script = ExtResource("6_placeholder_visual")
+visual_state = 2
+accent_color = Color(0.24, 0.82, 0.52, 1)
+
+[node name="StateLabel" type="Label" parent="StateObject" unique_id=980348929]
+offset_left = -24.0
+offset_top = -24.0
+offset_right = 24.0
+offset_bottom = 24.0
+theme_override_colors/font_color = Color(0.05, 0.06, 0.07, 1)
+theme_override_font_sizes/font_size = 34
+text = "A"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="MotionGuide" type="Node2D" parent="." unique_id=1273949567]
+z_index = -1
+position = Vector2(576, 322)
+script = ExtResource("4_motion_guide")
+
+[node name="CircularMotionDetector" type="Node" parent="." unique_id=1994326596]
+script = ExtResource("3_motion_detector")
+
+[node name="CountdownTimer" type="Timer" parent="." unique_id=990816007]
+one_shot = true
+
+[node name="HUD" type="CanvasLayer" parent="." unique_id=1944269721]
+
+[node name="TimerLabel" type="Label" parent="HUD" unique_id=1111519127]
+anchors_preset = 10
+anchor_right = 1.0
+offset_left = 24.0
+offset_top = 18.0
+offset_right = -24.0
+offset_bottom = 64.0
+grow_horizontal = 2
+theme_override_colors/font_color = Color(0.88, 0.96, 1, 1)
+theme_override_font_sizes/font_size = 28
+text = "Time: 5.0"
+horizontal_alignment = 1
+
+[node name="ProgressLabel" type="Label" parent="HUD" unique_id=1651123996]
+anchors_preset = 10
+anchor_right = 1.0
+offset_left = 24.0
+offset_top = 56.0
+offset_right = -24.0
+offset_bottom = 96.0
+grow_horizontal = 2
+theme_override_colors/font_color = Color(0.62, 0.8, 0.88, 1)
+theme_override_font_sizes/font_size = 22
+text = "Rotations: 0/5"
+horizontal_alignment = 1
+
+[node name="ResultLabel" type="Label" parent="HUD" unique_id=1810795010]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -260.0
+offset_top = -34.0
+offset_right = 260.0
+offset_bottom = 34.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0.88, 0.96, 1, 1)
+theme_override_font_sizes/font_size = 36
+horizontal_alignment = 1

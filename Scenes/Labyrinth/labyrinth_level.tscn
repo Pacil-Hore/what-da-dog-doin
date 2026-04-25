@@ -1,0 +1,91 @@
+[gd_scene format=3 uid="uid://732jxuib78jn"]
+
+[ext_resource type="PackedScene" uid="uid://crbrwaqq404iv" path="res://Scenes/Labyrinth/labyrinth_object.tscn" id="1_wo3la"]
+[ext_resource type="PackedScene" uid="uid://canpbu2erlkfy" path="res://Scenes/Player.tscn" id="2_jrs6i"]
+[ext_resource type="Script" uid="uid://c5vrtkuahkgl6" path="res://Scripts/labyrinth_level.gd" id="3_857ma"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_t8w3n"]
+size = Vector2(127, 16)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_top_border"]
+size = Vector2(780, 18)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_left_border"]
+size = Vector2(21.625, 640)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_right_border"]
+size = Vector2(21.625, 640)
+
+[node name="LabyrinthLevel" type="Node2D" unique_id=1216538779]
+script = ExtResource("3_857ma")
+
+[node name="LabyrinthLevel" parent="." unique_id=1343195067 instance=ExtResource("1_wo3la")]
+position = Vector2(518, 338)
+
+[node name="Player" parent="." unique_id=1446940125 instance=ExtResource("2_jrs6i")]
+position = Vector2(528, 21)
+
+[node name="StartPoint" type="Marker2D" parent="." unique_id=956427480]
+position = Vector2(528, 21)
+
+[node name="WinArea" type="Area2D" parent="." unique_id=465826932]
+position = Vector2(385, 650)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="WinArea" unique_id=896327398]
+position = Vector2(5, -11)
+shape = SubResource("RectangleShape2D_t8w3n")
+
+[node name="MazeBorders" type="StaticBody2D" parent="." unique_id=1431097969]
+
+[node name="TopBorder" type="CollisionShape2D" parent="MazeBorders" unique_id=2097966829]
+position = Vector2(502, -2)
+shape = SubResource("RectangleShape2D_top_border")
+
+[node name="BottomBorder" type="CollisionShape2D" parent="MazeBorders" unique_id=1047070036]
+position = Vector2(502, 656)
+shape = SubResource("RectangleShape2D_top_border")
+
+[node name="LeftBorder" type="CollisionShape2D" parent="MazeBorders" unique_id=785875102]
+position = Vector2(123, 327)
+shape = SubResource("RectangleShape2D_left_border")
+
+[node name="RightBorder" type="CollisionShape2D" parent="MazeBorders" unique_id=1834059448]
+position = Vector2(881, 327)
+shape = SubResource("RectangleShape2D_right_border")
+
+[node name="TimeLimit" type="Timer" parent="." unique_id=850858641]
+one_shot = true
+
+[node name="HUD" type="CanvasLayer" parent="." unique_id=188497579]
+
+[node name="TimerLabel" type="Label" parent="HUD" unique_id=1229365980]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 8.0
+offset_top = -6.0
+offset_right = 8.0
+offset_bottom = -6.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 24
+text = "Time: 10.0"
+
+[node name="ResultLabel" type="Label" parent="HUD" unique_id=160947532]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -29.5
+offset_top = -22.5
+offset_right = 29.5
+offset_bottom = 22.5
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+theme_override_font_sizes/font_size = 32
+horizontal_alignment = 1
+
+[connection signal="body_entered" from="WinArea" to="." method="_on_win_area_body_entered"]
+[connection signal="timeout" from="TimeLimit" to="." method="_on_time_limit_timeout"]
