@@ -11,9 +11,17 @@ config_version=5
 [application]
 
 config/name="What Da Dog Doin"
-run/main_scene="uid://dgy4f1s322mnv"
+run/main_scene="uid://cetkayu1iq8kv"
 config/features=PackedStringArray("4.6", "Mobile")
 config/icon="res://icon.svg"
+
+[autoload]
+
+MCPRuntime="*uid://thnk5lnwxx8b"
+
+[editor_plugins]
+
+enabled=PackedStringArray("res://addons/godot_mcp/plugin.cfg")
 
 [physics]
 

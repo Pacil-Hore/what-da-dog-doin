@@ -1,6 +1,7 @@
 extends Node2D
 
-signal game_finished(did_win: bool)
+signal game_won
+signal game_lost
 
 @export var time_limit: float = 3.0
 @export var instruction_text: String = "Left click the best toilet spot before time runs out."
@@ -85,7 +86,12 @@ func finish_game(did_win: bool, message: String, selected_spot: ToiletSpot = nul
 		correct_spot.reveal_as_correct()
 
 	result_label.text = message
-	game_finished.emit(did_win)
+	
+	await get_tree().create_timer(1.0, false).timeout
+	if did_win:
+		emit_signal("game_won")
+	else:
+		emit_signal("game_lost")
 
 
 func _configure_round_layout() -> void:

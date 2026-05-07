@@ -1,7 +1,8 @@
 extends Node2D
 class_name PickTheRopeStage
 
-signal game_finished(did_win: bool)
+signal game_won
+signal game_lost
 
 @export var start_delay_duration: float = 0.25
 @export var time_limit: float = 4.0
@@ -80,7 +81,12 @@ func finish_game(did_win: bool, message: String, selected_hook_index: int = -1, 
 	if did_win and win_label_text != "":
 		instruction_label.text = win_label_text
 
-	game_finished.emit(did_win)
+	
+	await get_tree().create_timer(1.0, false).timeout
+	if did_win:
+		emit_signal("game_won")
+	else:
+		emit_signal("game_lost")
 
 
 func _start_round() -> void:

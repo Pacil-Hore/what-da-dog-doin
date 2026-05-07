@@ -1,6 +1,7 @@
 extends Node2D
 
-signal game_finished(did_win: bool)
+signal game_won
+signal game_lost
 
 @export var time_limit := 5.0
 @export var rotations_per_state := 5
@@ -59,7 +60,12 @@ func finish_game(did_win: bool, message: String) -> void:
 	countdown_timer.stop()
 	motion_detector.set_motion_enabled(false)
 	result_label.text = message
-	game_finished.emit(did_win)
+	
+	await get_tree().create_timer(1.0, false).timeout
+	if did_win:
+		emit_signal("game_won")
+	else:
+		emit_signal("game_lost")
 
 
 func _update_hud() -> void:

@@ -1,0 +1,9 @@
+[gd_scene format=3 uid="uid://cn2l0se34drpq"]
+
+[ext_resource type="Script" uid="uid://4s4i2cieyvvr" path="res://Scripts/Placeholders/placeholder_game.gd" id="1_buobj"]
+
+[node name="PlaceholderGame2" type="Node2D" unique_id=986025102]
+script = ExtResource("1_buobj")
+
+[node name="Label" type="Label" parent="." unique_id=124047742]
+text = "Placeholder Game 2"

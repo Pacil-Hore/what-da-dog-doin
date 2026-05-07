@@ -1,5 +1,8 @@
 extends Node2D
 
+signal game_won
+signal game_lost
+
 @export var time_limit := 5.0
 @export var win_label_text := "You Win"
 @export var lose_label_text := "You Lose"
@@ -56,6 +59,13 @@ func finish_level(message: String) -> void:
 	time_limit_timer.stop()
 	result_label.text = message
 	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
+	
+	await get_tree().create_timer(1.0, false).timeout
+	if message == win_label_text:
+		emit_signal("game_won")
+	else:
+		emit_signal("game_lost")
+
 
 
 func _get_maze_bounds() -> Rect2:
