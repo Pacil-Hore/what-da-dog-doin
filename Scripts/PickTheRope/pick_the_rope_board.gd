@@ -25,56 +25,52 @@ const NPC_COLLAR_COLORS: Array[Color] = [
 	Color(0.33, 0.62, 0.9),
 ]
 const ROPE_TINT_OFFSETS: Array[float] = [-0.03, 0.02, -0.01, 0.04]
+const TANGLE_CENTER: Vector2 = Vector2(646.0, 334.0)
 const TARGET_KNOT_OFFSETS := [
-	Vector2(-34.0, 22.0),
-	Vector2(28.0, -18.0),
-	Vector2(-18.0, 20.0),
-	Vector2(34.0, -24.0),
-]
-const HOOK_ENTRY_VARIANTS := [
-	[
-		Vector2(576.0, 164.0),
-		Vector2(576.0, 232.0),
-		Vector2(576.0, 300.0),
-		Vector2(576.0, 368.0),
-	],
-	[
-		Vector2(562.0, 176.0),
-		Vector2(590.0, 244.0),
-		Vector2(564.0, 312.0),
-		Vector2(588.0, 380.0),
-	],
-	[
-		Vector2(590.0, 170.0),
-		Vector2(562.0, 238.0),
-		Vector2(590.0, 306.0),
-		Vector2(560.0, 374.0),
-	],
+	Vector2(-16.0, -10.0),
+	Vector2(16.0, 8.0),
+	Vector2(-12.0, 12.0),
+	Vector2(18.0, -8.0),
 ]
 const KNOT_VARIANTS := [
 	[
-		Vector2(452.0, 238.0),
-		Vector2(690.0, 226.0),
-		Vector2(500.0, 354.0),
-		Vector2(734.0, 330.0),
+		Vector2(706.0, 198.0),
+		Vector2(604.0, 260.0),
+		Vector2(700.0, 340.0),
+		Vector2(598.0, 416.0),
 	],
 	[
-		Vector2(420.0, 256.0),
-		Vector2(664.0, 214.0),
-		Vector2(488.0, 338.0),
-		Vector2(760.0, 354.0),
+		Vector2(686.0, 214.0),
+		Vector2(584.0, 242.0),
+		Vector2(714.0, 368.0),
+		Vector2(592.0, 388.0),
 	],
 	[
-		Vector2(444.0, 222.0),
-		Vector2(706.0, 248.0),
-		Vector2(512.0, 370.0),
-		Vector2(716.0, 318.0),
+		Vector2(724.0, 204.0),
+		Vector2(616.0, 276.0),
+		Vector2(678.0, 316.0),
+		Vector2(606.0, 436.0),
 	],
 ]
-const FAN_SWAY_VARIANTS := [
-	[-18.0, -6.0, 8.0, 20.0],
-	[12.0, -18.0, 18.0, -10.0],
-	[-10.0, 16.0, -14.0, 12.0],
+const SPREAD_VARIANTS := [
+	[
+		Vector2(472.0, 188.0),
+		Vector2(420.0, 276.0),
+		Vector2(476.0, 376.0),
+		Vector2(420.0, 478.0),
+	],
+	[
+		Vector2(490.0, 202.0),
+		Vector2(432.0, 262.0),
+		Vector2(484.0, 386.0),
+		Vector2(430.0, 464.0),
+	],
+	[
+		Vector2(458.0, 182.0),
+		Vector2(414.0, 286.0),
+		Vector2(464.0, 362.0),
+		Vector2(414.0, 490.0),
+	],
 ]
 
 @export var rope_count: int = 4:
@@ -83,16 +79,16 @@ const FAN_SWAY_VARIANTS := [
 		_sync_hook_layout()
 		queue_redraw()
 @export var hook_positions: PackedVector2Array = PackedVector2Array([
-	Vector2(576.0, 126.0),
-	Vector2(576.0, 194.0),
-	Vector2(576.0, 262.0),
-	Vector2(576.0, 330.0),
+	Vector2(916.0, 182.0),
+	Vector2(916.0, 248.0),
+	Vector2(916.0, 314.0),
+	Vector2(916.0, 380.0),
 ])
 @export var dog_slot_positions: PackedVector2Array = PackedVector2Array([
-	Vector2(160.0, 510.0),
-	Vector2(416.0, 508.0),
-	Vector2(736.0, 508.0),
-	Vector2(992.0, 510.0),
+	Vector2(196.0, 344.0),
+	Vector2(314.0, 396.0),
+	Vector2(196.0, 452.0),
+	Vector2(314.0, 504.0),
 ])
 @export var rope_color: Color = Color(0.9, 0.37, 0.39)
 @export var correct_color: Color = Color(0.28, 0.77, 0.39)
@@ -100,10 +96,8 @@ const FAN_SWAY_VARIANTS := [
 @export var rope_shadow_color: Color = Color(0.09, 0.08, 0.07, 0.24)
 @export var rope_width: float = 6.0
 @export var rope_shadow_width: float = 11.0
-@export var player_label_offset: Vector2 = Vector2(0.0, -106.0)
 
 @onready var hook_nodes: Array[PickTheRopeHook] = [$HookA, $HookB, $HookC, $HookD]
-@onready var player_dog_label: Label = $PlayerDogLabel
 
 var rng: RandomNumberGenerator = RandomNumberGenerator.new()
 var dog_slot_for_hook: Array[int] = []
@@ -130,12 +124,11 @@ func _ready() -> void:
 
 
 func reset_round() -> void:
-	current_pattern_index = rng.randi_range(0, HOOK_ENTRY_VARIANTS.size() - 1)
+	current_pattern_index = rng.randi_range(0, KNOT_VARIANTS.size() - 1)
 	_shuffle_assignments()
 	_build_rope_paths()
 	_reset_feedback_visuals()
 	_sync_hook_layout()
-	_update_player_label()
 	queue_redraw()
 
 
@@ -209,64 +202,88 @@ func _build_rope_paths() -> void:
 	rope_paths.clear()
 	rope_states.clear()
 
-	var entry_points: Array = HOOK_ENTRY_VARIANTS[current_pattern_index]
 	var knot_points: Array = KNOT_VARIANTS[current_pattern_index]
 
 	for hook_index in range(rope_count):
 		var dog_slot_index: int = dog_slot_for_hook[hook_index]
 		var knot_point: Vector2 = knot_points[hook_index] + TARGET_KNOT_OFFSETS[dog_slot_index]
-		rope_paths.append(_build_rope_path(hook_index, dog_slot_index, entry_points[hook_index], knot_point))
+		rope_paths.append(_build_rope_path(hook_index, dog_slot_index, knot_point))
 		rope_states.append(FeedbackState.NEUTRAL)
 
 	for index in range(rope_count, MAX_ROPES):
 		rope_states.append(FeedbackState.NEUTRAL)
 
 
-func _build_rope_path(hook_index: int, dog_slot_index: int, drop_point: Vector2, knot_point: Vector2) -> PackedVector2Array:
-	var start: Vector2 = hook_positions[hook_index] + Vector2(0.0, 22.0)
-	var fan_sways: Array = FAN_SWAY_VARIANTS[current_pattern_index]
-	var fan_point: Vector2 = Vector2(
-		576.0 + (float(dog_slot_index) - 1.5) * 132.0 + float(fan_sways[dog_slot_index]),
-		396.0 + float(hook_index - dog_slot_index) * 8.0
-	)
+func _build_rope_path(hook_index: int, dog_slot_index: int, knot_point: Vector2) -> PackedVector2Array:
+	var spread_points: Array = SPREAD_VARIANTS[current_pattern_index]
 	var end: Vector2 = _get_dog_neck_anchor(dog_slot_index)
+	var spread_point: Vector2 = spread_points[dog_slot_index] + Vector2(float(hook_index - dog_slot_index) * 4.0, float(hook_index - dog_slot_index) * 4.0)
+	var outward_sign: float = -1.0
+	var start: Vector2 = hook_positions[hook_index] + Vector2(outward_sign * 22.0, 0.0)
+	var hook_exit: Vector2 = start + Vector2(-34.0, clampf((end.y - start.y) * 0.04, -7.0, 7.0))
+	var pole_clear: Vector2 = Vector2(
+		hook_positions[hook_index].x - (94.0 + float(current_pattern_index) * 8.0),
+		start.y + float(hook_index - 1) * 4.0
+	)
+	var lane_point: Vector2 = Vector2(
+		756.0 - float(current_pattern_index) * 12.0,
+		lerpf(start.y, end.y, 0.18) + float(hook_index - dog_slot_index) * 10.0
+	)
 	var rope_points: PackedVector2Array = PackedVector2Array()
 
 	_append_bezier_segment(
 		rope_points,
 		start,
-		start + Vector2(0.0, 28.0),
-		drop_point + Vector2(0.0, -22.0),
-		drop_point,
-		8
+		start + Vector2(-14.0, 0.0),
+		hook_exit + Vector2(10.0, 0.0),
+		hook_exit,
+		5
 	)
 
-	var knot_dx: float = knot_point.x - drop_point.x
 	_append_bezier_segment(
 		rope_points,
-		drop_point,
-		drop_point + Vector2(clampf(knot_dx * 0.18, -28.0, 28.0), 42.0),
-		knot_point + Vector2(clampf(-knot_dx * 0.24, -76.0, 76.0), -44.0),
+		hook_exit,
+		hook_exit + Vector2(-18.0, 0.0),
+		pole_clear + Vector2(18.0, clampf((hook_exit.y - pole_clear.y) * 0.16, -10.0, 10.0)),
+		pole_clear,
+		6
+	)
+
+	_append_bezier_segment(
+		rope_points,
+		pole_clear,
+		pole_clear + Vector2(-28.0, 0.0),
+		lane_point + Vector2(34.0, clampf((pole_clear.y - lane_point.y) * 0.18, -16.0, 16.0)),
+		lane_point,
+		6
+	)
+
+	var knot_dx: float = knot_point.x - lane_point.x
+	_append_bezier_segment(
+		rope_points,
+		lane_point,
+		lane_point + Vector2(clampf(knot_dx * 0.2, -22.0, 16.0), clampf((knot_point.y - lane_point.y) * 0.24, -24.0, 24.0)),
+		knot_point + Vector2(clampf(-knot_dx * 0.18, -48.0, 52.0), clampf((lane_point.y - knot_point.y) * 0.22, -28.0, 28.0)),
 		knot_point,
 		10
 	)
 
-	var fan_dx: float = fan_point.x - knot_point.x
+	var spread_dx: float = spread_point.x - knot_point.x
 	_append_bezier_segment(
 		rope_points,
 		knot_point,
-		knot_point + Vector2(fan_dx * 0.34, 58.0),
-		fan_point + Vector2(-fan_dx * 0.22, -36.0),
-		fan_point,
+		knot_point + Vector2(spread_dx * 0.22, clampf((spread_point.y - knot_point.y) * 0.34, -40.0, 40.0)),
+		spread_point + Vector2(-spread_dx * 0.18, clampf((knot_point.y - spread_point.y) * 0.2, -28.0, 28.0)),
+		spread_point,
 		10
 	)
 
-	var end_dx: float = end.x - fan_point.x
+	var end_dx: float = end.x - spread_point.x
 	_append_bezier_segment(
 		rope_points,
-		fan_point,
-		fan_point + Vector2(end_dx * 0.3, 30.0),
-		end + Vector2(-end_dx * 0.08, -58.0),
+		spread_point,
+		spread_point + Vector2(end_dx * 0.22, clampf((end.y - spread_point.y) * 0.24, -24.0, 24.0)),
+		end + Vector2(clampf(-end_dx * 0.08, -26.0, 30.0), clampf((spread_point.y - end.y) * 0.2, -32.0, 32.0)),
 		end,
 		10
 	)
@@ -294,9 +311,7 @@ func _cubic_bezier_point(p0: Vector2, p1: Vector2, p2: Vector2, p3: Vector2, t: 
 
 
 func _draw_tangle_shadow() -> void:
-	draw_circle(Vector2(576.0, 316.0), 122.0, Color(0.18, 0.11, 0.1, 0.06))
-	draw_circle(Vector2(576.0, 316.0), 86.0, Color(0.18, 0.11, 0.1, 0.08))
-	draw_arc(Vector2(576.0, 316.0), 138.0, PI * 0.15, PI * 0.95, 40, Color(1.0, 1.0, 1.0, 0.09), 3.0)
+	pass
 
 
 func _draw_ropes() -> void:
@@ -325,10 +340,20 @@ func _draw_dog(slot_index: int) -> void:
 	var spot_color: Color = PLAYER_SPOT_COLOR if is_player_dog else fur_color.darkened(0.12)
 	var collar_color: Color = PLAYER_COLLAR_COLOR if is_player_dog else NPC_COLLAR_COLORS[slot_index % NPC_COLLAR_COLORS.size()]
 
-	if is_player_dog and player_dog_glow > 0.0:
-		var aura: Color = correct_color
-		aura.a = 0.08 + player_dog_glow * 0.18
-		draw_circle(origin + Vector2(0.0, -24.0), 64.0 + player_dog_glow * 8.0, aura)
+	if is_player_dog:
+		var aura_strength: float = 0.46 + player_dog_glow * 0.54
+		var floor_glow: Color = PLAYER_COLLAR_COLOR
+		floor_glow.a = 0.1 + aura_strength * 0.09
+		draw_circle(origin + Vector2(0.0, 6.0), 48.0 + aura_strength * 10.0, floor_glow)
+
+		var aura_color: Color = PLAYER_COLLAR_COLOR.lightened(0.14)
+		aura_color.a = 0.12 + aura_strength * 0.14
+		draw_circle(origin + Vector2(0.0, -22.0), 62.0 + aura_strength * 18.0, aura_color)
+
+		var ring_color: Color = correct_color.lightened(0.08)
+		ring_color.a = 0.28 + player_dog_glow * 0.22
+		draw_arc(origin + Vector2(0.0, -24.0), 46.0 + player_dog_glow * 5.0, 0.0, TAU, 36, ring_color, 3.0)
+		_draw_player_marker(origin + Vector2(0.0, -102.0 - player_dog_glow * 6.0), aura_strength)
 
 	draw_circle(origin + Vector2(0.0, 8.0), 34.0, Color(0.15, 0.11, 0.09, 0.12))
 	draw_colored_polygon(PackedVector2Array([
@@ -354,6 +379,33 @@ func _draw_dog(slot_index: int) -> void:
 	draw_rect(Rect2(origin + Vector2(-5.0, 10.0), Vector2(10.0, 28.0)), fur_color.darkened(0.14), true)
 	draw_rect(Rect2(origin + Vector2(13.0, 8.0), Vector2(10.0, 28.0)), fur_color.darkened(0.14), true)
 	draw_arc(origin + Vector2(30.0, -2.0), 20.0, -0.7, 0.8, 18, spot_color, 5.0)
+
+
+func _draw_player_marker(center: Vector2, aura_strength: float) -> void:
+	var badge_shadow: Color = Color(0.08, 0.09, 0.08, 0.18)
+	draw_circle(center + Vector2(0.0, 8.0), 18.0 + aura_strength * 3.0, badge_shadow)
+
+	var badge_outline: Color = PLAYER_COLLAR_COLOR.darkened(0.18)
+	var badge_fill: Color = PLAYER_COLLAR_COLOR.lightened(0.08)
+	var badge_inner: Color = Color(0.96, 0.99, 0.95)
+	var pointer_color: Color = PLAYER_COLLAR_COLOR.lightened(0.02)
+	draw_colored_polygon(PackedVector2Array([
+		center + Vector2(-9.0, 12.0),
+		center + Vector2(0.0, 28.0 + aura_strength * 2.0),
+		center + Vector2(9.0, 12.0),
+	]), pointer_color)
+	draw_circle(center, 17.0 + aura_strength * 2.0, badge_outline)
+	draw_circle(center, 14.0 + aura_strength * 2.0, badge_fill)
+	draw_circle(center, 10.5 + aura_strength * 1.4, badge_inner)
+	_draw_marker_paw(center + Vector2(0.0, 1.0), PLAYER_COLLAR_COLOR.darkened(0.18))
+
+
+func _draw_marker_paw(center: Vector2, color: Color) -> void:
+	draw_circle(center + Vector2(0.0, 4.0), 4.2, color)
+	draw_circle(center + Vector2(-5.0, -3.0), 2.1, color)
+	draw_circle(center + Vector2(-1.6, -5.4), 2.1, color)
+	draw_circle(center + Vector2(1.6, -5.4), 2.1, color)
+	draw_circle(center + Vector2(5.0, -3.0), 2.1, color)
 
 
 func _get_dog_neck_anchor(slot_index: int) -> Vector2:
@@ -426,14 +478,6 @@ func _sync_hook_layout() -> void:
 			hook.set_pick_enabled(false)
 
 
-func _update_player_label() -> void:
-	if player_dog_label == null:
-		return
-
-	player_dog_label.position = dog_slot_positions[player_dog_slot_index] + player_label_offset + Vector2(-60.0, -player_dog_bounce)
-	player_dog_label.modulate = Color(0.19, 0.3, 0.16).lerp(Color(0.23, 0.54, 0.25), player_dog_glow)
-
-
 func _play_player_success_feedback() -> void:
 	feedback_tween = create_tween()
 	feedback_tween.tween_method(_set_player_dog_glow, 0.0, 1.0, 0.12)
@@ -451,13 +495,11 @@ func _clear_feedback_tween() -> void:
 
 func _set_player_dog_glow(value: float) -> void:
 	player_dog_glow = value
-	_update_player_label()
 	queue_redraw()
 
 
 func _set_player_dog_bounce(value: float) -> void:
 	player_dog_bounce = value
-	_update_player_label()
 	queue_redraw()
 
 
