@@ -1,0 +1,23 @@
+[gd_scene format=3 uid="uid://c3x8fiyss1j45"]
+
+[ext_resource type="Script" uid="uid://cwmt213llalf2" path="res://Scripts/PickMe/trash_can.gd" id="1_trash"]
+[ext_resource type="Script" uid="uid://bei6m7nrkc53w" path="res://Scripts/PickMe/trash_can_contents.gd" id="2_contents"]
+[ext_resource type="Script" uid="uid://dfllfl5ihuw3d" path="res://Scripts/PickMe/trash_can_shell.gd" id="3_shell"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_pick_area"]
+size = Vector2(136, 164)
+
+[node name="TrashCan" type="Area2D" unique_id=542267804]
+script = ExtResource("1_trash")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=2086139744]
+position = Vector2(0, 8)
+shape = SubResource("RectangleShape2D_pick_area")
+
+[node name="Contents" type="Node2D" parent="." unique_id=551133672]
+visible = false
+position = Vector2(0, 64)
+script = ExtResource("2_contents")
+
+[node name="Shell" type="Node2D" parent="." unique_id=2116648553]
+script = ExtResource("3_shell")
