@@ -1,0 +1,8 @@
+[gd_resource type="Resource" script_class="LaneConfig" format=3 uid="uid://tdfhif5j8qds"]
+
+[ext_resource type="Script" uid="uid://dttki2so0q34a" path="res://Scripts/DogCross/lane_config.gd" id="1_x4lob"]
+
+[resource]
+script = ExtResource("1_x4lob")
+type = 2
+platform_count = 4

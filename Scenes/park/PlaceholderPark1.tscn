@@ -1,0 +1,45 @@
+[gd_scene format=3 uid="uid://6cbowj4ykug0"]
+
+[ext_resource type="Script" uid="uid://3qk60wi7dvbp" path="res://Scripts/interactive_placeholder.gd" id="uid://6cbowj4ykug0"]
+
+[node name="PlaceholderPark1" type="Node2D" unique_id=1389426415]
+script = ExtResource("uid://6cbowj4ykug0")
+
+[node name="UI" type="CanvasLayer" parent="." unique_id=281987875]
+
+[node name="VBox" type="VBoxContainer" parent="UI" unique_id=1599869355]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -150.0
+offset_top = -130.0
+offset_right = 150.0
+offset_bottom = 130.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 20
+alignment = 1
+
+[node name="TitleLabel" type="Label" parent="UI/VBox" unique_id=223460463]
+layout_mode = 2
+theme_override_font_sizes/font_size = 28
+text = "Park Game 1"
+horizontal_alignment = 1
+
+[node name="TimerLabel" type="Label" parent="UI/VBox" unique_id=990194737]
+layout_mode = 2
+theme_override_font_sizes/font_size = 48
+text = "5.0"
+horizontal_alignment = 1
+
+[node name="WinButton" type="Button" parent="UI/VBox" unique_id=1479723744]
+custom_minimum_size = Vector2(200, 50)
+layout_mode = 2
+text = "WIN"
+
+[node name="LoseButton" type="Button" parent="UI/VBox" unique_id=281492637]
+custom_minimum_size = Vector2(200, 50)
+layout_mode = 2
+text = "LOSE"

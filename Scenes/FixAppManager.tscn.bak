@@ -1,0 +1,6 @@
+[gd_scene format=3 uid="uid://b8i3eg0qaexc3"]
+
+[ext_resource type="Script" path="res://Scripts/fix_app_manager_runtime.gd" id="1_omoc0"]
+
+[node name="Fixer" type="Node" unique_id=1216946433]
+script = ExtResource("1_omoc0")
