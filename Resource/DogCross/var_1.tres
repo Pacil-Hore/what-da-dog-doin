@@ -8,4 +8,4 @@
 
 [resource]
 script = ExtResource("4_n5n1a")
-lane_configs = Array[ExtResource("1_qijnc")]([ExtResource("2_26wnv"), ExtResource("3_fh2j3"), ExtResource("2_26wnv"), ExtResource("3_fh2j3"), ExtResource("3_fh2j3"), ExtResource("4_26wnv")])
+lane_configs = Array[ExtResource("1_qijnc")]([ExtResource("4_26wnv"), ExtResource("2_26wnv"), ExtResource("3_fh2j3"), ExtResource("4_26wnv"), ExtResource("4_26wnv"), ExtResource("3_fh2j3"), ExtResource("4_26wnv"), ExtResource("4_26wnv"), ExtResource("3_fh2j3"), ExtResource("2_26wnv"), ExtResource("3_fh2j3"), ExtResource("2_26wnv"), ExtResource("4_26wnv"), ExtResource("3_fh2j3"), ExtResource("4_26wnv")])

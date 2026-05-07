@@ -67,8 +67,3 @@ func _trigger_win():
 		player.set_process_input(false)
 	if dog:
 		dog.set_process_input(false)
-	
-	# Tampilkan win screen
-	if win_screen_scene:
-		var win_screen = win_screen_scene.instantiate()
-		get_tree().root.add_child(win_screen)

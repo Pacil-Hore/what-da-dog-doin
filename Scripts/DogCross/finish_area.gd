@@ -10,6 +10,7 @@ var triggered: bool = false
 func _ready():
 	body_entered.connect(_on_body_entered)
 	body_exited.connect(_on_body_exited)
+	print("FinishArea ready! Path: ", get_path())
 
 func _on_body_entered(body):
 	if not body is CharacterBody2D:
@@ -47,13 +48,11 @@ func _show_win_screen():
 	if camera and "auto_scroll" in camera:
 		camera.auto_scroll = false
 	
-	# Disable input semua entity yang udah sampe
+	# Disable input
 	for body in entities_arrived:
 		body.set_process_input(false)
 	
 	# Tampilkan win screen
 	if win_screen_scene:
 		var win_screen = win_screen_scene.instantiate()
-		get_tree().root.add_child(win_screen)
-	else:
-		print("WARNING: win_screen_scene belum di-assign!")
+		get_tree().current_scene.add_child(win_screen)

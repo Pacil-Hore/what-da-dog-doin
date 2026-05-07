@@ -1,16 +1,16 @@
 [gd_scene format=3 uid="uid://b1mitdmf22s86"]
 
 [ext_resource type="Script" uid="uid://dugckmmsyi4l7" path="res://Scripts/DogCross/platform_generator.gd" id="1_5vydb"]
-[ext_resource type="PackedScene" uid="uid://da5xgdajrdusf" path="res://Scenes/DogCross/platform.tscn" id="1_ufxs0"]
-[ext_resource type="PackedScene" uid="uid://b24xjwcc07ct2" path="res://Scenes/DogCross/player.tscn" id="2_6we3w"]
-[ext_resource type="PackedScene" uid="uid://cjtteofm1bf54" path="res://Scenes/DogCross/dog.tscn" id="2_brl4o"]
+[ext_resource type="PackedScene" uid="uid://da5xgdajrdusf" path="res://Scenes/park/DogCross/platform.tscn" id="1_ufxs0"]
+[ext_resource type="PackedScene" uid="uid://b24xjwcc07ct2" path="res://Scenes/park/DogCross/player.tscn" id="2_6we3w"]
+[ext_resource type="PackedScene" uid="uid://cjtteofm1bf54" path="res://Scenes/park/DogCross/dog.tscn" id="2_brl4o"]
 [ext_resource type="Resource" uid="uid://npwmc4ngk0p2" path="res://Resource/DogCross/var_1.tres" id="2_opoxb"]
-[ext_resource type="PackedScene" uid="uid://bo6p86blgj8u7" path="res://Scenes/DogCross/start_area.tscn" id="4_h0ekl"]
-[ext_resource type="PackedScene" uid="uid://drc6koxaj0red" path="res://Scenes/DogCross/finish_area.tscn" id="5_1nidl"]
-[ext_resource type="PackedScene" uid="uid://btaupe783yj15" path="res://Scenes/DogCross/rope.tscn" id="5_5vydb"]
-[ext_resource type="PackedScene" uid="uid://urvyjavba67i" path="res://Scenes/DogCross/game_manager.tscn" id="9_1nidl"]
+[ext_resource type="PackedScene" uid="uid://bo6p86blgj8u7" path="res://Scenes/park/DogCross/start_area.tscn" id="4_h0ekl"]
+[ext_resource type="PackedScene" uid="uid://drc6koxaj0red" path="res://Scenes/park/DogCross/finish_area.tscn" id="5_1nidl"]
+[ext_resource type="PackedScene" uid="uid://btaupe783yj15" path="res://Scenes/park/DogCross/rope.tscn" id="5_5vydb"]
+[ext_resource type="PackedScene" uid="uid://urvyjavba67i" path="res://Scenes/park/DogCross/game_manager.tscn" id="9_1nidl"]
 [ext_resource type="Script" uid="uid://chfr1sh7lveac" path="res://Scripts/DogCross/auto_camera.gd" id="10_2edv1"]
-[ext_resource type="PackedScene" uid="uid://b8slxm5toun2f" path="res://Scenes/DogCross/WinScreen.tscn" id="10_dq83f"]
+[ext_resource type="PackedScene" uid="uid://b8slxm5toun2f" path="res://Scenes/park/DogCross/WinScreen.tscn" id="10_dq83f"]
 
 [node name="Node2D" type="Node2D" unique_id=579529688]
 
@@ -30,6 +30,8 @@ dog = NodePath("../Dog")
 [node name="Rope" parent="." unique_id=289791178 node_paths=PackedStringArray("entity_a", "entity_b") instance=ExtResource("5_5vydb")]
 entity_a = NodePath("../Player")
 entity_b = NodePath("../Dog")
+offset_a = Vector2(25, -8)
+offset_b = Vector2(0, -10)
 
 [node name="GameManager" parent="." unique_id=275895558 node_paths=PackedStringArray("player", "dog", "rope", "camera") instance=ExtResource("9_1nidl")]
 player = NodePath("../Player")
