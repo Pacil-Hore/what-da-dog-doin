@@ -1,0 +1,47 @@
+[gd_scene format=3 uid="uid://bqhn73rnl0855"]
+
+[ext_resource type="PackedScene" path="res://Scenes/Lazy/ThoughtBubble.tscn" id="1_bubble"]
+[ext_resource type="Script" uid="uid://dmb1jw6wqsngl" path="res://Scripts/Lazy/lazy_stage.gd" id="2_script"]
+
+[node name="LazyStage" type="Node2D" unique_id=751672754]
+script = ExtResource("2_script")
+bubble_scene = ExtResource("1_bubble")
+
+[node name="Dog" type="AnimatedSprite2D" parent="." unique_id=218976800]
+position = Vector2(576, 170)
+
+[node name="BubbleContainer" type="Node2D" parent="." unique_id=1438512940]
+
+[node name="CardTray" type="HBoxContainer" parent="." unique_id=712247074]
+offset_left = 360.0
+offset_top = 500.0
+offset_right = 792.0
+offset_bottom = 640.0
+theme_override_constants/separation = 24
+alignment = 1
+
+[node name="SurviveTimer" type="Label" parent="." unique_id=1596171170]
+offset_left = 468.0
+offset_top = 28.0
+offset_right = 684.0
+offset_bottom = 64.0
+theme_override_font_sizes/font_size = 28
+horizontal_alignment = 1
+
+[node name="ResultOverlay" type="CanvasLayer" parent="." unique_id=1741496231]
+
+[node name="Backdrop" type="ColorRect" parent="ResultOverlay" unique_id=1000158610]
+visible = false
+offset_right = 1152.0
+offset_bottom = 648.0
+color = Color(0, 0, 0, 0.45)
+
+[node name="ResultLabel" type="Label" parent="ResultOverlay/Backdrop" unique_id=362768921]
+layout_mode = 0
+offset_left = 416.0
+offset_top = 256.0
+offset_right = 736.0
+offset_bottom = 392.0
+theme_override_font_sizes/font_size = 54
+horizontal_alignment = 1
+vertical_alignment = 1

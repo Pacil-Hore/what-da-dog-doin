@@ -1,0 +1,22 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://Scripts/Lazy/thought_bubble.gd" id="1_script"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_bubble"]
+size = Vector2(180, 136)
+
+[node name="ThoughtBubble" type="Area2D"]
+script = ExtResource("1_script")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_bubble")
+
+[node name="BubbleSprite" type="Sprite2D" parent="."]
+
+[node name="ItemIcon" type="Sprite2D" parent="."]
+
+[node name="TimerBar" type="ProgressBar" parent="."]
+show_percentage = false
+
+[node name="SecondsLabel" type="Label" parent="."]
+horizontal_alignment = 1
