@@ -38,6 +38,7 @@ func _ready():
 	if not timer_bar.timeout.is_connected(_on_timer_timeout):
 		timer_bar.timeout.connect(_on_timer_timeout)
 
+	timer_bar.hide()
 	call_deferred("start_game_loop")
 
 func start_game_loop():
@@ -160,6 +161,7 @@ func _on_game_won():
 	# Wait using real time so it's consistent regardless of game speed
 	await get_tree().create_timer(1.0, true, false, true).timeout
 	feedback_label.hide()
+	timer_bar.hide()
 	_pick_next_game()
 	_load_interstitial()
 
@@ -184,6 +186,7 @@ func _on_game_lost():
 	
 	await get_tree().create_timer(1.0).timeout
 	feedback_label.hide()
+	timer_bar.hide()
 	
 	if games_played < total_games_per_run - 1:
 		games_played += 1

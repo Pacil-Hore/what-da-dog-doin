@@ -10,7 +10,6 @@ signal game_lost
 @export var time_limit: float = 5.0
 
 @onready var title_label: Label = $UI/VBox/TitleLabel
-@onready var timer_label: Label = $UI/VBox/TimerLabel
 @onready var win_button: Button = $UI/VBox/WinButton
 @onready var lose_button: Button = $UI/VBox/LoseButton
 
@@ -27,7 +26,6 @@ func _process(delta: float):
 	if is_done:
 		return
 	time_left = maxf(time_left - delta, 0.0)
-	timer_label.text = "%.1f" % time_left
 	if time_left <= 0.0:
 		_on_lose()
 

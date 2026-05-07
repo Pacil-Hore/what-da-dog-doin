@@ -18,7 +18,6 @@ signal game_lost
 @onready var countdown_timer: Timer = get_node_or_null("CountdownTimer")
 
 var trash_cans: Array[PickMeTrashCan] = []
-var time_left := 0.0
 var is_finished := false
 
 
@@ -32,16 +31,13 @@ func _ready() -> void:
 	reset_game()
 
 
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
 	if is_finished:
 		return
-
-	time_left = max(time_left - delta, 0.0)
 
 
 func reset_game() -> void:
 	is_finished = false
-	time_left = time_limit
 
 	var clue_index := randi_range(0, trash_cans.size() - 1) if auto_randomize_clue else 0
 	for index in range(trash_cans.size()):
@@ -51,7 +47,7 @@ func reset_game() -> void:
 		countdown_timer.start(time_limit)
 
 
-func finish_game(did_win: bool, message: String) -> void:
+func finish_game(did_win: bool, _message: String) -> void:
 	if is_finished:
 		return
 

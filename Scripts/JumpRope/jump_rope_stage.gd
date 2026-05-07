@@ -89,7 +89,7 @@ func reset_game() -> void:
 		_start_round()
 
 
-func finish_game(did_win: bool, message: String) -> void:
+func finish_game(did_win: bool, _message: String) -> void:
 	if is_finished:
 		return
 

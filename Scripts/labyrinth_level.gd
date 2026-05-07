@@ -18,10 +18,7 @@ signal game_lost
 @onready var win_area: Area2D = $WinArea
 @onready var start_point: Marker2D = $StartPoint
 @onready var time_limit_timer: Timer = get_node_or_null("TimeLimit")
-# @onready var timer_label: Label = $HUD/TimerLabel # Removed for standardization
-# @onready var result_label: Label = $HUD/ResultLabel # Removed for standardization
 
-var time_left := 0.0
 var is_finished := false
 var maze_bounds := Rect2()
 
@@ -31,24 +28,17 @@ func _ready() -> void:
 	reset_level()
 
 
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
 	if is_finished:
 		return
-
-	time_left = max(time_left - delta, 0.0)
-	# if is_instance_valid(timer_label):
-	# 	timer_label.text = "Time: %.1f" % time_left
 
 
 func reset_level() -> void:
 	is_finished = false
-	time_left = time_limit
 	player.enabled = false # Disable until mouse is warped
 	player.global_position = start_point.global_position
 	player.movement_bounds = maze_bounds.grow(-player.collision_radius)
 	player.has_movement_bounds = true
-	# result_label.text = ""
-	# timer_label.text = "Time: %.1f" % time_left
 	if is_instance_valid(time_limit_timer):
 		time_limit_timer.start(time_limit)
 	

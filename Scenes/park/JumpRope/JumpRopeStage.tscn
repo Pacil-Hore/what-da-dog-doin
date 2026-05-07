@@ -43,19 +43,6 @@ lateral_sway = 78.0
 
 [node name="HUD" type="CanvasLayer" parent="." unique_id=643048976]
 
-[node name="TimerLabel" type="Label" parent="HUD" unique_id=495858933]
-anchors_preset = 10
-anchor_right = 1.0
-offset_left = 24.0
-offset_top = 20.0
-offset_right = -24.0
-offset_bottom = 56.0
-grow_horizontal = 2
-theme_override_colors/font_color = Color(0.18, 0.2, 0.16, 1)
-theme_override_font_sizes/font_size = 28
-text = "Start in: 1.0"
-horizontal_alignment = 1
-
 [node name="MissLabel" type="Label" parent="HUD" unique_id=918690963]
 anchors_preset = 10
 anchor_right = 1.0
@@ -80,20 +67,4 @@ grow_horizontal = 2
 theme_override_colors/font_color = Color(0.18, 0.2, 0.16, 1)
 theme_override_font_sizes/font_size = 22
 text = "Press Space or left click before the rope hits the dog's paws."
-horizontal_alignment = 1
-
-[node name="ResultLabel" type="Label" parent="HUD" unique_id=1796552083]
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -280.0
-offset_top = -34.0
-offset_right = 280.0
-offset_bottom = 34.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_colors/font_color = Color(0.17, 0.2, 0.16, 1)
-theme_override_font_sizes/font_size = 36
 horizontal_alignment = 1

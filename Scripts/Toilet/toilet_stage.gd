@@ -21,7 +21,6 @@ signal game_lost
 
 var spots: Array[ToiletSpot] = []
 var correct_spot: ToiletSpot
-var time_left: float = 0.0
 var is_finished: bool = false
 var rng: RandomNumberGenerator = RandomNumberGenerator.new()
 var slot_positions: Array[Vector2] = []
@@ -45,17 +44,13 @@ func _ready() -> void:
 	reset_game()
 
 
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
 	if is_finished:
 		return
-
-	time_left = maxf(time_left - delta, 0.0)
-	_update_hud()
 
 
 func reset_game() -> void:
 	is_finished = false
-	time_left = maxf(time_limit, 0.0)
 	_randomize_spot_positions()
 	_configure_round_layout()
 
@@ -64,10 +59,9 @@ func reset_game() -> void:
 
 	if is_instance_valid(countdown_timer):
 		countdown_timer.start(time_limit)
-	_update_hud()
 
 
-func finish_game(did_win: bool, message: String, selected_spot: ToiletSpot = null, reveal_correct: bool = false) -> void:
+func finish_game(did_win: bool, _message: String, selected_spot: ToiletSpot = null, reveal_correct: bool = false) -> void:
 	if is_finished:
 		return
 
@@ -111,10 +105,6 @@ func _randomize_spot_positions() -> void:
 
 	for index in range(spots.size()):
 		spots[index].position = shuffled_positions[index]
-
-
-func _update_hud() -> void:
-	pass
 
 
 func _on_spot_selected(spot: ToiletSpot) -> void:
