@@ -1,6 +1,11 @@
 extends Node2D
 
-signal game_finished(did_win: bool)
+signal game_won
+signal game_lost
+
+@export var objective_text: String = "Pick the right one!"
+@export var control_hint: String = "Mouse"
+@export var control_icon_path: String = "res://assets/generated/mouse_icon.png"
 
 @export var time_limit := 3.0
 @export var win_label_text := "You picked the clue!"
@@ -60,7 +65,12 @@ func finish_game(did_win: bool, message: String) -> void:
 		trash_can.reveal()
 
 	result_label.text = message
-	game_finished.emit(did_win)
+	
+	await get_tree().create_timer(1.0, false).timeout
+	if did_win:
+		emit_signal("game_won")
+	else:
+		emit_signal("game_lost")
 
 
 func _on_trash_can_picked(trash_can: PickMeTrashCan) -> void:

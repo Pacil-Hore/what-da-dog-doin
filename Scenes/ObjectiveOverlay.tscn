@@ -1,0 +1,36 @@
+[gd_scene format=3 uid="uid://tvjhmo8l8bo5"]
+
+[ext_resource type="Script" uid="uid://i0apiq10hvka" path="res://Scripts/objective_overlay.gd" id="1_dkxtn"]
+
+[node name="ObjectiveOverlay" type="CanvasLayer" unique_id=877309698]
+script = ExtResource("1_dkxtn")
+
+[node name="Control" type="Control" parent="." unique_id=1799123217]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Dimmer" type="ColorRect" parent="Control" unique_id=231513488]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color(0, 0, 0, 0.6)
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Control" unique_id=1201976351]
+layout_mode = 0
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+alignment = 1
+
+[node name="ObjectiveLabel" type="Label" parent="Control/VBoxContainer" unique_id=42938170]
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+text = "Objective Text"
+horizontal_alignment = 1

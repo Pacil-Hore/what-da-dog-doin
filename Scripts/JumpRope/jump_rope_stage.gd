@@ -1,6 +1,11 @@
 extends Node2D
 
-signal game_finished(did_win: bool)
+signal game_won
+signal game_lost
+
+@export var objective_text: String = "Jump!"
+@export var control_hint: String = "Spacebar"
+@export var control_icon_path: String = "res://assets/generated/spacebar_icon.png"
 
 @export var start_delay_duration: float = 1.0
 @export var round_duration: float = 5.0
@@ -98,7 +103,12 @@ func finish_game(did_win: bool, message: String) -> void:
 	result_label.text = message
 	if did_win and win_label_text != "" and message != win_label_text:
 		instruction_label.text = win_label_text
-	game_finished.emit(did_win)
+	
+	await get_tree().create_timer(1.0, false).timeout
+	if did_win:
+		emit_signal("game_won")
+	else:
+		emit_signal("game_lost")
 
 
 func _attempt_jump() -> void:

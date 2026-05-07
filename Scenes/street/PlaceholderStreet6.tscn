@@ -1,0 +1,46 @@
+[gd_scene format=3 uid="uid://dh2as3dfbunu0"]
+
+[ext_resource type="Script" uid="uid://3qk60wi7dvbp" path="res://Scripts/interactive_placeholder.gd" id="uid://dh2as3dfbunu0"]
+
+[node name="PlaceholderStreet6" type="Node2D"]
+script = ExtResource("uid://dh2as3dfbunu0")
+
+[node name="UI" type="CanvasLayer" parent="."]
+
+[node name="VBox" type="VBoxContainer" parent="UI"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -150.0
+offset_top = -130.0
+offset_right = 150.0
+offset_bottom = 130.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 20
+alignment = 1
+
+[node name="TitleLabel" type="Label" parent="UI/VBox"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 28
+text = "Street Game 6"
+horizontal_alignment = 1
+
+[node name="TimerLabel" type="Label" parent="UI/VBox"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 48
+text = "5.0"
+horizontal_alignment = 1
+
+[node name="WinButton" type="Button" parent="UI/VBox"]
+layout_mode = 2
+custom_minimum_size = Vector2(200, 50)
+text = "WIN"
+
+[node name="LoseButton" type="Button" parent="UI/VBox"]
+layout_mode = 2
+custom_minimum_size = Vector2(200, 50)
+text = "LOSE"
