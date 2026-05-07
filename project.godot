@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="What Da Dog Doin"
-run/main_scene="uid://732jxuib78jn"
+run/main_scene="uid://brxhdkdban0ai"
 config/features=PackedStringArray("4.6", "Mobile")
 config/icon="res://icon.svg"
 
@@ -19,6 +19,7 @@ config/icon="res://icon.svg"
 
 MCPRuntime="*uid://thnk5lnwxx8b"
 AppManager="*res://Scenes/AppManager.tscn"
+MicrogameTestHelper="*res://Scripts/microgame_test_helper.gd"
 
 [editor_plugins]
 

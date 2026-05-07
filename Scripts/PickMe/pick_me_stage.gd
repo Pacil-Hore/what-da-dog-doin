@@ -15,9 +15,7 @@ signal game_lost
 
 @onready var left_trash_can: PickMeTrashCan = $TrashCans/LeftTrashCan
 @onready var right_trash_can: PickMeTrashCan = $TrashCans/RightTrashCan
-@onready var countdown_timer: Timer = $CountdownTimer
-@onready var timer_label: Label = $HUD/TimerLabel
-@onready var result_label: Label = $HUD/ResultLabel
+@onready var countdown_timer: Timer = get_node_or_null("CountdownTimer")
 
 var trash_cans: Array[PickMeTrashCan] = []
 var time_left := 0.0
@@ -29,7 +27,8 @@ func _ready() -> void:
 	for trash_can in trash_cans:
 		trash_can.trash_can_picked.connect(_on_trash_can_picked)
 
-	countdown_timer.timeout.connect(_on_countdown_timer_timeout)
+	if is_instance_valid(countdown_timer):
+		countdown_timer.timeout.connect(_on_countdown_timer_timeout)
 	reset_game()
 
 
@@ -38,20 +37,18 @@ func _process(delta: float) -> void:
 		return
 
 	time_left = max(time_left - delta, 0.0)
-	timer_label.text = "Time: %.1f" % time_left
 
 
 func reset_game() -> void:
 	is_finished = false
 	time_left = time_limit
-	result_label.text = ""
-	timer_label.text = "Time: %.1f" % time_left
 
 	var clue_index := randi_range(0, trash_cans.size() - 1) if auto_randomize_clue else 0
 	for index in range(trash_cans.size()):
 		trash_cans[index].reset_trash_can(index == clue_index)
 
-	countdown_timer.start(time_limit)
+	if is_instance_valid(countdown_timer):
+		countdown_timer.start(time_limit)
 
 
 func finish_game(did_win: bool, message: String) -> void:
@@ -59,14 +56,12 @@ func finish_game(did_win: bool, message: String) -> void:
 		return
 
 	is_finished = true
-	countdown_timer.stop()
+	if is_instance_valid(countdown_timer):
+		countdown_timer.stop()
 	for trash_can in trash_cans:
 		trash_can.set_pick_enabled(false)
 		trash_can.reveal()
-
-	result_label.text = message
 	
-	await get_tree().create_timer(1.0, false).timeout
 	if did_win:
 		emit_signal("game_won")
 	else:

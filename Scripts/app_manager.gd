@@ -53,7 +53,8 @@ func start_free_play(scenario: String):
 
 func _launch_game_manager(microgames: Array[PackedScene], boss: PackedScene):
 	# Pass via a global dict that GameManager will read
-	pending_microgames = microgames
+	# IMPORTANT: Use duplicate() to avoid clearing the source arrays in AppManager
+	pending_microgames = microgames.duplicate()
 	pending_boss = boss
 	get_tree().change_scene_to_packed(game_manager_scene)
 
