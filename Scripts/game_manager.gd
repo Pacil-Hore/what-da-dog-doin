@@ -23,11 +23,15 @@ var next_game_scene: PackedScene = null
 
 func _ready():
 	# Load config from AppManager (set before scene was changed)
+	if AppManager.pending_microgames.is_empty():
+		push_error("GameManager: AppManager.pending_microgames is empty!")
+	
 	microgames = AppManager.pending_microgames.duplicate()
 	boss_game = AppManager.pending_boss
-	# Clear pending so they don't bleed over
-	AppManager.pending_microgames.clear()
-	AppManager.pending_boss = null
+	
+	# We don't clear AppManager's pending data here anymore to avoid 
+	# accidentally clearing the source arrays if they were passed by reference.
+	# They will be overwritten anyway on the next launch.
 
 	call_deferred("start_game_loop")
 
@@ -53,12 +57,22 @@ func _load_interstitial():
 		current_instance.queue_free()
 		current_instance = null
 
+	if next_game_scene == null:
+		push_error("GameManager: next_game_scene is null!")
+		AppManager.go_to_main_menu()
+		return
+
 	var is_speed_up = (games_played == speed_up_threshold)
 	if is_speed_up:
 		speed_multiplier = speed_up_multiplier
 		Engine.time_scale = speed_multiplier
 
 	var is_boss = (games_played == total_games_per_run - 1)
+
+	if interstitial_scene == null:
+		push_error("GameManager: interstitial_scene is null!")
+		AppManager.go_to_main_menu()
+		return
 
 	var interstitial = interstitial_scene.instantiate()
 	add_child(interstitial)
