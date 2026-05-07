@@ -110,13 +110,13 @@ func _spawn_logs(container: Node2D, config: LaneConfig):
 	container.add_child(timer)
 	
 func _create_log(container: Node2D, config: LaneConfig, x_pos: float):
-	var log = platform_scene.instantiate()
-	log.type = Platform.PlatformType.WOOD_LOG
-	log.size = Vector2(180, 90)
-	log.current_speed = config.current_speed
-	log.current_direction = config.current_direction
-	log.position = Vector2(x_pos, 0)
-	container.add_child(log)
+	var log_platform = platform_scene.instantiate()
+	log_platform.type = Platform.PlatformType.WOOD_LOG
+	log_platform.size = Vector2(180, 90)
+	log_platform.current_speed = config.current_speed
+	log_platform.current_direction = config.current_direction
+	log_platform.position = Vector2(x_pos, 0)
+	container.add_child(log_platform)
 	
 func _spawn_log_at_edge(container: Node2D, config: LaneConfig):
 	# Spawn dari sisi yang berlawanan arah arus

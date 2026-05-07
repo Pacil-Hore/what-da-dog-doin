@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://b24xjwcc07ct2"]
 
 [ext_resource type="Script" uid="uid://bew8hlftj38gu" path="res://Scripts/DogCross/player.gd" id="1_3vyb7"]
-[ext_resource type="Texture2D" uid="uid://brnl33fdvb5i4" path="res://Assets/Sprites/man_top.png" id="2_ux6ck"]
+[ext_resource type="Texture2D" path="res://Assets/Sprites/man_top.png" id="2_ux6ck"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_4bv6r"]
 radius = 17.9

@@ -3,6 +3,7 @@
 [ext_resource type="PackedScene" uid="uid://crbrwaqq404iv" path="res://Scenes/park/Labyrinth/labyrinth_object.tscn" id="1_wo3la"]
 [ext_resource type="PackedScene" uid="uid://canpbu2erlkfy" path="res://Scenes/Player.tscn" id="2_jrs6i"]
 [ext_resource type="Script" uid="uid://c5vrtkuahkgl6" path="res://Scripts/labyrinth_level.gd" id="3_857ma"]
+[ext_resource type="Texture2D" uid="uid://brnl33fdvb5i4" path="res://Assets/Sprites/man_top.png" id="4_oomtj"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_t8w3n"]
 size = Vector2(127, 16)
@@ -59,5 +60,12 @@ shape = SubResource("RectangleShape2D_left_border")
 position = Vector2(362.2812, -11.2499695)
 scale = Vector2(0.9999997, 0.9999997)
 shape = SubResource("RectangleShape2D_right_border")
+
+[node name="ManSprite" type="Sprite2D" parent="." unique_id=1885891258]
+z_index = 1
+position = Vector2(120, 324)
+rotation = 1.5707964
+scale = Vector2(1.4, 1.4)
+texture = ExtResource("4_oomtj")
 
 [connection signal="body_entered" from="WinArea" to="." method="_on_win_area_body_entered"]
