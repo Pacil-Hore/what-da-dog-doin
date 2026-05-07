@@ -12,8 +12,8 @@ signal game_lost
 @export var lose_label_text := "You Lose"
 @export var hide_system_cursor := true
 
-@onready var maze: Node2D = $LabyrinthLevel
-@onready var tile_map: TileMapLayer = $LabyrinthLevel/TileMapLayer
+@onready var maze: Node2D = $MazeObject
+@onready var tile_map: TileMapLayer = $MazeObject/TileMapLayer
 @onready var player: PlayerMouse = $Player
 @onready var win_area: Area2D = $WinArea
 @onready var start_point: Marker2D = $StartPoint

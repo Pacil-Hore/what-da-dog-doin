@@ -1,4 +1,4 @@
-[gd_scene format=3 uid="uid://732jxuib78jn"]
+[gd_scene format=3 uid="uid://bcj7gviuuoac1"]
 
 [ext_resource type="PackedScene" uid="uid://crbrwaqq404iv" path="res://Scenes/park/Labyrinth/labyrinth_object.tscn" id="1_wo3la"]
 [ext_resource type="PackedScene" uid="uid://canpbu2erlkfy" path="res://Scenes/Player.tscn" id="2_jrs6i"]
@@ -19,17 +19,17 @@ size = Vector2(21.625, 640)
 [node name="LabyrinthLevel" type="Node2D" unique_id=1216538779]
 script = ExtResource("3_857ma")
 
-[node name="LabyrinthLevel" parent="." unique_id=1343195067 instance=ExtResource("1_wo3la")]
-position = Vector2(518, 338)
+[node name="MazeObject" parent="." unique_id=1343195067 instance=ExtResource("1_wo3la")]
+position = Vector2(592, 338)
 
 [node name="Player" parent="." unique_id=1446940125 instance=ExtResource("2_jrs6i")]
-position = Vector2(528, 21)
+position = Vector2(602, 21)
 
 [node name="StartPoint" type="Marker2D" parent="." unique_id=956427480]
-position = Vector2(528, 21)
+position = Vector2(602, 21)
 
 [node name="WinArea" type="Area2D" parent="." unique_id=465826932]
-position = Vector2(385, 650)
+position = Vector2(459, 650)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="WinArea" unique_id=896327398]
 position = Vector2(5, -11)
@@ -38,19 +38,19 @@ shape = SubResource("RectangleShape2D_t8w3n")
 [node name="MazeBorders" type="StaticBody2D" parent="." unique_id=1431097969]
 
 [node name="TopBorder" type="CollisionShape2D" parent="MazeBorders" unique_id=2097966829]
-position = Vector2(502, -2)
+position = Vector2(576, -2)
 shape = SubResource("RectangleShape2D_top_border")
 
 [node name="BottomBorder" type="CollisionShape2D" parent="MazeBorders" unique_id=1047070036]
-position = Vector2(502, 656)
+position = Vector2(576, 656)
 shape = SubResource("RectangleShape2D_top_border")
 
 [node name="LeftBorder" type="CollisionShape2D" parent="MazeBorders" unique_id=785875102]
-position = Vector2(123, 327)
+position = Vector2(197, 327)
 shape = SubResource("RectangleShape2D_left_border")
 
 [node name="RightBorder" type="CollisionShape2D" parent="MazeBorders" unique_id=1834059448]
-position = Vector2(881, 327)
+position = Vector2(955, 327)
 shape = SubResource("RectangleShape2D_right_border")
 
 [node name="TimeLimit" type="Timer" parent="." unique_id=850858641]
