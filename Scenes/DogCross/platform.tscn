@@ -1,0 +1,15 @@
+[gd_scene format=3 uid="uid://da5xgdajrdusf"]
+
+[ext_resource type="Script" uid="uid://delsy5mis636f" path="res://Scripts/DogCross/platform.gd" id="1_ba0x2"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_dgmfy"]
+size = Vector2(1, 1)
+
+[node name="Platform" type="Area2D" unique_id=540400719]
+script = ExtResource("1_ba0x2")
+
+[node name="ColorRect" type="ColorRect" parent="." unique_id=1999999494]
+color = Color(0.41960785, 0.23137255, 0.12941177, 1)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1392308068]
+shape = SubResource("RectangleShape2D_dgmfy")

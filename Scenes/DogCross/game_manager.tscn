@@ -1,0 +1,6 @@
+[gd_scene format=3 uid="uid://urvyjavba67i"]
+
+[ext_resource type="Script" uid="uid://bfjrupqygkcbm" path="res://Scripts/DogCross/game_manager.gd" id="1_1ndb4"]
+
+[node name="GameManager" type="Node" unique_id=275895558]
+script = ExtResource("1_1ndb4")

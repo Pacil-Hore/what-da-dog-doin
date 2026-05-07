@@ -1,0 +1,21 @@
+[gd_scene format=3 uid="uid://b24xjwcc07ct2"]
+
+[ext_resource type="Script" uid="uid://bew8hlftj38gu" path="res://Scripts/DogCross/player.gd" id="1_3vyb7"]
+[ext_resource type="Texture2D" uid="uid://brnl33fdvb5i4" path="res://Assets/Sprites/man_top.png" id="2_ux6ck"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_4bv6r"]
+radius = 17.9
+height = 81.0
+
+[node name="Player" type="CharacterBody2D" unique_id=1662722633]
+motion_mode = 1
+script = ExtResource("1_3vyb7")
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="." unique_id=442650225]
+rotation = 1.5707964
+shape = SubResource("CapsuleShape2D_4bv6r")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1351458633]
+position = Vector2(0, 2)
+scale = Vector2(2.2, 2.2)
+texture = ExtResource("2_ux6ck")
