@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://drc6koxaj0red"]
 
 [ext_resource type="Script" uid="uid://bm1g2srk6ok30" path="res://Scripts/DogCross/finish_area.gd" id="1_jki56"]
-[ext_resource type="PackedScene" uid="uid://b8slxm5toun2f" path="res://Scenes/DogCross/WinScreen.tscn" id="2_vopn7"]
+[ext_resource type="PackedScene" uid="uid://b8slxm5toun2f" path="res://Scenes/park/DogCross/WinScreen.tscn" id="2_vopn7"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ynyjl"]
 size = Vector2(1500, 162)
