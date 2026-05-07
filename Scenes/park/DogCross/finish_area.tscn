@@ -12,7 +12,7 @@ win_screen_scene = ExtResource("2_vopn7")
 
 [node name="ColorRect" type="ColorRect" parent="." unique_id=804701304]
 offset_left = -750.0
-offset_top = -81.0
+offset_top = -419.0
 offset_right = 750.0
 offset_bottom = 81.0
 color = Color(0, 0.72156864, 0.05490196, 1)
