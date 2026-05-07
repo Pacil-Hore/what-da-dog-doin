@@ -28,12 +28,6 @@ theme_override_font_sizes/font_size = 28
 text = "Park Game 1"
 horizontal_alignment = 1
 
-[node name="TimerLabel" type="Label" parent="UI/VBox" unique_id=990194737]
-layout_mode = 2
-theme_override_font_sizes/font_size = 48
-text = "5.0"
-horizontal_alignment = 1
-
 [node name="WinButton" type="Button" parent="UI/VBox" unique_id=1479723744]
 custom_minimum_size = Vector2(200, 50)
 layout_mode = 2

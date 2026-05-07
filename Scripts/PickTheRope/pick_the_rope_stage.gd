@@ -19,7 +19,6 @@ signal game_lost
 @onready var board: PickTheRopeBoard = $Board
 @onready var countdown_timer: Timer = get_node_or_null("CountdownTimer")
 
-var time_left: float = 0.0
 var start_delay_left: float = 0.0
 var is_finished: bool = false
 var is_round_active: bool = false
@@ -40,19 +39,14 @@ func _process(delta: float) -> void:
 
 	if not is_round_active:
 		start_delay_left = maxf(start_delay_left - delta, 0.0)
-		_update_hud()
 		if start_delay_left <= 0.0:
 			_start_round()
 		return
-
-	time_left = maxf(time_left - delta, 0.0)
-	_update_hud()
 
 
 func reset_game() -> void:
 	is_finished = false
 	is_round_active = false
-	time_left = maxf(time_limit, 0.0)
 	start_delay_left = maxf(start_delay_duration, 0.0)
 	if is_instance_valid(countdown_timer):
 		countdown_timer.stop()
@@ -60,13 +54,12 @@ func reset_game() -> void:
 	board.rope_count = rope_count
 	board.reset_round()
 	board.set_pick_enabled(false)
-	_update_hud()
 
 	if start_delay_left <= 0.0:
 		_start_round()
 
 
-func finish_game(did_win: bool, message: String, selected_hook_index: int = -1, reveal_correct: bool = true) -> void:
+func finish_game(did_win: bool, _message: String, selected_hook_index: int = -1, reveal_correct: bool = true) -> void:
 	if is_finished:
 		return
 
@@ -91,15 +84,9 @@ func _start_round() -> void:
 		return
 
 	is_round_active = true
-	time_left = maxf(time_limit, 0.0)
 	board.set_pick_enabled(true)
 	if is_instance_valid(countdown_timer):
 		countdown_timer.start(time_limit)
-	_update_hud()
-
-
-func _update_hud() -> void:
-	pass
 
 
 func _on_hook_selected(hook_index: int) -> void:

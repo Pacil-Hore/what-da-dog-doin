@@ -63,7 +63,7 @@ func _setup_test_hud(microgame: Node):
 	elif "round_duration" in microgame:
 		time_limit = microgame.round_duration
 		
-	var time_left = time_limit
+	var time_data = {"left": time_limit}
 	# Use a timer to update
 	var timer = Timer.new()
 	timer.wait_time = 0.1
@@ -71,12 +71,16 @@ func _setup_test_hud(microgame: Node):
 	microgame.add_child(timer)
 	timer.timeout.connect(func():
 		if result_label.text != "": return
-		time_left -= 0.1
-		label.text = "DEBUG TIME: %.1f" % max(time_left, 0)
-		if time_left <= 0:
+		time_data.left -= 0.1
+		label.text = "DEBUG TIME: %.1f" % max(time_data.left, 0)
+		if time_data.left <= 0:
 			timer.stop()
-			if "timeout_wins" in microgame and microgame.timeout_wins:
-				microgame.emit_signal("game_won")
+			if microgame.has_method("finish_game"):
+				var is_win = "timeout_wins" in microgame and microgame.timeout_wins
+				microgame.finish_game(is_win, "Timeout!")
 			else:
-				microgame.emit_signal("game_lost")
+				if "timeout_wins" in microgame and microgame.timeout_wins:
+					microgame.emit_signal("game_won")
+				else:
+					microgame.emit_signal("game_lost")
 	)

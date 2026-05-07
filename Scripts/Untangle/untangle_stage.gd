@@ -17,8 +17,7 @@ signal game_lost
 @onready var motion_guide = $MotionGuide
 @onready var countdown_timer: Timer = get_node_or_null("CountdownTimer")
 
-var time_left := 0.0
-var is_finished := false
+var is_finished: bool = false
 var rotations_in_current_state := 0
 
 
@@ -32,17 +31,14 @@ func _ready() -> void:
 	reset_game()
 
 
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
 	if is_finished:
 		return
-
-	time_left = max(time_left - delta, 0.0)
-	motion_detector.sample(get_global_mouse_position(), state_object.global_position, delta)
+	motion_detector.sample(get_global_mouse_position(), state_object.global_position, _delta)
 
 
 func reset_game() -> void:
 	is_finished = false
-	time_left = time_limit
 	rotations_in_current_state = 0
 	state_object.set_state_index(0)
 	motion_guide.set_progress(0.0)
@@ -53,7 +49,7 @@ func reset_game() -> void:
 	_update_hud()
 
 
-func finish_game(did_win: bool, message: String) -> void:
+func finish_game(did_win: bool, _message: String) -> void:
 	if is_finished:
 		return
 
