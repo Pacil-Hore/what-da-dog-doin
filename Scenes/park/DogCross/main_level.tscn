@@ -11,8 +11,13 @@
 [ext_resource type="PackedScene" uid="uid://urvyjavba67i" path="res://Scenes/park/DogCross/game_manager.tscn" id="9_1nidl"]
 [ext_resource type="Script" uid="uid://chfr1sh7lveac" path="res://Scripts/DogCross/auto_camera.gd" id="10_2edv1"]
 [ext_resource type="PackedScene" uid="uid://b8slxm5toun2f" path="res://Scenes/park/DogCross/WinScreen.tscn" id="10_dq83f"]
+[ext_resource type="Script" path="res://Scripts/DogCross/dog_cross_stage.gd" id="11_stage"]
+[ext_resource type="Texture2D" path="res://Assets/generated/arrow_keys_icon.png" id="12_arrows"]
 
-[node name="Node2D" type="Node2D" unique_id=579529688]
+[node name="Node2D" type="Node2D" unique_id=579529688 node_paths=PackedStringArray("dog_cross_manager_path")]
+script = ExtResource("11_stage")
+control_icon = ExtResource("12_arrows")
+dog_cross_manager_path = NodePath("GameManager")
 
 [node name="Background" type="ColorRect" parent="." unique_id=228095585]
 offset_left = 11.0
@@ -49,7 +54,10 @@ win_screen_scene = ExtResource("10_dq83f")
 
 [node name="Camera2D" type="Camera2D" parent="." unique_id=409648292 node_paths=PackedStringArray("follow_target", "entity_a", "entity_b")]
 position = Vector2(600, 0)
+offset = Vector2(0, 80)
 script = ExtResource("10_2edv1")
 follow_target = NodePath("../Player")
+follow_offset = Vector2(0, -120)
 entity_a = NodePath("../Player")
 entity_b = NodePath("../Dog")
+bottom_kill_offset = 580.0

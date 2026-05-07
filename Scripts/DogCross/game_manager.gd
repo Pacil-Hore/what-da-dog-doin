@@ -1,11 +1,16 @@
 extends Node
 class_name GameManager
 
+signal dog_cross_won
+signal dog_cross_lost
+
 @export var player: CharacterBody2D
 @export var dog: CharacterBody2D
 @export var rope: Rope
 @export var camera: Camera2D       # ← drag Camera2D di Inspector
 @export var win_screen_scene: PackedScene  # ← drag WinScreen.tscn di Inspector
+@export var show_win_screen: bool = false
+@export var reload_on_loss: bool = false
 
 var game_over: bool = false
 var level_won: bool = false
@@ -54,15 +59,22 @@ func _on_level_completed():
 	_trigger_win()
 
 func _trigger_game_over():
-	await get_tree().create_timer(1.5).timeout
-	get_tree().reload_current_scene()
+	_stop_play()
+	dog_cross_lost.emit()
+	if reload_on_loss:
+		await get_tree().create_timer(1.5).timeout
+		get_tree().reload_current_scene()
 
 func _trigger_win():
-	# Stop kamera
+	_stop_play()
+	dog_cross_won.emit()
+	if show_win_screen and win_screen_scene:
+		var win_screen = win_screen_scene.instantiate()
+		get_tree().current_scene.add_child(win_screen)
+
+func _stop_play():
 	if camera and "auto_scroll" in camera:
 		camera.auto_scroll = false
-	
-	# Disable input player & dog
 	if player:
 		player.set_process_input(false)
 	if dog:
