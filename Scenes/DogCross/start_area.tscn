@@ -1,0 +1,20 @@
+[gd_scene format=3 uid="uid://bo6p86blgj8u7"]
+
+[ext_resource type="Script" uid="uid://cbm5i0avs7uhn" path="res://Scripts/DogCross/safe_area.gd" id="1_hprxr"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_tt3cq"]
+size = Vector2(1500, 162)
+
+[node name="StartArea" type="Area2D" unique_id=227275805]
+script = ExtResource("1_hprxr")
+
+[node name="ColorRect" type="ColorRect" parent="." unique_id=1807264634]
+offset_left = -750.0
+offset_top = -81.0
+offset_right = 750.0
+offset_bottom = 81.0
+color = Color(0, 0.72156864, 0.05490196, 1)
+metadata/_edit_use_anchors_ = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=644010666]
+shape = SubResource("RectangleShape2D_tt3cq")

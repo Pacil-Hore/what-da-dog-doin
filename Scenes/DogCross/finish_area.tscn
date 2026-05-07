@@ -1,0 +1,22 @@
+[gd_scene format=3 uid="uid://drc6koxaj0red"]
+
+[ext_resource type="Script" uid="uid://bm1g2srk6ok30" path="res://Scripts/DogCross/finish_area.gd" id="1_jki56"]
+[ext_resource type="PackedScene" uid="uid://b8slxm5toun2f" path="res://Scenes/DogCross/WinScreen.tscn" id="2_vopn7"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ynyjl"]
+size = Vector2(1500, 162)
+
+[node name="FinishArea" type="Area2D" unique_id=1104937620]
+script = ExtResource("1_jki56")
+win_screen_scene = ExtResource("2_vopn7")
+
+[node name="ColorRect" type="ColorRect" parent="." unique_id=804701304]
+offset_left = -750.0
+offset_top = -81.0
+offset_right = 750.0
+offset_bottom = 81.0
+color = Color(0, 0.72156864, 0.05490196, 1)
+metadata/_edit_use_anchors_ = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=405556140]
+shape = SubResource("RectangleShape2D_ynyjl")

@@ -1,15 +1,59 @@
-# FinishArea.gd
-extends SafeArea
-class_name FinishArea
+extends Area2D
+
+@export var win_screen_scene: PackedScene
 
 signal level_completed
 
-var entities_arrived: Array[CharacterBody2D] = []
+var entities_arrived: Array = []
+var triggered: bool = false
+
+func _ready():
+	body_entered.connect(_on_body_entered)
+	body_exited.connect(_on_body_exited)
 
 func _on_body_entered(body):
-	super._on_body_entered(body)
-	if body is CharacterBody2D and body not in entities_arrived:
+	if not body is CharacterBody2D:
+		return
+	
+	# Skip kalau entity udah mati
+	if "is_alive" in body and not body.is_alive:
+		return
+	
+	# Set safe area (biar gak ke-detect "jatuh")
+	if "is_on_safe_area" in body:
+		body.is_on_safe_area = true
+	
+	# Track yang udah sampe
+	if body not in entities_arrived:
 		entities_arrived.append(body)
-		# Menang kalau player & dog dua-duanya udah sampe
-		if entities_arrived.size() >= 2:
-			level_completed.emit()
+		print(body.name, " sampe finish! Total: ", entities_arrived.size())
+	
+	# Cek menang
+	if not triggered and entities_arrived.size() >= 2:
+		triggered = true
+		print("LEVEL COMPLETED!")
+		level_completed.emit()
+		_show_win_screen()
+
+func _on_body_exited(body):
+	if not body is CharacterBody2D:
+		return
+	if "is_on_safe_area" in body:
+		body.is_on_safe_area = false
+
+func _show_win_screen():
+	# Stop kamera
+	var camera = get_viewport().get_camera_2d()
+	if camera and "auto_scroll" in camera:
+		camera.auto_scroll = false
+	
+	# Disable input semua entity yang udah sampe
+	for body in entities_arrived:
+		body.set_process_input(false)
+	
+	# Tampilkan win screen
+	if win_screen_scene:
+		var win_screen = win_screen_scene.instantiate()
+		get_tree().root.add_child(win_screen)
+	else:
+		print("WARNING: win_screen_scene belum di-assign!")

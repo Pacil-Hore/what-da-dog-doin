@@ -22,9 +22,9 @@ func generate_level() -> void:
 	var current_y: float = 0.0  # mulai dari bawah (start area di y=0)
 	
 	# 1. Spawn start area di paling bawah
-	#var start = start_area_scene.instantiate()
-	#start.position = Vector2(level_config.level_width / 2, current_y)
-	#add_child(start)
+	var start = start_area_scene.instantiate()
+	start.position = Vector2(level_config.level_width / 2, current_y)
+	add_child(start)
 	
 	# Posisikan player & dog di start area
 	if player:
@@ -38,10 +38,10 @@ func generate_level() -> void:
 		_generate_lane(lane_config, current_y)
 	
 	# 3. Spawn finish area di paling atas
-	#current_y -= level_config.lane_height
-	#var finish = finish_area_scene.instantiate()
-	#finish.position = Vector2(level_config.level_width / 2, current_y)
-	#add_child(finish)
+	current_y -= level_config.lane_height
+	var finish = finish_area_scene.instantiate()
+	finish.position = Vector2(level_config.level_width / 2, current_y)
+	add_child(finish)
 
 func _generate_lane(config: LaneConfig, lane_y: float) -> void:
 	# Container per lane biar gampang manage

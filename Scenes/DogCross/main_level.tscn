@@ -5,7 +5,12 @@
 [ext_resource type="PackedScene" uid="uid://b24xjwcc07ct2" path="res://Scenes/DogCross/player.tscn" id="2_6we3w"]
 [ext_resource type="PackedScene" uid="uid://cjtteofm1bf54" path="res://Scenes/DogCross/dog.tscn" id="2_brl4o"]
 [ext_resource type="Resource" uid="uid://npwmc4ngk0p2" path="res://Resource/DogCross/var_1.tres" id="2_opoxb"]
+[ext_resource type="PackedScene" uid="uid://bo6p86blgj8u7" path="res://Scenes/DogCross/start_area.tscn" id="4_h0ekl"]
+[ext_resource type="PackedScene" uid="uid://drc6koxaj0red" path="res://Scenes/DogCross/finish_area.tscn" id="5_1nidl"]
 [ext_resource type="PackedScene" uid="uid://btaupe783yj15" path="res://Scenes/DogCross/rope.tscn" id="5_5vydb"]
+[ext_resource type="PackedScene" uid="uid://urvyjavba67i" path="res://Scenes/DogCross/game_manager.tscn" id="9_1nidl"]
+[ext_resource type="Script" uid="uid://chfr1sh7lveac" path="res://Scripts/DogCross/auto_camera.gd" id="10_2edv1"]
+[ext_resource type="PackedScene" uid="uid://b8slxm5toun2f" path="res://Scenes/DogCross/WinScreen.tscn" id="10_dq83f"]
 
 [node name="Node2D" type="Node2D" unique_id=579529688]
 
@@ -13,6 +18,8 @@
 script = ExtResource("1_5vydb")
 level_config = ExtResource("2_opoxb")
 platform_scene = ExtResource("1_ufxs0")
+start_area_scene = ExtResource("4_h0ekl")
+finish_area_scene = ExtResource("5_1nidl")
 player = NodePath("../Player")
 dog = NodePath("../Dog")
 
@@ -21,5 +28,19 @@ dog = NodePath("../Dog")
 [node name="Dog" parent="." unique_id=2021155083 instance=ExtResource("2_brl4o")]
 
 [node name="Rope" parent="." unique_id=289791178 node_paths=PackedStringArray("entity_a", "entity_b") instance=ExtResource("5_5vydb")]
+entity_a = NodePath("../Player")
+entity_b = NodePath("../Dog")
+
+[node name="GameManager" parent="." unique_id=275895558 node_paths=PackedStringArray("player", "dog", "rope", "camera") instance=ExtResource("9_1nidl")]
+player = NodePath("../Player")
+dog = NodePath("../Dog")
+rope = NodePath("../Rope")
+camera = NodePath("../Camera2D")
+win_screen_scene = ExtResource("10_dq83f")
+
+[node name="Camera2D" type="Camera2D" parent="." unique_id=409648292 node_paths=PackedStringArray("follow_target", "entity_a", "entity_b")]
+position = Vector2(600, 0)
+script = ExtResource("10_2edv1")
+follow_target = NodePath("../Player")
 entity_a = NodePath("../Player")
 entity_b = NodePath("../Dog")
