@@ -1,0 +1,16 @@
+[gd_scene format=3 uid="uid://bj6sogkphwhfr"]
+
+[ext_resource type="Script" uid="uid://22xg8exwfu5l" path="res://Scripts/app_manager.gd" id="1_uhbg8"]
+
+[node name="AppManager" type="Node" unique_id=737805345]
+script = ExtResource("1_uhbg8")
+main_menu_scene = "res://Scenes/Menus/MainMenu.tscn"
+stage_select_scene = "res://Scenes/Menus/StageSelect.tscn"
+cutscene_a_scene = "res://Scenes/Cutscenes/CutsceneA.tscn"
+cutscene_b_scene = "res://Scenes/Cutscenes/CutsceneB.tscn"
+cutscene_c_scene = "res://Scenes/Cutscenes/CutsceneC.tscn"
+game_manager_scene = "res://Scenes/GameManager.tscn"
+park_microgames = ["res://Scenes/park/Labyrinth/labyrinth_level.tscn", "res://Scenes/park/JumpRope/JumpRopeStage.tscn", "res://Scenes/park/PickMe/PickMeStage.tscn", "res://Scenes/park/Untangle/UntangleStage.tscn", "res://Scenes/park/PlaceholderPark1.tscn", "res://Scenes/park/PlaceholderPark2.tscn", "res://Scenes/park/PlaceholderPark3.tscn", "res://Scenes/park/PlaceholderPark4.tscn"]
+park_boss = "res://Scenes/park/PlaceholderParkBoss.tscn"
+street_microgames = ["res://Scenes/street/PickTheRope/PickTheRopeStage.tscn", "res://Scenes/street/Toilet/ToiletStage.tscn", "res://Scenes/street/PlaceholderStreet1.tscn", "res://Scenes/street/PlaceholderStreet2.tscn", "res://Scenes/street/PlaceholderStreet3.tscn", "res://Scenes/street/PlaceholderStreet4.tscn", "res://Scenes/street/PlaceholderStreet5.tscn", "res://Scenes/street/PlaceholderStreet6.tscn"]
+street_boss = "res://Scenes/street/PlaceholderStreetBoss.tscn"

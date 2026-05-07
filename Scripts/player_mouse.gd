@@ -2,17 +2,14 @@ extends CharacterBody2D
 class_name PlayerMouse
 
 @export var enabled := true
-@export var cursor_radius := 6.0
-@export var cursor_color := Color(1.0, 1.0, 1.0, 1.0)
-@export var cursor_outline_color := Color(0.08, 0.09, 0.12, 1.0)
+@export var collision_radius := 5.0
+@export var max_speed := 1500.0 # Limit speed to prevent tunneling through walls
 
 var movement_bounds := Rect2()
 var has_movement_bounds := false
 
-
 func _ready() -> void:
-	queue_redraw()
-
+	pass
 
 func _physics_process(delta: float) -> void:
 	if not enabled:
@@ -22,20 +19,21 @@ func _physics_process(delta: float) -> void:
 	if has_movement_bounds:
 		target_position = _clamp_to_bounds(target_position)
 
-	var motion := target_position - global_position
-	if motion.length_squared() == 0.0:
-		return
-
-	velocity = motion / delta
+	var diff := target_position - global_position
+	
+	# Proportional movement: speed depends on distance to mouse
+	# This feels more natural and less like "teleporting"
+	var speed_factor = 30.0 
+	var desired_velocity = diff * speed_factor
+	
+	# Limit velocity to prevent tunneling
+	velocity = desired_velocity.limit_length(max_speed)
+	
 	move_and_slide()
 
+	# Secondary clamp to ensure physics didn't push us out of bounds
 	if has_movement_bounds:
 		global_position = _clamp_to_bounds(global_position)
-
-
-func _draw() -> void:
-	draw_circle(Vector2.ZERO, cursor_radius + 2.0, cursor_outline_color)
-	draw_circle(Vector2.ZERO, cursor_radius, cursor_color)
 
 
 func _clamp_to_bounds(point: Vector2) -> Vector2:

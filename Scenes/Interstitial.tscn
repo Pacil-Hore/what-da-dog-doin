@@ -36,12 +36,6 @@ grow_vertical = 2
 theme_override_constants/separation = 20
 alignment = 1
 
-[node name="GameNumberLabel" type="Label" parent="VBoxContainer" unique_id=2000666493]
-layout_mode = 2
-theme_override_font_sizes/font_size = 48
-text = "Game: 1"
-horizontal_alignment = 1
-
 [node name="LivesLabel" type="Label" parent="VBoxContainer" unique_id=295737217]
 layout_mode = 2
 theme_override_font_sizes/font_size = 32
@@ -55,3 +49,14 @@ theme_override_colors/font_color = Color(1, 0, 0, 1)
 theme_override_font_sizes/font_size = 36
 text = "SPEED UP!"
 horizontal_alignment = 1
+
+[node name="ControlIcon" type="TextureRect" parent="VBoxContainer" unique_id=1670314742]
+custom_minimum_size = Vector2(128, 128)
+layout_mode = 2
+expand_mode = 1
+stretch_mode = 5
+
+[node name="BossLabel" type="Label" parent="VBoxContainer" unique_id=986874438]
+visible = false
+layout_mode = 2
+text = "BOSS STAGE!"

@@ -4,6 +4,9 @@ signal game_won
 signal game_lost
 
 @export var label_text: String = "Placeholder Game"
+@export var objective_text: String = "Placeholder Instruction"
+@export var control_hint: String = "Mouse"
+@export var control_icon_path: String = "res://assets/generated/placeholder_icon.png"
 @export var time_limit: float = 5.0
 
 @onready var title_label: Label = $UI/VBox/TitleLabel

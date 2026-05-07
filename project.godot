@@ -11,14 +11,14 @@ config_version=5
 [application]
 
 config/name="What Da Dog Doin"
-run/main_scene="res://Scenes/Menus/MainMenu.tscn"
+run/main_scene="uid://732jxuib78jn"
 config/features=PackedStringArray("4.6", "Mobile")
 config/icon="res://icon.svg"
 
 [autoload]
 
 MCPRuntime="*uid://thnk5lnwxx8b"
-AppManager="*res://Scripts/app_manager.gd"
+AppManager="*res://Scenes/AppManager.tscn"
 
 [editor_plugins]
 
