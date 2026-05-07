@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://cjtteofm1bf54"]
 
-[ext_resource type="Script" uid="uid://daas0kkn582t4" path="res://Scripts/DogCross/dog.gd" id="1_gwaxu"]
-[ext_resource type="Texture2D" uid="uid://cv8u2dr6aysc6" path="res://Assets/Sprites/dog_top.png" id="2_wrtqu"]
+[ext_resource type="Script" path="res://Scripts/DogCross/dog.gd" id="1_gwaxu"]
+[ext_resource type="Texture2D" path="res://Assets/Sprites/dog_top.png" id="2_wrtqu"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_wrtqu"]
 radius = 22.0
