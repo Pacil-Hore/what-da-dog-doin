@@ -27,19 +27,6 @@ func _setup_test_hud(microgame: Node):
 	canvas.layer = 999
 	microgame.add_child(canvas)
 	
-	# Add a simple background for the timer
-	var bg = ColorRect.new()
-	bg.color = Color(0, 0, 0, 0.5)
-	bg.size = Vector2(200, 40)
-	bg.position = Vector2(10, 10)
-	canvas.add_child(bg)
-	
-	# Add a timer label
-	var label = Label.new()
-	label.name = "TestTimerLabel"
-	label.position = Vector2(20, 20)
-	canvas.add_child(label)
-	
 	# Add a result label
 	var result_label = Label.new()
 	result_label.name = "TestResultLabel"
@@ -57,12 +44,31 @@ func _setup_test_hud(microgame: Node):
 	microgame.game_lost.connect(func(): result_label.text = "LOSE..."; result_label.modulate = Color.RED)
 	
 	# Logic for timer
-	var time_limit = 5.0
+	var has_debug_timer := false
+	var time_limit := 0.0
 	if "time_limit" in microgame:
+		has_debug_timer = true
 		time_limit = microgame.time_limit
 	elif "round_duration" in microgame:
+		has_debug_timer = true
 		time_limit = microgame.round_duration
-		
+	
+	if not has_debug_timer:
+		return
+	
+	# Add a simple background for the timer
+	var bg = ColorRect.new()
+	bg.color = Color(0, 0, 0, 0.5)
+	bg.size = Vector2(200, 40)
+	bg.position = Vector2(10, 10)
+	canvas.add_child(bg)
+	
+	# Add a timer label
+	var label = Label.new()
+	label.name = "TestTimerLabel"
+	label.position = Vector2(20, 20)
+	canvas.add_child(label)
+	
 	var time_data = {"left": time_limit}
 	# Use a timer to update
 	var timer = Timer.new()

@@ -22,6 +22,7 @@ var boss_game: PackedScene = null
 var lives: int = 5
 var games_played: int = 0
 var speed_multiplier: float = 1.0
+var current_game_is_boss: bool = false
 
 @onready var timer_bar = $HUDLayer/TimerBar
 @onready var feedback_label = $HUDLayer/FeedbackLabel
@@ -78,7 +79,7 @@ func _load_interstitial():
 		speed_multiplier = speed_up_multiplier
 		Engine.time_scale = speed_multiplier
 
-	var is_boss = (games_played == total_games_per_run - 1)
+	current_game_is_boss = (games_played == total_games_per_run - 1)
 
 	if interstitial_scene == null:
 		push_error("GameManager: interstitial_scene is null!")
@@ -98,7 +99,7 @@ func _load_interstitial():
 		icon = load(temp_game.control_icon_path)
 	temp_game.queue_free()
 
-	interstitial.setup(lives, icon, is_speed_up, is_boss)
+	interstitial.setup(lives, icon, is_speed_up, current_game_is_boss)
 	interstitial.interstitial_done.connect(_on_interstitial_done)
 
 func _on_interstitial_done():
@@ -136,14 +137,17 @@ func _on_interstitial_done():
 	if is_instance_valid(game_instance):
 		game_instance.process_mode = Node.PROCESS_MODE_INHERIT
 		
-		# Start global timer
-		var duration = default_game_duration
-		if "time_limit" in game_instance:
-			duration = game_instance.time_limit
-		elif "round_duration" in game_instance:
-			duration = game_instance.round_duration
-		
-		timer_bar.start(duration)
+		if current_game_is_boss:
+			timer_bar.stop()
+			timer_bar.hide()
+		else:
+			var duration = default_game_duration
+			if "time_limit" in game_instance:
+				duration = game_instance.time_limit
+			elif "round_duration" in game_instance:
+				duration = game_instance.round_duration
+			
+			timer_bar.start(duration)
 
 	if game_instance.has_signal("game_won"):
 		game_instance.game_won.connect(_on_game_won)
@@ -182,7 +186,9 @@ func _on_game_lost():
 	timer_bar.stop()
 	
 	var msg = "LOSE..."
-	if is_instance_valid(current_instance):
+	if current_game_is_boss:
+		msg = "Try Again" if lives > 1 else "You Lose"
+	elif is_instance_valid(current_instance):
 		if "lose_label_text" in current_instance:
 			msg = current_instance.lose_label_text
 	

@@ -1,6 +1,7 @@
 extends Area2D
 
 @export var win_screen_scene: PackedScene
+@export var show_win_screen: bool = false
 
 signal level_completed
 
@@ -34,7 +35,8 @@ func _on_body_entered(body):
 		triggered = true
 		print("LEVEL COMPLETED!")
 		level_completed.emit()
-		_show_win_screen()
+		if show_win_screen:
+			_show_win_screen()
 
 func _on_body_exited(body):
 	if not body is CharacterBody2D:
