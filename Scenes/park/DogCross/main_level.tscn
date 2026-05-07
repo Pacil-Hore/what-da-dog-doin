@@ -14,6 +14,13 @@
 
 [node name="Node2D" type="Node2D" unique_id=579529688]
 
+[node name="Background" type="ColorRect" parent="." unique_id=228095585]
+offset_left = 11.0
+offset_top = -2786.0
+offset_right = 1211.0
+offset_bottom = 714.0
+color = Color(0, 0.827451, 1, 1)
+
 [node name="RiverGenerator" type="Node2D" parent="." unique_id=168970886 node_paths=PackedStringArray("player", "dog")]
 script = ExtResource("1_5vydb")
 level_config = ExtResource("2_opoxb")
