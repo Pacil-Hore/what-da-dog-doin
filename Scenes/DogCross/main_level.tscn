@@ -1,0 +1,25 @@
+[gd_scene format=3 uid="uid://b1mitdmf22s86"]
+
+[ext_resource type="Script" uid="uid://dugckmmsyi4l7" path="res://Scripts/DogCross/platform_generator.gd" id="1_5vydb"]
+[ext_resource type="PackedScene" uid="uid://da5xgdajrdusf" path="res://Scenes/DogCross/platform.tscn" id="1_ufxs0"]
+[ext_resource type="PackedScene" uid="uid://b24xjwcc07ct2" path="res://Scenes/DogCross/player.tscn" id="2_6we3w"]
+[ext_resource type="PackedScene" uid="uid://cjtteofm1bf54" path="res://Scenes/DogCross/dog.tscn" id="2_brl4o"]
+[ext_resource type="Resource" uid="uid://npwmc4ngk0p2" path="res://Resource/DogCross/var_1.tres" id="2_opoxb"]
+[ext_resource type="PackedScene" uid="uid://btaupe783yj15" path="res://Scenes/DogCross/rope.tscn" id="5_5vydb"]
+
+[node name="Node2D" type="Node2D" unique_id=579529688]
+
+[node name="RiverGenerator" type="Node2D" parent="." unique_id=168970886 node_paths=PackedStringArray("player", "dog")]
+script = ExtResource("1_5vydb")
+level_config = ExtResource("2_opoxb")
+platform_scene = ExtResource("1_ufxs0")
+player = NodePath("../Player")
+dog = NodePath("../Dog")
+
+[node name="Player" parent="." unique_id=1662722633 instance=ExtResource("2_6we3w")]
+
+[node name="Dog" parent="." unique_id=2021155083 instance=ExtResource("2_brl4o")]
+
+[node name="Rope" parent="." unique_id=289791178 node_paths=PackedStringArray("entity_a", "entity_b") instance=ExtResource("5_5vydb")]
+entity_a = NodePath("../Player")
+entity_b = NodePath("../Dog")

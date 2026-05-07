@@ -1,0 +1,21 @@
+[gd_scene format=3 uid="uid://b24xjwcc07ct2"]
+
+[ext_resource type="Script" uid="uid://bew8hlftj38gu" path="res://Scripts/DogCross/player.gd" id="1_3vyb7"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_u8vuu"]
+size = Vector2(81, 81)
+
+[node name="Player" type="CharacterBody2D" unique_id=1662722633]
+motion_mode = 1
+script = ExtResource("1_3vyb7")
+
+[node name="ColorRect" type="ColorRect" parent="." unique_id=859179802]
+offset_left = -40.0
+offset_top = -40.0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=699313991]
+shape = SubResource("RectangleShape2D_u8vuu")
+
+[node name="Camera2D" type="Camera2D" parent="." unique_id=1723038749]

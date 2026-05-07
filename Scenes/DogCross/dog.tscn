@@ -1,0 +1,18 @@
+[gd_scene format=3 uid="uid://cjtteofm1bf54"]
+
+[ext_resource type="Script" uid="uid://daas0kkn582t4" path="res://Scripts/DogCross/dog.gd" id="1_gwaxu"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_q5vqw"]
+size = Vector2(81, 81)
+
+[node name="Dog" type="CharacterBody2D" unique_id=2021155083]
+script = ExtResource("1_gwaxu")
+
+[node name="ColorRect" type="ColorRect" parent="." unique_id=1998597864]
+offset_left = -40.5
+offset_top = -40.5
+offset_right = 40.5
+offset_bottom = 40.5
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=995761735]
+shape = SubResource("RectangleShape2D_q5vqw")
