@@ -25,6 +25,9 @@ func go_to_main_menu():
 	Engine.time_scale = 1.0
 	get_tree().change_scene_to_packed(main_menu_scene)
 
+func go_to_stage_select():
+	get_tree().change_scene_to_packed(stage_select_scene)
+
 func start_story_mode():
 	current_mode = Mode.STORY
 	story_stage = 0

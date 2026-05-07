@@ -8,9 +8,14 @@ signal run_lost
 @export var speed_up_threshold: int = 14
 @export var speed_up_multiplier: float = 1.5
 @export var total_games_per_run: int = 25
+@export var default_game_duration: float = 5.0
+@export var feedback_duration: float = 1.0
 
 @export_group("Scenes")
 @export var interstitial_scene: PackedScene
+
+@export_group("UI")
+@export var objective_overlay_template_path: NodePath = ^"ObjectiveOverlayTemplate"
 
 var microgames: Array[PackedScene] = []
 var boss_game: PackedScene = null
@@ -84,14 +89,16 @@ func _load_interstitial():
 	add_child(interstitial)
 	current_instance = interstitial
 
-	# To get control icon, we'll instantiate the game but not add it yet
+	# To get control icon, instantiate the game without adding it to the tree.
 	var temp_game = next_game_scene.instantiate()
-	var icon_path = "res://assets/generated/placeholder_icon.png"
-	if "control_icon_path" in temp_game:
-		icon_path = temp_game.control_icon_path
+	var icon: Texture2D = null
+	if "control_icon" in temp_game:
+		icon = temp_game.control_icon
+	elif "control_icon_path" in temp_game and temp_game.control_icon_path != "":
+		icon = load(temp_game.control_icon_path)
 	temp_game.queue_free()
 
-	interstitial.setup(lives, icon_path, is_speed_up, is_boss)
+	interstitial.setup(lives, icon, is_speed_up, is_boss)
 	interstitial.interstitial_done.connect(_on_interstitial_done)
 
 func _on_interstitial_done():
@@ -106,9 +113,14 @@ func _on_interstitial_done():
 	# Pause gameplay until objective is shown
 	game_instance.process_mode = Node.PROCESS_MODE_DISABLED
 	
-	# Show objective overlay
-	var overlay_scene = load("res://Scenes/ObjectiveOverlay.tscn")
-	var overlay = overlay_scene.instantiate()
+	var overlay_template = get_node_or_null(objective_overlay_template_path)
+	if overlay_template == null:
+		push_error("GameManager: objective overlay template is not assigned.")
+		AppManager.go_to_main_menu()
+		return
+
+	var overlay = overlay_template.duplicate()
+	overlay.visible = true
 	add_child(overlay) 
 	
 	var obj_text = "Go!"
@@ -125,7 +137,7 @@ func _on_interstitial_done():
 		game_instance.process_mode = Node.PROCESS_MODE_INHERIT
 		
 		# Start global timer
-		var duration = 5.0
+		var duration = default_game_duration
 		if "time_limit" in game_instance:
 			duration = game_instance.time_limit
 		elif "round_duration" in game_instance:
@@ -159,7 +171,7 @@ func _on_game_won():
 		return
 	
 	# Wait using real time so it's consistent regardless of game speed
-	await get_tree().create_timer(1.0, true, false, true).timeout
+	await get_tree().create_timer(feedback_duration, true, false, true).timeout
 	feedback_label.hide()
 	timer_bar.hide()
 	_pick_next_game()
@@ -184,7 +196,7 @@ func _on_game_lost():
 		AppManager.on_run_lost()
 		return
 	
-	await get_tree().create_timer(1.0).timeout
+	await get_tree().create_timer(feedback_duration).timeout
 	feedback_label.hide()
 	timer_bar.hide()
 	
