@@ -1,0 +1,102 @@
+[gd_scene format=3 uid="uid://dbd08m2tcy3gu"]
+
+[ext_resource type="Script" uid="uid://d2m0oj1q0t8k7" path="res://Scripts/JumpRope/jump_rope_stage.gd" id="1_stage"]
+[ext_resource type="Script" uid="uid://b78f6b4wtynt0" path="res://Scripts/JumpRope/jump_rope_background.gd" id="2_background"]
+[ext_resource type="Script" uid="uid://d4cws35ef10yl" path="res://Scripts/JumpRope/jump_rope_child_visual.gd" id="3_child"]
+[ext_resource type="Script" uid="uid://ch2u8n2h7mq2g" path="res://Scripts/JumpRope/jump_rope_dog.gd" id="4_dog"]
+[ext_resource type="Script" uid="uid://d0jlx1u0ocq8h" path="res://Scripts/JumpRope/jump_rope_rope.gd" id="5_rope"]
+
+[node name="JumpRopeStage" type="Node2D" unique_id=703288775]
+script = ExtResource("1_stage")
+
+[node name="Background" type="Node2D" parent="." unique_id=572483486]
+z_index = -100
+script = ExtResource("2_background")
+
+[node name="Playfield" type="Node2D" parent="." unique_id=1254204708]
+
+[node name="LeftChild" type="Node2D" parent="Playfield" unique_id=576203807]
+position = Vector2(278, 418)
+script = ExtResource("3_child")
+shorts_color = Color(0.22, 0.32, 0.48, 1)
+
+[node name="RightChild" type="Node2D" parent="Playfield" unique_id=1730699395]
+position = Vector2(874, 418)
+script = ExtResource("3_child")
+mirror_character = true
+shirt_color = Color(0.28, 0.67, 0.78, 1)
+shorts_color = Color(0.31, 0.23, 0.48, 1)
+skin_color = Color(0.91, 0.78, 0.63, 1)
+
+[node name="Dog" type="Node2D" parent="Playfield" unique_id=1570130226]
+position = Vector2(576, 432)
+script = ExtResource("4_dog")
+
+[node name="Rope" type="Node2D" parent="Playfield" unique_id=561475856]
+position = Vector2(576, 292)
+script = ExtResource("5_rope")
+left_handle_position = Vector2(-258, 86)
+right_handle_position = Vector2(258, 86)
+top_center_y = -128.0
+bottom_center_y = 204.0
+lateral_sway = 78.0
+
+[node name="CountdownTimer" type="Timer" parent="." unique_id=2038560448]
+one_shot = true
+
+[node name="HUD" type="CanvasLayer" parent="." unique_id=643048976]
+
+[node name="TimerLabel" type="Label" parent="HUD" unique_id=495858933]
+anchors_preset = 10
+anchor_right = 1.0
+offset_left = 24.0
+offset_top = 20.0
+offset_right = -24.0
+offset_bottom = 56.0
+grow_horizontal = 2
+theme_override_colors/font_color = Color(0.18, 0.2, 0.16, 1)
+theme_override_font_sizes/font_size = 28
+text = "Start in: 1.0"
+horizontal_alignment = 1
+
+[node name="MissLabel" type="Label" parent="HUD" unique_id=918690963]
+anchors_preset = 10
+anchor_right = 1.0
+offset_left = 24.0
+offset_top = 54.0
+offset_right = -24.0
+offset_bottom = 92.0
+grow_horizontal = 2
+theme_override_colors/font_color = Color(0.62, 0.21, 0.18, 1)
+theme_override_font_sizes/font_size = 24
+text = "Misses: 0/3"
+horizontal_alignment = 1
+
+[node name="InstructionLabel" type="Label" parent="HUD" unique_id=741245982]
+anchors_preset = 10
+anchor_right = 1.0
+offset_left = 80.0
+offset_top = 566.0
+offset_right = -80.0
+offset_bottom = 612.0
+grow_horizontal = 2
+theme_override_colors/font_color = Color(0.18, 0.2, 0.16, 1)
+theme_override_font_sizes/font_size = 22
+text = "Press Space or left click before the rope hits the dog's paws."
+horizontal_alignment = 1
+
+[node name="ResultLabel" type="Label" parent="HUD" unique_id=1796552083]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -280.0
+offset_top = -34.0
+offset_right = 280.0
+offset_bottom = 34.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0.17, 0.2, 0.16, 1)
+theme_override_font_sizes/font_size = 36
+horizontal_alignment = 1
