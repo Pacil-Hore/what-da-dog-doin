@@ -1,0 +1,19 @@
+[gd_scene format=3 uid="uid://cjtteofm1bf54"]
+
+[ext_resource type="Script" uid="uid://daas0kkn582t4" path="res://Scripts/DogCross/dog.gd" id="1_gwaxu"]
+[ext_resource type="Texture2D" uid="uid://cv8u2dr6aysc6" path="res://Assets/Sprites/dog_top.png" id="2_wrtqu"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_wrtqu"]
+radius = 22.0
+height = 81.0
+
+[node name="Dog" type="CharacterBody2D" unique_id=2021155083]
+script = ExtResource("1_gwaxu")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=128230588]
+position = Vector2(0, 3)
+scale = Vector2(2, 2)
+texture = ExtResource("2_wrtqu")
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="." unique_id=104425501]
+shape = SubResource("CapsuleShape2D_wrtqu")

@@ -1,0 +1,37 @@
+[gd_scene format=3 uid="uid://b8slxm5toun2f"]
+
+[ext_resource type="Script" uid="uid://2opqsv3wq2oo" path="res://scripts/DogCross/win_screen.gd" id="1_nwloc"]
+[ext_resource type="PackedScene" uid="uid://brxhdkdban0ai" path="res://Scenes/Menus/MainMenu.tscn" id="2_u1xni"]
+
+[node name="WinScreen" type="CanvasLayer" unique_id=1897912676]
+script = ExtResource("1_nwloc")
+main_menu_scene = ExtResource("2_u1xni")
+
+[node name="Background" type="ColorRect" parent="." unique_id=2111961104]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.5)
+
+[node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=1398856931]
+anchors_preset = 14
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Label" type="Label" parent="VBoxContainer" unique_id=1140034879]
+layout_mode = 2
+theme_override_font_sizes/font_size = 80
+text = "YOU WIN!"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="BackButton" type="Button" parent="VBoxContainer" unique_id=1707187585]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "Back to Main Menu"

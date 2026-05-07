@@ -1,0 +1,10 @@
+[gd_scene format=3 uid="uid://btaupe783yj15"]
+
+[ext_resource type="Script" uid="uid://d0j3h30gt7ow2" path="res://Scripts/DogCross/rope.gd" id="1_hb30n"]
+
+[node name="Rope" type="Node2D" unique_id=289791178]
+script = ExtResource("1_hb30n")
+
+[node name="Line2D" type="Line2D" parent="." unique_id=1745657170]
+width = 4.0
+default_color = Color(1, 0.0627451, 0.0627451, 1)
