@@ -8,7 +8,7 @@ signal game_lost
 @export var control_hint: String = "Mouse"
 @export var control_icon_path: String = "res://assets/generated/mouse_icon.png"
 
-@export var start_delay_duration: float = 0.25
+@export var start_delay_duration: float = 0.0
 @export var time_limit: float = 4.0
 @export var rope_count: int = 4
 @export var instruction_text: String = "Trace your dog's leash and click the right hook before time runs out."
@@ -17,10 +17,7 @@ signal game_lost
 @export var timeout_label_text: String = "Time is up!"
 
 @onready var board: PickTheRopeBoard = $Board
-@onready var countdown_timer: Timer = $CountdownTimer
-@onready var timer_label: Label = $HUD/TimerLabel
-@onready var instruction_label: Label = $HUD/InstructionLabel
-@onready var result_label: Label = $HUD/ResultLabel
+@onready var countdown_timer: Timer = get_node_or_null("CountdownTimer")
 
 var time_left: float = 0.0
 var start_delay_left: float = 0.0
@@ -32,7 +29,8 @@ func _ready() -> void:
 	if not board.hook_selected.is_connected(_on_hook_selected):
 		board.hook_selected.connect(_on_hook_selected)
 
-	countdown_timer.timeout.connect(_on_countdown_timer_timeout)
+	if is_instance_valid(countdown_timer):
+		countdown_timer.timeout.connect(_on_countdown_timer_timeout)
 	reset_game()
 
 
@@ -56,9 +54,8 @@ func reset_game() -> void:
 	is_round_active = false
 	time_left = maxf(time_limit, 0.0)
 	start_delay_left = maxf(start_delay_duration, 0.0)
-	result_label.text = ""
-	instruction_label.text = instruction_text
-	countdown_timer.stop()
+	if is_instance_valid(countdown_timer):
+		countdown_timer.stop()
 
 	board.rope_count = rope_count
 	board.reset_round()
@@ -75,18 +72,14 @@ func finish_game(did_win: bool, message: String, selected_hook_index: int = -1, 
 
 	is_finished = true
 	is_round_active = false
-	countdown_timer.stop()
+	if is_instance_valid(countdown_timer):
+		countdown_timer.stop()
 	board.set_pick_enabled(false)
 
 	if reveal_correct:
 		board.reveal_result(selected_hook_index, board.get_correct_hook_index())
 
-	result_label.text = message
-	if did_win and win_label_text != "":
-		instruction_label.text = win_label_text
-
 	
-	await get_tree().create_timer(1.0, false).timeout
 	if did_win:
 		emit_signal("game_won")
 	else:
@@ -100,15 +93,13 @@ func _start_round() -> void:
 	is_round_active = true
 	time_left = maxf(time_limit, 0.0)
 	board.set_pick_enabled(true)
-	countdown_timer.start(time_limit)
+	if is_instance_valid(countdown_timer):
+		countdown_timer.start(time_limit)
 	_update_hud()
 
 
 func _update_hud() -> void:
-	if is_round_active:
-		timer_label.text = "Time: %.1f" % time_left
-	else:
-		timer_label.text = "Start in: %.1f" % start_delay_left
+	pass
 
 
 func _on_hook_selected(hook_index: int) -> void:

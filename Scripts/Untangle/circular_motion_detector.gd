@@ -6,8 +6,8 @@ signal progress_changed(progress: float)
 @export var min_radius := 48.0
 @export var max_radius := 260.0
 @export var min_angle_delta := 0.01
-@export var direction_change_grace := 0.45
-@export var radius_exit_grace := 0.12
+@export var direction_change_grace := 1.5
+@export var radius_exit_grace := 0.25
 
 var is_enabled := true
 var completed_rotations := 0

@@ -41,9 +41,6 @@ top_center_y = -128.0
 bottom_center_y = 204.0
 lateral_sway = 78.0
 
-[node name="CountdownTimer" type="Timer" parent="." unique_id=2038560448]
-one_shot = true
-
 [node name="HUD" type="CanvasLayer" parent="." unique_id=643048976]
 
 [node name="TimerLabel" type="Label" parent="HUD" unique_id=495858933]

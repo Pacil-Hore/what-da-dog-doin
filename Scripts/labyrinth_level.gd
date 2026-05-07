@@ -17,9 +17,9 @@ signal game_lost
 @onready var player: PlayerMouse = $Player
 @onready var win_area: Area2D = $WinArea
 @onready var start_point: Marker2D = $StartPoint
-@onready var time_limit_timer: Timer = $TimeLimit
-@onready var timer_label: Label = $HUD/TimerLabel
-@onready var result_label: Label = $HUD/ResultLabel
+@onready var time_limit_timer: Timer = get_node_or_null("TimeLimit")
+# @onready var timer_label: Label = $HUD/TimerLabel # Removed for standardization
+# @onready var result_label: Label = $HUD/ResultLabel # Removed for standardization
 
 var time_left := 0.0
 var is_finished := false
@@ -36,7 +36,8 @@ func _process(delta: float) -> void:
 		return
 
 	time_left = max(time_left - delta, 0.0)
-	timer_label.text = "Time: %.1f" % time_left
+	# if is_instance_valid(timer_label):
+	# 	timer_label.text = "Time: %.1f" % time_left
 
 
 func reset_level() -> void:
@@ -46,9 +47,10 @@ func reset_level() -> void:
 	player.global_position = start_point.global_position
 	player.movement_bounds = maze_bounds.grow(-player.collision_radius)
 	player.has_movement_bounds = true
-	result_label.text = ""
-	timer_label.text = "Time: %.1f" % time_left
-	time_limit_timer.start(time_limit)
+	# result_label.text = ""
+	# timer_label.text = "Time: %.1f" % time_left
+	if is_instance_valid(time_limit_timer):
+		time_limit_timer.start(time_limit)
 	
 	_warp_mouse_to_player()
 	
@@ -66,11 +68,11 @@ func finish_level(message: String) -> void:
 
 	is_finished = true
 	player.enabled = false
-	time_limit_timer.stop()
-	result_label.text = message
+	if is_instance_valid(time_limit_timer):
+		time_limit_timer.stop()
+	# result_label.text = message
 	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 	
-	await get_tree().create_timer(1.0, false).timeout
 	if message == win_label_text:
 		emit_signal("game_won")
 	else:
@@ -81,8 +83,8 @@ func finish_level(message: String) -> void:
 func _get_maze_bounds() -> Rect2:
 	var used_rect := tile_map.get_used_rect()
 	var tile_size := Vector2(tile_map.tile_set.tile_size)
-	var top_left := tile_map.global_position + Vector2(used_rect.position) * tile_size
-	var maze_size := Vector2(used_rect.size) * tile_size
+	var top_left := tile_map.global_position + Vector2(used_rect.position) * tile_size * tile_map.scale
+	var maze_size := Vector2(used_rect.size) * tile_size * tile_map.scale
 
 	return Rect2(top_left, maze_size)
 

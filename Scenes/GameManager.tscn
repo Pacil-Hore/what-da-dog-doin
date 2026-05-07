@@ -2,7 +2,26 @@
 
 [ext_resource type="Script" uid="uid://56nt545x6yhe" path="res://Scripts/game_manager.gd" id="1_m2tc1"]
 [ext_resource type="PackedScene" uid="uid://7ugsq80aeecn" path="res://Scenes/Interstitial.tscn" id="2_bwyv8"]
+[ext_resource type="PackedScene" uid="uid://p5fs5nwphm54" path="res://Scenes/UI/TimerBar.tscn" id="3_7cxpe"]
 
 [node name="GameManager" type="Node" unique_id=536985573]
 script = ExtResource("1_m2tc1")
 interstitial_scene = ExtResource("2_bwyv8")
+
+[node name="HUDLayer" type="CanvasLayer" parent="." unique_id=125613773]
+layer = 100
+
+[node name="TimerBar" parent="HUDLayer" unique_id=2138421008 instance=ExtResource("3_7cxpe")]
+
+[node name="FeedbackLabel" type="Label" parent="HUDLayer" unique_id=541616638]
+visible = false
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+theme_override_constants/outline_size = 0
+theme_override_font_sizes/font_size = 32
+horizontal_alignment = 1
+vertical_alignment = 1

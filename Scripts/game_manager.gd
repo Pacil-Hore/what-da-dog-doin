@@ -18,6 +18,9 @@ var lives: int = 5
 var games_played: int = 0
 var speed_multiplier: float = 1.0
 
+@onready var timer_bar = $HUDLayer/TimerBar
+@onready var feedback_label = $HUDLayer/FeedbackLabel
+
 var current_instance: Node
 var next_game_scene: PackedScene = null
 
@@ -31,7 +34,9 @@ func _ready():
 	
 	# We don't clear AppManager's pending data here anymore to avoid 
 	# accidentally clearing the source arrays if they were passed by reference.
-	# They will be overwritten anyway on the next launch.
+	
+	if not timer_bar.timeout.is_connected(_on_timer_timeout):
+		timer_bar.timeout.connect(_on_timer_timeout)
 
 	call_deferred("start_game_loop")
 
@@ -103,7 +108,6 @@ func _on_interstitial_done():
 	# Show objective overlay
 	var overlay_scene = load("res://Scenes/ObjectiveOverlay.tscn")
 	var overlay = overlay_scene.instantiate()
-	# Use a separate CanvasLayer so it's not affected by game's process mode
 	add_child(overlay) 
 	
 	var obj_text = "Go!"
@@ -118,6 +122,15 @@ func _on_interstitial_done():
 	# Resume gameplay
 	if is_instance_valid(game_instance):
 		game_instance.process_mode = Node.PROCESS_MODE_INHERIT
+		
+		# Start global timer
+		var duration = 5.0
+		if "time_limit" in game_instance:
+			duration = game_instance.time_limit
+		elif "round_duration" in game_instance:
+			duration = game_instance.round_duration
+		
+		timer_bar.start(duration)
 
 	if game_instance.has_signal("game_won"):
 		game_instance.game_won.connect(_on_game_won)
@@ -125,16 +138,43 @@ func _on_interstitial_done():
 		game_instance.game_lost.connect(_on_game_lost)
 
 func _on_game_won():
+	# Immediate visual freeze and feedback
+	timer_bar.stop()
+	
+	var msg = "WIN!"
+	if is_instance_valid(current_instance):
+		if "win_label_text" in current_instance:
+			msg = current_instance.win_label_text
+	
+	feedback_label.text = msg
+	feedback_label.modulate = Color.WHITE
+	feedback_label.show()
+	
 	games_played += 1
 	if games_played == total_games_per_run:
 		Engine.time_scale = 1.0
 		emit_signal("run_won")
 		AppManager.on_run_won()
 		return
+	
+	# Wait using real time so it's consistent regardless of game speed
+	await get_tree().create_timer(1.0, true, false, true).timeout
+	feedback_label.hide()
 	_pick_next_game()
 	_load_interstitial()
 
 func _on_game_lost():
+	# Immediate visual freeze and feedback
+	timer_bar.stop()
+	
+	var msg = "LOSE..."
+	if is_instance_valid(current_instance):
+		if "lose_label_text" in current_instance:
+			msg = current_instance.lose_label_text
+	
+	feedback_label.text = msg
+	feedback_label.modulate = Color.WHITE
+	feedback_label.show()
 	lives -= 1
 	if lives <= 0:
 		Engine.time_scale = 1.0
@@ -142,9 +182,9 @@ func _on_game_lost():
 		AppManager.on_run_lost()
 		return
 	
-	# If it's not the boss, proceed to the next game
-	# If it IS the boss (games_played == total_games_per_run - 1), we don't increment
-	# so that _pick_next_game() keeps choosing the boss.
+	await get_tree().create_timer(1.0).timeout
+	feedback_label.hide()
+	
 	if games_played < total_games_per_run - 1:
 		games_played += 1
 		_pick_next_game()
@@ -153,3 +193,15 @@ func _on_game_lost():
 		_pick_next_game()
 	
 	_load_interstitial()
+
+func _on_timer_timeout():
+	if current_instance != null:
+		if "timeout_wins" in current_instance and current_instance.timeout_wins:
+			_on_game_won()
+		else:
+			_on_game_lost()
+
+func _show_feedback(text: String, color: Color):
+	feedback_label.text = text
+	feedback_label.modulate = color
+	feedback_label.show()

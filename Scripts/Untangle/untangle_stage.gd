@@ -15,10 +15,7 @@ signal game_lost
 @onready var state_object = $StateObject
 @onready var motion_detector = $CircularMotionDetector
 @onready var motion_guide = $MotionGuide
-@onready var countdown_timer: Timer = $CountdownTimer
-@onready var timer_label: Label = $HUD/TimerLabel
-@onready var progress_label: Label = $HUD/ProgressLabel
-@onready var result_label: Label = $HUD/ResultLabel
+@onready var countdown_timer: Timer = get_node_or_null("CountdownTimer")
 
 var time_left := 0.0
 var is_finished := false
@@ -30,7 +27,8 @@ func _ready() -> void:
 	motion_guide.max_radius = motion_detector.max_radius
 	motion_detector.rotation_completed.connect(_on_rotation_completed)
 	motion_detector.progress_changed.connect(_on_motion_progress_changed)
-	countdown_timer.timeout.connect(_on_countdown_timer_timeout)
+	if is_instance_valid(countdown_timer):
+		countdown_timer.timeout.connect(_on_countdown_timer_timeout)
 	reset_game()
 
 
@@ -39,7 +37,6 @@ func _process(delta: float) -> void:
 		return
 
 	time_left = max(time_left - delta, 0.0)
-	timer_label.text = "Time: %.1f" % time_left
 	motion_detector.sample(get_global_mouse_position(), state_object.global_position, delta)
 
 
@@ -47,12 +44,12 @@ func reset_game() -> void:
 	is_finished = false
 	time_left = time_limit
 	rotations_in_current_state = 0
-	result_label.text = ""
 	state_object.set_state_index(0)
 	motion_guide.set_progress(0.0)
 	motion_detector.reset()
 	motion_detector.set_motion_enabled(true)
-	countdown_timer.start(time_limit)
+	if is_instance_valid(countdown_timer):
+		countdown_timer.start(time_limit)
 	_update_hud()
 
 
@@ -61,11 +58,10 @@ func finish_game(did_win: bool, message: String) -> void:
 		return
 
 	is_finished = true
-	countdown_timer.stop()
+	if is_instance_valid(countdown_timer):
+		countdown_timer.stop()
 	motion_detector.set_motion_enabled(false)
-	result_label.text = message
 	
-	await get_tree().create_timer(1.0, false).timeout
 	if did_win:
 		emit_signal("game_won")
 	else:
@@ -73,24 +69,31 @@ func finish_game(did_win: bool, message: String) -> void:
 
 
 func _update_hud() -> void:
-	timer_label.text = "Time: %.1f" % time_left
-	progress_label.text = "Rotations: %d/%d" % [rotations_in_current_state, rotations_per_state]
+	var progress_label = get_node_or_null("HUD/ProgressLabel")
+	if is_instance_valid(progress_label):
+		var state_name = "A"
+		if is_instance_valid(state_object):
+			var labels = state_object.state_labels
+			if state_object.current_state_index < labels.size():
+				state_name = labels[state_object.current_state_index]
+		
+		progress_label.text = "Step %s: %d / %d" % [state_name, rotations_in_current_state, rotations_per_state]
 
 
 func _on_rotation_completed(_total_rotations: int) -> void:
 	if is_finished:
 		return
-
+		
 	rotations_in_current_state += 1
+	_update_hud() # Update immediately on rotation
+	
 	if rotations_in_current_state >= rotations_per_state:
 		rotations_in_current_state = 0
 		state_object.advance_state()
 		if state_object.is_completed():
-			_update_hud()
 			finish_game(true, win_label_text)
 			return
-
-	_update_hud()
+		_update_hud() # Update again for new state
 
 
 func _on_motion_progress_changed(progress: float) -> void:

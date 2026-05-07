@@ -17,11 +17,7 @@ signal game_lost
 @onready var grass_spot: ToiletSpot = $Hotspots/GrassSpot
 @onready var pole_spot: ToiletSpot = $Hotspots/PoleSpot
 @onready var car_spot: ToiletSpot = $Hotspots/CarSpot
-@onready var countdown_timer: Timer = $CountdownTimer
-@onready var timer_label: Label = $HUD/TimerLabel
-@onready var instruction_label: Label = $HUD/InstructionLabel
-@onready var result_label: Label = $HUD/ResultLabel
-@onready var time_bar: ProgressBar = $HUD/TimeBar
+@onready var countdown_timer: Timer = get_node_or_null("CountdownTimer")
 
 var spots: Array[ToiletSpot] = []
 var correct_spot: ToiletSpot
@@ -44,7 +40,8 @@ func _ready() -> void:
 		if not spot.spot_selected.is_connected(_on_spot_selected):
 			spot.spot_selected.connect(_on_spot_selected)
 
-	countdown_timer.timeout.connect(_on_countdown_timer_timeout)
+	if is_instance_valid(countdown_timer):
+		countdown_timer.timeout.connect(_on_countdown_timer_timeout)
 	reset_game()
 
 
@@ -59,15 +56,14 @@ func _process(delta: float) -> void:
 func reset_game() -> void:
 	is_finished = false
 	time_left = maxf(time_limit, 0.0)
-	result_label.text = ""
-	instruction_label.text = instruction_text
 	_randomize_spot_positions()
 	_configure_round_layout()
 
 	for spot in spots:
 		spot.set_pick_enabled(true)
 
-	countdown_timer.start(time_limit)
+	if is_instance_valid(countdown_timer):
+		countdown_timer.start(time_limit)
 	_update_hud()
 
 
@@ -76,7 +72,8 @@ func finish_game(did_win: bool, message: String, selected_spot: ToiletSpot = nul
 		return
 
 	is_finished = true
-	countdown_timer.stop()
+	if is_instance_valid(countdown_timer):
+		countdown_timer.stop()
 	for spot in spots:
 		spot.set_pick_enabled(false)
 
@@ -88,10 +85,7 @@ func finish_game(did_win: bool, message: String, selected_spot: ToiletSpot = nul
 
 	if reveal_correct and correct_spot != null and correct_spot != selected_spot:
 		correct_spot.reveal_as_correct()
-
-	result_label.text = message
 	
-	await get_tree().create_timer(1.0, false).timeout
 	if did_win:
 		emit_signal("game_won")
 	else:
@@ -120,9 +114,7 @@ func _randomize_spot_positions() -> void:
 
 
 func _update_hud() -> void:
-	timer_label.text = "Time: %.1f" % time_left
-	time_bar.max_value = maxf(time_limit, 0.01)
-	time_bar.value = clampf(time_left, 0.0, time_bar.max_value)
+	pass
 
 
 func _on_spot_selected(spot: ToiletSpot) -> void:
