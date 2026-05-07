@@ -12,7 +12,7 @@ script = ExtResource("1_hprxr")
 offset_left = -750.0
 offset_top = -81.0
 offset_right = 750.0
-offset_bottom = 81.0
+offset_bottom = 419.0
 color = Color(0, 0.72156864, 0.05490196, 1)
 metadata/_edit_use_anchors_ = true
 
