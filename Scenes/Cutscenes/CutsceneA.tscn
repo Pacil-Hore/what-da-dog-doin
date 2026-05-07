@@ -1,0 +1,44 @@
+[gd_scene format=3 uid="uid://cp2omeuda1f6g"]
+
+[ext_resource type="Script" uid="uid://beq0n5f5r161o" path="res://Scripts/cutscene.gd" id="1_yeph0"]
+
+[node name="CutsceneA" type="Control" unique_id=19633721]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_yeph0")
+
+[node name="VBox" type="VBoxContainer" parent="." unique_id=961148215]
+layout_mode = 0
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -250.0
+offset_top = -150.0
+offset_right = 250.0
+offset_bottom = 150.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 20
+alignment = 1
+
+[node name="TitleLabel" type="Label" parent="VBox" unique_id=712454010]
+layout_mode = 2
+text = "Cutscene A"
+horizontal_alignment = 1
+
+[node name="BodyLabel" type="Label" parent="VBox" unique_id=40625426]
+layout_mode = 2
+text = "[Cutscene A Placeholder]
+
+The dog heads to the park..."
+horizontal_alignment = 1
+autowrap_mode = 3
+
+[node name="ContinueButton" type="Button" parent="VBox" unique_id=938449165]
+layout_mode = 2
+text = "Continue →"

@@ -1,0 +1,40 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://Scripts/app_manager.gd" id="1_uhbg8"]
+[ext_resource type="PackedScene" path="res://Scenes/Menus/MainMenu.tscn" id="2_mg4ys"]
+[ext_resource type="PackedScene" path="res://Scenes/Menus/StageSelect.tscn" id="3_86k5y"]
+[ext_resource type="PackedScene" path="res://Scenes/Cutscenes/CutsceneA.tscn" id="4_i1bw7"]
+[ext_resource type="PackedScene" path="res://Scenes/Cutscenes/CutsceneB.tscn" id="5_luyt5"]
+[ext_resource type="PackedScene" path="res://Scenes/Cutscenes/CutsceneC.tscn" id="6_d7d5k"]
+[ext_resource type="PackedScene" path="res://Scenes/GameManager.tscn" id="7_x057w"]
+[ext_resource type="PackedScene" path="res://Scenes/park/Labyrinth/labyrinth_level.tscn" id="8_tbdtn"]
+[ext_resource type="PackedScene" path="res://Scenes/park/JumpRope/JumpRopeStage.tscn" id="9_q8wbe"]
+[ext_resource type="PackedScene" path="res://Scenes/park/PickMe/PickMeStage.tscn" id="10_h5en5"]
+[ext_resource type="PackedScene" path="res://Scenes/park/Untangle/UntangleStage.tscn" id="11_5qyke"]
+[ext_resource type="PackedScene" path="res://Scenes/park/PlaceholderPark1.tscn" id="12_g8enm"]
+[ext_resource type="PackedScene" path="res://Scenes/park/PlaceholderPark2.tscn" id="13_gmk5h"]
+[ext_resource type="PackedScene" path="res://Scenes/park/PlaceholderPark3.tscn" id="14_7pil5"]
+[ext_resource type="PackedScene" path="res://Scenes/park/PlaceholderPark4.tscn" id="15_i50ik"]
+[ext_resource type="PackedScene" path="res://Scenes/park/PlaceholderParkBoss.tscn" id="16_em45s"]
+[ext_resource type="PackedScene" path="res://Scenes/street/PickTheRope/PickTheRopeStage.tscn" id="17_2cd0w"]
+[ext_resource type="PackedScene" path="res://Scenes/street/Toilet/ToiletStage.tscn" id="18_oaig6"]
+[ext_resource type="PackedScene" path="res://Scenes/street/PlaceholderStreet1.tscn" id="19_ow0sn"]
+[ext_resource type="PackedScene" path="res://Scenes/street/PlaceholderStreet2.tscn" id="20_8g0j6"]
+[ext_resource type="PackedScene" path="res://Scenes/street/PlaceholderStreet3.tscn" id="21_deeb1"]
+[ext_resource type="PackedScene" path="res://Scenes/street/PlaceholderStreet4.tscn" id="22_ih7s3"]
+[ext_resource type="PackedScene" path="res://Scenes/street/PlaceholderStreet5.tscn" id="23_wm7q4"]
+[ext_resource type="PackedScene" path="res://Scenes/street/PlaceholderStreet6.tscn" id="24_vc0jl"]
+[ext_resource type="PackedScene" path="res://Scenes/street/PlaceholderStreetBoss.tscn" id="25_c1y88"]
+
+[node name="AppManager" type="Node" unique_id=1453838948]
+script = ExtResource("1_uhbg8")
+main_menu_scene = ExtResource("2_mg4ys")
+stage_select_scene = ExtResource("3_86k5y")
+cutscene_a_scene = ExtResource("4_i1bw7")
+cutscene_b_scene = ExtResource("5_luyt5")
+cutscene_c_scene = ExtResource("6_d7d5k")
+game_manager_scene = ExtResource("7_x057w")
+park_microgames = Array[PackedScene]([ExtResource("8_tbdtn"), ExtResource("9_q8wbe"), ExtResource("10_h5en5"), ExtResource("11_5qyke"), ExtResource("12_g8enm"), ExtResource("13_gmk5h"), ExtResource("14_7pil5"), ExtResource("15_i50ik")])
+park_boss = ExtResource("16_em45s")
+street_microgames = Array[PackedScene]([ExtResource("17_2cd0w"), ExtResource("18_oaig6"), ExtResource("19_ow0sn"), ExtResource("20_8g0j6"), ExtResource("21_deeb1"), ExtResource("22_ih7s3"), ExtResource("23_wm7q4"), ExtResource("24_vc0jl")])
+street_boss = ExtResource("25_c1y88")

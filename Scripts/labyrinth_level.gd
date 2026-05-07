@@ -1,5 +1,12 @@
 extends Node2D
 
+signal game_won
+signal game_lost
+
+@export var objective_text: String = "Exit the labyrinth!"
+@export var control_hint: String = "Mouse"
+@export var control_icon_path: String = "res://assets/generated/mouse_icon.png"
+
 @export var time_limit := 5.0
 @export var win_label_text := "You Win"
 @export var lose_label_text := "You Lose"
@@ -35,16 +42,22 @@ func _process(delta: float) -> void:
 func reset_level() -> void:
 	is_finished = false
 	time_left = time_limit
-	player.enabled = true
+	player.enabled = false # Disable until mouse is warped
 	player.global_position = start_point.global_position
-	player.movement_bounds = maze_bounds.grow(-player.cursor_radius)
+	player.movement_bounds = maze_bounds.grow(-player.collision_radius)
 	player.has_movement_bounds = true
 	result_label.text = ""
 	timer_label.text = "Time: %.1f" % time_left
 	time_limit_timer.start(time_limit)
+	
 	_warp_mouse_to_player()
+	
 	if hide_system_cursor:
 		Input.mouse_mode = Input.MOUSE_MODE_HIDDEN
+	
+	# Small delay to ensure mouse is warped before enabling movement
+	await get_tree().create_timer(0.1).timeout
+	player.enabled = true
 
 
 func finish_level(message: String) -> void:
@@ -56,6 +69,13 @@ func finish_level(message: String) -> void:
 	time_limit_timer.stop()
 	result_label.text = message
 	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
+	
+	await get_tree().create_timer(1.0, false).timeout
+	if message == win_label_text:
+		emit_signal("game_won")
+	else:
+		emit_signal("game_lost")
+
 
 
 func _get_maze_bounds() -> Rect2:
