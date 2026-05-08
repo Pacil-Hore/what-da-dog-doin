@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" uid="uid://dugckmmsyi4l7" path="res://Scripts/DogCross/platform_generator.gd" id="1_5vydb"]
 [ext_resource type="PackedScene" uid="uid://da5xgdajrdusf" path="res://Scenes/park/DogCross/platform.tscn" id="1_ufxs0"]
+[ext_resource type="Texture2D" uid="uid://bn73nif4coo1q" path="res://Assets/Sprites/Keyboard & Mouse/Double/keyboard_arrows_horizontal.png" id="2_3hqwf"]
 [ext_resource type="PackedScene" uid="uid://b24xjwcc07ct2" path="res://Scenes/park/DogCross/player.tscn" id="2_6we3w"]
 [ext_resource type="PackedScene" uid="uid://cjtteofm1bf54" path="res://Scenes/park/DogCross/dog.tscn" id="2_brl4o"]
 [ext_resource type="Resource" uid="uid://npwmc4ngk0p2" path="res://Resource/DogCross/var_1.tres" id="2_opoxb"]
@@ -11,13 +12,11 @@
 [ext_resource type="PackedScene" uid="uid://urvyjavba67i" path="res://Scenes/park/DogCross/game_manager.tscn" id="9_1nidl"]
 [ext_resource type="Script" uid="uid://chfr1sh7lveac" path="res://Scripts/DogCross/auto_camera.gd" id="10_2edv1"]
 [ext_resource type="PackedScene" uid="uid://b8slxm5toun2f" path="res://Scenes/park/DogCross/WinScreen.tscn" id="10_dq83f"]
-[ext_resource type="Script" path="res://Scripts/DogCross/dog_cross_stage.gd" id="11_stage"]
-[ext_resource type="Texture2D" path="res://Assets/generated/arrow_keys_icon.png" id="12_arrows"]
+[ext_resource type="Script" uid="uid://nv3dcegcxv2c" path="res://Scripts/DogCross/dog_cross_stage.gd" id="11_stage"]
 
-[node name="Node2D" type="Node2D" unique_id=579529688 node_paths=PackedStringArray("dog_cross_manager_path")]
+[node name="Node2D" type="Node2D" unique_id=579529688]
 script = ExtResource("11_stage")
-control_icon = ExtResource("12_arrows")
-dog_cross_manager_path = NodePath("GameManager")
+control_icon = ExtResource("2_3hqwf")
 
 [node name="Background" type="ColorRect" parent="." unique_id=228095585]
 offset_left = 11.0
@@ -51,6 +50,7 @@ dog = NodePath("../Dog")
 rope = NodePath("../Rope")
 camera = NodePath("../Camera2D")
 win_screen_scene = ExtResource("10_dq83f")
+show_win_screen = true
 
 [node name="Camera2D" type="Camera2D" parent="." unique_id=409648292 node_paths=PackedStringArray("follow_target", "entity_a", "entity_b")]
 position = Vector2(600, 0)
