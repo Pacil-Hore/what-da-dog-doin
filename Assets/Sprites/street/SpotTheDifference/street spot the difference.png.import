@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://vghockuxusn1"
-path="res://.godot/imported/bg_original.png-56709b4ea5c9f516c764a3161320382c.ctex"
+uid="uid://bd3xdyhul2nlb"
+path="res://.godot/imported/street spot the difference.png-81d5b303268e24654aeb88d4c370c89d.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/Sprites/SpotTheDifference/bg_original.png"
-dest_files=["res://.godot/imported/bg_original.png-56709b4ea5c9f516c764a3161320382c.ctex"]
+source_file="res://Assets/Sprites/street/SpotTheDifference/street spot the difference.png"
+dest_files=["res://.godot/imported/street spot the difference.png-81d5b303268e24654aeb88d4c370c89d.ctex"]
 
 [params]
 

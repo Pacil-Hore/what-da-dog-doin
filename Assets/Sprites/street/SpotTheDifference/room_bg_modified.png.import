@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://iqnvld544mej"
-path="res://.godot/imported/room_bg_modified.png-3f68e121b9147fe038651ee336300777.ctex"
+uid="uid://biv6ajifd27ci"
+path="res://.godot/imported/room_bg_modified.png-4418644963d652eed68a91c6e1ba3d83.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/Sprites/SpotTheDifference/room_bg_modified.png"
-dest_files=["res://.godot/imported/room_bg_modified.png-3f68e121b9147fe038651ee336300777.ctex"]
+source_file="res://Assets/Sprites/street/SpotTheDifference/room_bg_modified.png"
+dest_files=["res://.godot/imported/room_bg_modified.png-4418644963d652eed68a91c6e1ba3d83.ctex"]
 
 [params]
 

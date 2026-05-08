@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://b6q620nkbhr13"
-path="res://.godot/imported/dog_icon_progress.png-26b76b42f1827a83ad423d2cdf18cf13.ctex"
+uid="uid://dr8b5ws6efbf8"
+path="res://.godot/imported/bg_modified.png-5aa322d9645c5a6e679ff723d2e463c8.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/Sprites/SpotTheDifference/dog_icon_progress.png"
-dest_files=["res://.godot/imported/dog_icon_progress.png-26b76b42f1827a83ad423d2cdf18cf13.ctex"]
+source_file="res://Assets/Sprites/street/SpotTheDifference/bg_modified.png"
+dest_files=["res://.godot/imported/bg_modified.png-5aa322d9645c5a6e679ff723d2e463c8.ctex"]
 
 [params]
 

@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://0cjusxubcuqb"
-path="res://.godot/imported/room_bg_original.png-3a5895a4719dfe6dc98dc3549f1614e5.ctex"
+uid="uid://dhqf2k5m1ofue"
+path="res://.godot/imported/dog_modified.png-1bc5c5b64d51f993a80c267dc918f577.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/Sprites/SpotTheDifference/room_bg_original.png"
-dest_files=["res://.godot/imported/room_bg_original.png-3a5895a4719dfe6dc98dc3549f1614e5.ctex"]
+source_file="res://Assets/Sprites/street/SpotTheDifference/dog_modified.png"
+dest_files=["res://.godot/imported/dog_modified.png-1bc5c5b64d51f993a80c267dc918f577.ctex"]
 
 [params]
 

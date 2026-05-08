@@ -136,7 +136,7 @@ func _show_fake_popup() -> void:
 
 func _show_passing_dog() -> void:
 	var dog = TextureRect.new()
-	dog.texture = load("res://Assets/Sprites/SpotTheDifference/dog_icon_progress.png")
+	dog.texture = load("res://Assets/Sprites/street/SpotTheDifference/dog_icon_progress.png")
 	dog.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 	dog.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
 	dog.modulate = Color(0, 0, 0, 0.6) # Silhouette

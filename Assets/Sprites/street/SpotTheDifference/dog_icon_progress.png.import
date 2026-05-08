@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cgnvfvy7ervj7"
-path="res://.godot/imported/street spot the difference.png-35a49645c38cf595a20a3f22e624c5e1.ctex"
+uid="uid://bdjwga44jg1jb"
+path="res://.godot/imported/dog_icon_progress.png-d58691df8502de5e9b406c5f7005e75f.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/Sprites/SpotTheDifference/street spot the difference.png"
-dest_files=["res://.godot/imported/street spot the difference.png-35a49645c38cf595a20a3f22e624c5e1.ctex"]
+source_file="res://Assets/Sprites/street/SpotTheDifference/dog_icon_progress.png"
+dest_files=["res://.godot/imported/dog_icon_progress.png-d58691df8502de5e9b406c5f7005e75f.ctex"]
 
 [params]
 
