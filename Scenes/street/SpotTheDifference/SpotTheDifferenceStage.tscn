@@ -1,11 +1,11 @@
 [gd_scene format=3 uid="uid://ch6pyvnkr1fxp"]
 
 [ext_resource type="Script" uid="uid://cdkvu7gcom17l" path="res://Scripts/street/SpotTheDifference/spot_the_difference_stage.gd" id="1_3to8w"]
-[ext_resource type="Texture2D" uid="uid://cgnvfvy7ervj7" path="res://Assets/Sprites/street/SpotTheDifference/street spot the difference.png" id="2_street"]
+[ext_resource type="Texture2D" uid="uid://bd3xdyhul2nlb" path="res://Assets/Sprites/street/SpotTheDifference/street spot the difference.png" id="2_street"]
 [ext_resource type="Script" uid="uid://ceq52yr6ud5up" path="res://Scripts/street/SpotTheDifference/difference_region.gd" id="4_nfrx4"]
 [ext_resource type="Script" uid="uid://ion7ydgfa5k3" path="res://Scripts/street/SpotTheDifference/distraction_manager.gd" id="5_3to8w"]
-[ext_resource type="Script" uid="uid://bg8ni0a7jcslq" path="res://Scripts/street/SpotTheDifference/difference_region.gd" id="5_geuvt"]
-[ext_resource type="Texture2D" uid="uid://b6q620nkbhr13" path="res://Assets/Sprites/street/SpotTheDifference/dog_icon_progress.png" id="5_kms0k"]
+[ext_resource type="Script" uid="uid://ceq52yr6ud5up" path="res://Scripts/street/SpotTheDifference/difference_region.gd" id="5_geuvt"]
+[ext_resource type="Texture2D" uid="uid://bdjwga44jg1jb" path="res://Assets/Sprites/street/SpotTheDifference/dog_icon_progress.png" id="5_kms0k"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_dark"]
 bg_color = Color(0, 0, 0, 0.8)
