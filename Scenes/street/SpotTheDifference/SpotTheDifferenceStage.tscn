@@ -1,0 +1,325 @@
+[gd_scene format=3 uid="uid://ch6pyvnkr1fxp"]
+
+[ext_resource type="Script" uid="uid://cdkvu7gcom17l" path="res://Scripts/street/SpotTheDifference/spot_the_difference_stage.gd" id="1_3to8w"]
+[ext_resource type="Texture2D" uid="uid://bd3xdyhul2nlb" path="res://Assets/Sprites/street/SpotTheDifference/street spot the difference.png" id="2_street"]
+[ext_resource type="Script" uid="uid://ceq52yr6ud5up" path="res://Scripts/street/SpotTheDifference/difference_region.gd" id="4_nfrx4"]
+[ext_resource type="Script" uid="uid://ion7ydgfa5k3" path="res://Scripts/street/SpotTheDifference/distraction_manager.gd" id="5_3to8w"]
+[ext_resource type="Script" uid="uid://ceq52yr6ud5up" path="res://Scripts/street/SpotTheDifference/difference_region.gd" id="5_geuvt"]
+[ext_resource type="Texture2D" uid="uid://bdjwga44jg1jb" path="res://Assets/Sprites/street/SpotTheDifference/dog_icon_progress.png" id="5_kms0k"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_dark"]
+bg_color = Color(0, 0, 0, 0.8)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_kms0k"]
+bg_color = Color(1, 0.75, 0, 1)
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 4
+border_color = Color(0, 0, 0, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+shadow_size = 4
+shadow_offset = Vector2(2, 2)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_mod"]
+atlas = ExtResource("2_street")
+region = Rect2(768, 0, 768, 1024)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_orig"]
+atlas = ExtResource("2_street")
+region = Rect2(0, 0, 768, 1024)
+
+[node name="SpotTheDifferenceStage" type="Node2D" unique_id=240863752]
+script = ExtResource("1_3to8w")
+
+[node name="GameCanvas" type="CanvasLayer" parent="." unique_id=1542537067]
+layer = 0
+
+[node name="Background" type="ColorRect" parent="GameCanvas" unique_id=1531566803]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.05, 0.05, 0.05, 1)
+
+[node name="MainLayout" type="VBoxContainer" parent="GameCanvas" unique_id=1959951241]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 0
+
+[node name="Header" type="Panel" parent="GameCanvas/MainLayout" unique_id=95856160]
+custom_minimum_size = Vector2(0, 45)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_dark")
+
+[node name="Title" type="Label" parent="GameCanvas/MainLayout/Header" unique_id=71703860]
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_left = 20.0
+offset_top = -11.5
+offset_right = 350.0
+offset_bottom = 11.5
+grow_vertical = 2
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 4
+theme_override_font_sizes/font_size = 18
+text = "TOUCH DIFFERENCES ON RIGHT!"
+vertical_alignment = 1
+
+[node name="ProgressIcons" type="HBoxContainer" parent="GameCanvas/MainLayout/Header" unique_id=878207040]
+layout_mode = 1
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -150.0
+offset_top = -12.0
+offset_right = -15.0
+offset_bottom = 12.0
+grow_horizontal = 0
+grow_vertical = 2
+theme_override_constants/separation = 6
+alignment = 2
+
+[node name="Icon1" type="TextureRect" parent="GameCanvas/MainLayout/Header/ProgressIcons" unique_id=1496017689]
+modulate = Color(0.2, 0.2, 0.2, 1)
+custom_minimum_size = Vector2(24, 24)
+layout_mode = 2
+texture = ExtResource("5_kms0k")
+expand_mode = 1
+
+[node name="Icon2" type="TextureRect" parent="GameCanvas/MainLayout/Header/ProgressIcons" unique_id=422748188]
+modulate = Color(0.2, 0.2, 0.2, 1)
+custom_minimum_size = Vector2(24, 24)
+layout_mode = 2
+texture = ExtResource("5_kms0k")
+expand_mode = 1
+
+[node name="Icon3" type="TextureRect" parent="GameCanvas/MainLayout/Header/ProgressIcons" unique_id=834395329]
+modulate = Color(0.2, 0.2, 0.2, 1)
+custom_minimum_size = Vector2(24, 24)
+layout_mode = 2
+texture = ExtResource("5_kms0k")
+expand_mode = 1
+
+[node name="Icon4" type="TextureRect" parent="GameCanvas/MainLayout/Header/ProgressIcons" unique_id=342876649]
+modulate = Color(0.2, 0.2, 0.2, 1)
+custom_minimum_size = Vector2(24, 24)
+layout_mode = 2
+texture = ExtResource("5_kms0k")
+expand_mode = 1
+
+[node name="TimerRibbon" type="Panel" parent="GameCanvas/MainLayout/Header" unique_id=2128464547]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -50.0
+offset_top = -18.0
+offset_right = 50.0
+offset_bottom = 19.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_kms0k")
+
+[node name="TimerLabel" type="Label" parent="GameCanvas/MainLayout/Header/TimerRibbon" unique_id=1287232423]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 24
+text = "10.0"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="GameArea" type="CenterContainer" parent="GameCanvas/MainLayout" unique_id=557209229]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="ImageContainer" type="HBoxContainer" parent="GameCanvas/MainLayout/GameArea" unique_id=1086132774]
+layout_mode = 2
+theme_override_constants/separation = 4
+
+[node name="ModifiedImage" type="TextureRect" parent="GameCanvas/MainLayout/GameArea/ImageContainer" unique_id=306597036]
+custom_minimum_size = Vector2(434, 579)
+layout_mode = 2
+texture = SubResource("AtlasTexture_mod")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Differences" type="Control" parent="GameCanvas/MainLayout/GameArea/ImageContainer/ModifiedImage" unique_id=28647048]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 1
+
+[node name="Bounty1" type="Control" parent="GameCanvas/MainLayout/GameArea/ImageContainer/ModifiedImage/Differences" unique_id=1666246845]
+layout_mode = 1
+anchors_preset = 0
+offset_left = 195.0
+offset_top = 76.0
+offset_right = 265.0
+offset_bottom = 176.0
+script = ExtResource("4_nfrx4")
+
+[node name="Bottle1" type="Control" parent="GameCanvas/MainLayout/GameArea/ImageContainer/ModifiedImage/Differences" unique_id=1696800360]
+layout_mode = 1
+anchors_preset = 0
+offset_left = 29.0
+offset_top = 294.0
+offset_right = 79.0
+offset_bottom = 344.0
+script = ExtResource("5_geuvt")
+
+[node name="Collar1" type="Control" parent="GameCanvas/MainLayout/GameArea/ImageContainer/ModifiedImage/Differences" unique_id=1644661295]
+layout_mode = 1
+anchors_preset = 0
+offset_left = 169.0
+offset_top = 354.0
+offset_right = 229.0
+offset_bottom = 404.0
+script = ExtResource("5_geuvt")
+
+[node name="Hydrant1" type="Control" parent="GameCanvas/MainLayout/GameArea/ImageContainer/ModifiedImage/Differences" unique_id=817026274]
+layout_mode = 1
+anchors_preset = 0
+offset_left = 323.0
+offset_top = 278.0
+offset_right = 388.0
+offset_bottom = 396.0
+script = ExtResource("5_geuvt")
+
+[node name="OriginalImage" type="TextureRect" parent="GameCanvas/MainLayout/GameArea/ImageContainer" unique_id=719463402]
+custom_minimum_size = Vector2(434, 579)
+layout_mode = 2
+texture = SubResource("AtlasTexture_orig")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="DifferencesOriginal" type="Control" parent="GameCanvas/MainLayout/GameArea/ImageContainer/OriginalImage" unique_id=204681092]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 1
+
+[node name="Bounty2" type="Control" parent="GameCanvas/MainLayout/GameArea/ImageContainer/OriginalImage/DifferencesOriginal" unique_id=1179341929]
+layout_mode = 1
+anchors_preset = 0
+offset_left = 195.0
+offset_top = 59.0
+offset_right = 265.0
+offset_bottom = 167.0
+script = ExtResource("5_geuvt")
+
+[node name="Bottle2" type="Control" parent="GameCanvas/MainLayout/GameArea/ImageContainer/OriginalImage/DifferencesOriginal" unique_id=1565932547]
+layout_mode = 1
+anchors_preset = 0
+offset_left = 20.0
+offset_top = 295.0
+offset_right = 70.0
+offset_bottom = 345.0
+script = ExtResource("5_geuvt")
+
+[node name="Collar2" type="Control" parent="GameCanvas/MainLayout/GameArea/ImageContainer/OriginalImage/DifferencesOriginal" unique_id=368215221]
+layout_mode = 1
+anchors_preset = 0
+offset_left = 169.0
+offset_top = 355.0
+offset_right = 229.0
+offset_bottom = 405.0
+script = ExtResource("5_geuvt")
+
+[node name="Hydrant2" type="Control" parent="GameCanvas/MainLayout/GameArea/ImageContainer/OriginalImage/DifferencesOriginal" unique_id=480692825]
+layout_mode = 1
+anchors_preset = 0
+offset_left = 344.0
+offset_top = 272.0
+offset_right = 409.0
+offset_bottom = 389.0
+script = ExtResource("5_geuvt")
+
+[node name="Footer" type="Control" parent="GameCanvas/MainLayout" unique_id=335296403]
+custom_minimum_size = Vector2(0, 24)
+layout_mode = 2
+
+[node name="FuseBar" type="Control" parent="GameCanvas/MainLayout/Footer" unique_id=1710611889]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="FuseTrack" type="ColorRect" parent="GameCanvas/MainLayout/Footer/FuseBar" unique_id=1592237843]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.15, 0.1, 0.08, 1)
+
+[node name="FuseFill" type="ColorRect" parent="GameCanvas/MainLayout/Footer/FuseBar" unique_id=324532646]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.98, 0.75, 0.1, 1)
+
+[node name="FuseShine" type="ColorRect" parent="GameCanvas/MainLayout/Footer/FuseBar" unique_id=1401863600]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_top = 2.0
+offset_bottom = 8.0
+grow_horizontal = 2
+color = Color(1, 1, 1, 0.2)
+
+[node name="ResultLabel" type="Label" parent="GameCanvas" unique_id=1176120657]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -250.0
+offset_top = -35.0
+offset_right = 250.0
+offset_bottom = 35.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 16
+theme_override_font_sizes/font_size = 64
+text = "SPOT IT!"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="DistractionLayer" type="CanvasLayer" parent="." unique_id=455262163]
+script = ExtResource("5_3to8w")
+
+[node name="CountdownTimer" type="Timer" parent="." unique_id=734942536]
+wait_time = 10.0
+one_shot = true
