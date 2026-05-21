@@ -144,14 +144,15 @@ func _spawn_mixed(container: Node2D, config: LaneConfig):
 		platform.position = Vector2(pos_x, 0)
 		container.add_child(platform)
 
-func _distribute_positions(count: int, total_width: float, min_gap: float) -> Array[float]:
+func _distribute_positions(count: int, total_width: float, min_gap: float) -> Array:
 	# Bagi width jadi N segment, taruh platform di tengah-tengah segment dengan random offset
-	var positions: Array[float] = []
+	var positions = []
 	var segment_width = total_width / count
 	
 	for i in range(count):
 		var center = (i + 0.5) * segment_width
-		var max_offset = (segment_width - min_gap) / 2
+		# Offset lebih kecil biar gak ke pinggir segment
+		var max_offset = max(0, (segment_width - min_gap) / 2)
 		var offset = randf_range(-max_offset, max_offset)
 		positions.append(center + offset)
 	
