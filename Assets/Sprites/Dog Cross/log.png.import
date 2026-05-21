@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://ec0eluuerr23"
-path="res://.godot/imported/stone.png.png-94ce3eebb0e49033f4a739e19591e84d.ctex"
+uid="uid://cb8twvm43tx5n"
+path="res://.godot/imported/log.png-fb58ef6b241c268cc198d7dd6d360515.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/Sprites/Dog Cross/stone.png.png"
-dest_files=["res://.godot/imported/stone.png.png-94ce3eebb0e49033f4a739e19591e84d.ctex"]
+source_file="res://Assets/Sprites/Dog Cross/log.png"
+dest_files=["res://.godot/imported/log.png-fb58ef6b241c268cc198d7dd6d360515.ctex"]
 
 [params]
 
