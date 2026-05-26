@@ -11,13 +11,11 @@ signal game_lost
 @export var control_icon_path: String = "res://assets/generated/mouse_icon.png"
 
 # === Rope settings ===
-@export var rope_length_normal: float = 200.0     # panjang tali pas idle
-@export var rope_length_extended: float = 500.0   # panjang tali pas dilempar
-@export var swing_speed: float = 2.0              # kecepatan swing otomatis (radians/sec)
-@export var swing_amplitude: float = PI / 2       # 90 derajat (total 180° kiri-kanan)
-@export var arrow_influence: float = 3.0          # seberapa kuat arrow key push swing
-@export var extend_duration: float = 0.3          # durasi extend tali (lempar)
-@onready var collar: Area2D = dog.get_node("collar")
+@export var rope_length_normal: float = 200.0
+@export var rope_length_extended: float = 500.0
+@export var swing_speed: float = 2.0
+@export var swing_amplitude: float = PI / 2
+@export var extend_duration: float = 0.3
 
 # === References ===
 @export var anchor: Marker2D
@@ -26,9 +24,8 @@ signal game_lost
 @export var dog: CharacterBody2D
 
 # === State ===
-var swing_angle: float = 0.0           # angle tali sekarang (radians, 0 = lurus ke atas)
-var swing_phase: float = 0.0           # phase untuk swing otomatis (0 to 2*PI)
-var arrow_velocity: float = 0.0        # velocity dari arrow key input
+var swing_angle: float = 0.0
+var swing_phase: float = 0.0
 var current_rope_length: float = 200.0
 var is_extending: bool = false
 var is_finished: bool = false
@@ -39,8 +36,6 @@ func _ready():
 	if hook:
 		hook.area_entered.connect(_on_hook_area_entered)
 	
-	# Start timer (kalau standalone, perlu manual timer)
-	# Kalau pake GameManager pusat, timer di-handle sama GM
 	if not _has_main_game_manager():
 		_start_standalone_timer()
 
@@ -56,36 +51,19 @@ func _input(event):
 	if is_finished:
 		return
 	
-	# Klik kiri = lempar tali
 	if event is InputEventMouseButton:
 		if event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
 			_extend_rope()
 
 func _update_swing(delta: float):
-	# Swing otomatis (sin wave biar smooth)
 	swing_phase += swing_speed * delta
-	var auto_angle = sin(swing_phase) * swing_amplitude
-	
-	# Arrow key influence (akumulasi velocity)
-	var input_dir = 0.0
-	if Input.is_action_pressed("ui_left"):
-		input_dir -= 1.0
-	if Input.is_action_pressed("ui_right"):
-		input_dir += 1.0
-	
-	arrow_velocity = lerp(arrow_velocity, input_dir * arrow_influence, delta * 5.0)
-	
-	# Combine auto + manual
-	swing_angle = auto_angle + arrow_velocity
-	swing_angle = clamp(swing_angle, -swing_amplitude, swing_amplitude)
+	swing_angle = sin(swing_phase) * swing_amplitude
 
 func _update_rope_visual():
 	if not anchor or not rope:
 		return
 	
 	var anchor_pos = anchor.global_position
-	# Karena anchor di bawah dan tali ke atas, pakai -cos untuk Y (Y negatif = ke atas)
-	# swing_angle = 0 berarti lurus ke atas
 	var end_pos = anchor_pos + Vector2(sin(swing_angle), -cos(swing_angle)) * current_rope_length
 	
 	rope.clear_points()
@@ -99,7 +77,6 @@ func _update_hook_position():
 	var anchor_pos = anchor.global_position
 	var end_pos = anchor_pos + Vector2(sin(swing_angle), -cos(swing_angle)) * current_rope_length
 	hook.global_position = end_pos
-	# Rotate hook supaya nempel di tali (optional, visual)
 	hook.rotation = swing_angle
 
 func _extend_rope():
@@ -107,25 +84,20 @@ func _extend_rope():
 		return
 	is_extending = true
 	
-	# Animate tali extend & retract
 	var tween = create_tween()
 	tween.tween_property(self, "current_rope_length", rope_length_extended, extend_duration)
 	tween.tween_property(self, "current_rope_length", rope_length_normal, extend_duration)
 	tween.tween_callback(func(): is_extending = false)
 
 func _on_hook_area_entered(area: Area2D):
-	# Hook nyentuh sesuatu — cek apakah itu collar
-	print("Hook ENTERED area: ", area.name, " | path: ", area.get_path())
 	if area.name == "Collar":
-		print("MATCH collar! WIN!")
 		_on_won()
-	else:
-		print("Bukan collar, skip. Reference collar: ", collar)
 
 func _on_won():
 	if is_finished:
 		return
 	is_finished = true
+	_freeze_scene()
 	emit_signal("game_won")
 	print("[Attach] WIN!")
 
@@ -133,10 +105,23 @@ func _on_lost():
 	if is_finished:
 		return
 	is_finished = true
+	_freeze_scene()
 	emit_signal("game_lost")
 	print("[Attach] LOSE!")
 
-# === Standalone timer (kalau gak ada GameManager pusat) ===
+func _freeze_scene():
+	# Stop anjing
+	if dog:
+		dog.set_physics_process(false)
+		dog.set_process(false)
+		if dog.has_method("set_velocity"):
+			dog.velocity = Vector2.ZERO
+	
+	# Hentikan tween yang lagi jalan (extend rope)
+	# Tween auto-stop kalau target node-nya pause/disabled,
+	# tapi kita explicit aja: skip _process di Attach itu sendiri
+	# (udah ke-handle di guard is_finished di awal _process)
+
 func _has_main_game_manager() -> bool:
 	var node = get_parent()
 	while node:
