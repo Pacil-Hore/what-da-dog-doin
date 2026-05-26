@@ -66,6 +66,7 @@ func _trigger_game_over():
 		get_tree().reload_current_scene()
 
 func _trigger_win():
+	print("GAME MANAGER TRIGGER")
 	_stop_play()
 	dog_cross_won.emit()
 	if show_win_screen and win_screen_scene:
