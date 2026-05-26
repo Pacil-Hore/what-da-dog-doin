@@ -11,7 +11,7 @@
 [ext_resource type="PackedScene" uid="uid://dbd08m2tcy3gu" path="res://Scenes/park/JumpRope/JumpRopeStage.tscn" id="9_q8wbe"]
 [ext_resource type="PackedScene" uid="uid://bueqw03mgerp6" path="res://Scenes/park/PickMe/PickMeStage.tscn" id="10_h5en5"]
 [ext_resource type="PackedScene" uid="uid://dgy4f1s322mnv" path="res://Scenes/park/Untangle/UntangleStage.tscn" id="11_5qyke"]
-[ext_resource type="PackedScene" uid="uid://6cbowj4ykug0" path="res://Scenes/park/PlaceholderPark1.tscn" id="12_g8enm"]
+[ext_resource type="PackedScene" path="res://Scenes/park/TugOfWar/TugOfWarStage.tscn" id="12_g8enm"]
 [ext_resource type="PackedScene" uid="uid://bwa5tn6w8qpbt" path="res://Scenes/park/PlaceholderPark2.tscn" id="13_gmk5h"]
 [ext_resource type="PackedScene" uid="uid://4kh2olneh1hr" path="res://Scenes/park/PlaceholderPark3.tscn" id="14_7pil5"]
 [ext_resource type="PackedScene" uid="uid://d31wwcomdmsb1" path="res://Scenes/park/PlaceholderPark4.tscn" id="15_i50ik"]

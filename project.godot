@@ -11,13 +11,13 @@ config_version=5
 [application]
 
 config/name="What Da Dog Doin"
-run/main_scene="uid://bcj7gviuuoac1"
+run/main_scene="res://Scenes/park/TugOfWar/TugOfWarStage.tscn"
 config/features=PackedStringArray("4.6", "Mobile")
 config/icon="res://icon.svg"
 
 [autoload]
 
-MCPRuntime="*uid://duj48hyatcodq"
+MCPRuntime="*res://addons/godot_mcp/runtime/mcp_runtime.gd"
 AppManager="*res://Scenes/AppManager.tscn"
 MicrogameTestHelper="*res://Scripts/microgame_test_helper.gd"
 
