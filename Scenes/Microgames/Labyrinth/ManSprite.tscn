@@ -1,0 +1,26 @@
+[gd_scene load_steps=4 format=3]
+
+[ext_resource type="Script" path="res://Scripts/man_ragdoll.gd" id="1_w5p5r"]
+[ext_resource type="Texture2D" path="res://Assets/Sprites/man_top.png" id="2_t4r31"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_torso"]
+radius = 16.0
+height = 42.0
+
+[node name="ManSprite" type="RigidBody2D"]
+z_index = 1
+collision_layer = 4
+collision_mask = 1
+gravity_scale = 0.0
+linear_damp = 5.0
+angular_damp = 5.0
+script = ExtResource("1_w5p5r")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CapsuleShape2D_torso")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("2_t4r31")
+
+[node name="HandPosition" type="Marker2D" parent="."]
+position = Vector2(18, -6)

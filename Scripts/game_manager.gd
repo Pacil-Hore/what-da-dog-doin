@@ -17,12 +17,12 @@ signal run_lost
 @export_group("UI")
 @export var objective_overlay_template_path: NodePath = ^"ObjectiveOverlayTemplate"
 
-var microgames: Array[PackedScene] = []
-var boss_game: PackedScene = null
+var scenario_games: Array[PackedScene] = []
+var final_game: PackedScene = null
 var lives: int = 5
 var games_played: int = 0
 var speed_multiplier: float = 1.0
-var current_game_is_boss: bool = false
+var current_game_is_final: bool = false
 
 @onready var timer_bar = $HUDLayer/TimerBar
 @onready var feedback_label = $HUDLayer/FeedbackLabel
@@ -30,13 +30,17 @@ var current_game_is_boss: bool = false
 var current_instance: Node
 var next_game_scene: PackedScene = null
 
+# Non-repeating randomizer state variables
+var _remaining_scenario_games: Array[PackedScene] = []
+var _last_played_game: PackedScene = null
+
 func _ready():
 	# Load config from AppManager (set before scene was changed)
-	if AppManager.pending_microgames.is_empty():
-		push_error("GameManager: AppManager.pending_microgames is empty!")
+	if AppManager.pending_scenario_games.is_empty():
+		push_error("GameManager: AppManager.pending_scenario_games is empty!")
 	
-	microgames = AppManager.pending_microgames.duplicate()
-	boss_game = AppManager.pending_boss
+	scenario_games = AppManager.pending_scenario_games.duplicate()
+	final_game = AppManager.pending_final_game
 	
 	# We don't clear AppManager's pending data here anymore to avoid 
 	# accidentally clearing the source arrays if they were passed by reference.
@@ -52,17 +56,44 @@ func start_game_loop():
 	games_played = 0
 	speed_multiplier = 1.0
 	Engine.time_scale = speed_multiplier
+	
+	# Reset randomizer pool
+	_remaining_scenario_games.clear()
+	_last_played_game = null
+	
 	_pick_next_game()
 	_load_interstitial()
 
 func _pick_next_game():
 	if games_played == total_games_per_run - 1:
-		next_game_scene = boss_game
+		next_game_scene = final_game
 	else:
-		if microgames.size() == 0:
-			push_error("No microgames assigned to GameManager")
+		if scenario_games.size() == 0:
+			push_error("No scenario games assigned to GameManager")
 			return
-		next_game_scene = microgames.pick_random()
+		
+		# If the deck/pool is empty, refill it
+		if _remaining_scenario_games.is_empty():
+			_refill_scenario_game_pool()
+		
+		# Draw from the deck
+		var picked_game = _remaining_scenario_games.pop_back()
+		next_game_scene = picked_game
+		_last_played_game = picked_game
+
+func _refill_scenario_game_pool():
+	var pool = scenario_games.duplicate()
+	pool.shuffle()
+	
+	# Prevent back-to-back repetition across resets
+	if pool.size() > 1 and _last_played_game != null and pool[pool.size() - 1] == _last_played_game:
+		# Since we pop from the back, pool[pool.size() - 1] is the first game drawn.
+		# Swap it with the item at index 0 to avoid immediate repeat.
+		var temp = pool[pool.size() - 1]
+		pool[pool.size() - 1] = pool[0]
+		pool[0] = temp
+		
+	_remaining_scenario_games = pool
 
 func _load_interstitial():
 	if current_instance != null:
@@ -79,7 +110,7 @@ func _load_interstitial():
 		speed_multiplier = speed_up_multiplier
 		Engine.time_scale = speed_multiplier
 
-	current_game_is_boss = (games_played == total_games_per_run - 1)
+	current_game_is_final = (games_played == total_games_per_run - 1)
 
 	if interstitial_scene == null:
 		push_error("GameManager: interstitial_scene is null!")
@@ -99,7 +130,7 @@ func _load_interstitial():
 		icon = load(temp_game.control_icon_path)
 	temp_game.queue_free()
 
-	interstitial.setup(lives, icon, is_speed_up, current_game_is_boss)
+	interstitial.setup(lives, icon, is_speed_up, current_game_is_final)
 	interstitial.interstitial_done.connect(_on_interstitial_done)
 
 func _on_interstitial_done():
@@ -137,7 +168,7 @@ func _on_interstitial_done():
 	if is_instance_valid(game_instance):
 		game_instance.process_mode = Node.PROCESS_MODE_INHERIT
 		
-		if current_game_is_boss:
+		if current_game_is_final:
 			timer_bar.stop()
 			timer_bar.hide()
 		else:
@@ -186,7 +217,7 @@ func _on_game_lost():
 	timer_bar.stop()
 	
 	var msg = "LOSE..."
-	if current_game_is_boss:
+	if current_game_is_final:
 		msg = "Try Again" if lives > 1 else "You Lose"
 	elif is_instance_valid(current_instance):
 		if "lose_label_text" in current_instance:
@@ -210,7 +241,7 @@ func _on_game_lost():
 		games_played += 1
 		_pick_next_game()
 	else:
-		# Retry boss
+		# Retry final game
 		_pick_next_game()
 	
 	_load_interstitial()

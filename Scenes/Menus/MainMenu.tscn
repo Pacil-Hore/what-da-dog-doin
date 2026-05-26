@@ -60,7 +60,7 @@ flat = true
 alignment = 0
 script = ExtResource("4_e8h4m")
 
-[node name="PickStageButton" type="Button" parent="MenuButtons" unique_id=1079548891]
+[node name="FreePlayButton" type="Button" parent="MenuButtons" unique_id=1079548891]
 custom_minimum_size = Vector2(420, 74)
 layout_mode = 0
 offset_top = 82.0
@@ -79,7 +79,7 @@ theme_override_styles/pressed = SubResource("StyleBoxEmpty_44l8m")
 theme_override_styles/hover = SubResource("StyleBoxEmpty_44l8m")
 theme_override_styles/disabled = SubResource("StyleBoxEmpty_44l8m")
 theme_override_styles/focus = SubResource("StyleBoxEmpty_44l8m")
-text = "Pick Stage"
+text = "Free Play"
 flat = true
 alignment = 0
 script = ExtResource("4_e8h4m")
