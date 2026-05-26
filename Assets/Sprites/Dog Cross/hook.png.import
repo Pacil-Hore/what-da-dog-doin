@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bs5esn4w53qn2"
-path="res://.godot/imported/dog_walk_spritesheet.png-bf33ae819f7e8882b473b579b4524c7e.ctex"
+uid="uid://davomaj1dq4km"
+path="res://.godot/imported/hook.png-4f64ecabba081fe4885e0d064e59a50c.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/Sprites/dog_walk_spritesheet.png"
-dest_files=["res://.godot/imported/dog_walk_spritesheet.png-bf33ae819f7e8882b473b579b4524c7e.ctex"]
+source_file="res://Assets/Sprites/Dog Cross/hook.png"
+dest_files=["res://.godot/imported/hook.png-4f64ecabba081fe4885e0d064e59a50c.ctex"]
 
 [params]
 

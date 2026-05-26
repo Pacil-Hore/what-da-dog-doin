@@ -26,9 +26,8 @@ signal game_lost
 @export var dog: CharacterBody2D
 
 # === State ===
-var swing_angle: float = 0.0           # angle tali sekarang (radians, 0 = lurus ke atas)
-var swing_phase: float = 0.0           # phase untuk swing otomatis (0 to 2*PI)
-var arrow_velocity: float = 0.0        # velocity dari arrow key input
+var swing_angle: float = 0.0
+var swing_phase: float = 0.0
 var current_rope_length: float = 200.0
 var is_extending: bool = false
 var is_finished: bool = false
@@ -40,24 +39,22 @@ func _ready():
 	if hook:
 		hook.area_entered.connect(_on_hook_area_entered)
 	
-	# Start timer (kalau standalone, perlu manual timer)
-	# Kalau pake GameManager pusat, timer di-handle sama GM
 	if not _has_main_game_manager():
 		_start_standalone_timer()
 
-func _process(delta):
+# Pindah ke _physics_process biar sync sama collision detection
+func _physics_process(delta):
 	if is_finished:
 		return
 	
 	_update_swing(delta)
-	_update_rope_visual()
 	_update_hook_position()
+	_update_rope_visual()
 
 func _input(event):
 	if is_finished:
 		return
 	
-	# Klik kiri = lempar tali
 	if event is InputEventMouseButton:
 		if event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
 			_extend_rope()
@@ -74,19 +71,6 @@ func _update_swing(_delta: float):
 	swing_angle = atan2(dir.x, -dir.y)
 	swing_angle = clamp(swing_angle, -swing_amplitude, swing_amplitude)
 
-func _update_rope_visual():
-	if not anchor or not rope:
-		return
-	
-	var anchor_pos = anchor.global_position
-	# Karena anchor di bawah dan tali ke atas, pakai -cos untuk Y (Y negatif = ke atas)
-	# swing_angle = 0 berarti lurus ke atas
-	var end_pos = anchor_pos + Vector2(sin(swing_angle), -cos(swing_angle)) * current_rope_length
-	
-	rope.clear_points()
-	rope.add_point(rope.to_local(anchor_pos))
-	rope.add_point(rope.to_local(end_pos))
-
 func _update_hook_position():
 	if not anchor or not hook:
 		return
@@ -94,8 +78,18 @@ func _update_hook_position():
 	var anchor_pos = anchor.global_position
 	var end_pos = anchor_pos + Vector2(sin(swing_angle), -cos(swing_angle)) * current_rope_length
 	hook.global_position = end_pos
-	# Rotate hook supaya nempel di tali (optional, visual)
 	hook.rotation = swing_angle
+
+func _update_rope_visual():
+	if not anchor or not rope:
+		return
+	
+	var anchor_pos = anchor.global_position
+	var end_pos = anchor_pos + Vector2(sin(swing_angle), -cos(swing_angle)) * current_rope_length
+	
+	rope.clear_points()
+	rope.add_point(rope.to_local(anchor_pos))
+	rope.add_point(rope.to_local(end_pos))
 
 func _extend_rope():
 	if is_extending:
@@ -109,13 +103,8 @@ func _extend_rope():
 	active_tween.tween_callback(func(): is_extending = false)
 
 func _on_hook_area_entered(area: Area2D):
-	# Hook nyentuh sesuatu — cek apakah itu collar
-	print("Hook ENTERED area: ", area.name, " | path: ", area.get_path())
 	if area.name == "Collar":
-		print("MATCH collar! WIN!")
 		_on_won()
-	else:
-		print("Bukan collar, skip. Reference collar: ", collar)
 
 func _on_won():
 	if is_finished:
@@ -123,6 +112,7 @@ func _on_won():
 	is_finished = true
 	if active_tween and active_tween.is_valid():
 		active_tween.kill()
+	_freeze_scene()
 	emit_signal("game_won")
 	print("[Attach] WIN!")
 	set_deferred("process_mode", Node.PROCESS_MODE_DISABLED)
@@ -133,11 +123,18 @@ func _on_lost():
 	is_finished = true
 	if active_tween and active_tween.is_valid():
 		active_tween.kill()
+	_freeze_scene()
 	emit_signal("game_lost")
 	print("[Attach] LOSE!")
 	set_deferred("process_mode", Node.PROCESS_MODE_DISABLED)
 
-# === Standalone timer (kalau gak ada GameManager pusat) ===
+func _freeze_scene():
+	if dog:
+		dog.set_physics_process(false)
+		dog.set_process(false)
+		if "velocity" in dog:
+			dog.velocity = Vector2.ZERO
+
 func _has_main_game_manager() -> bool:
 	var node = get_parent()
 	while node:

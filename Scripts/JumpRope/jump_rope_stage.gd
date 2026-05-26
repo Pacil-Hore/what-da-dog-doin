@@ -7,7 +7,7 @@ signal game_lost
 @export var control_hint: String = "Spacebar"
 @export var control_icon_path: String = "res://assets/generated/spacebar_icon.png"
 
-@export var start_delay_duration: float = 0.0
+@export var start_delay_duration: float = 0.2
 @export var round_duration: float = 5.0
 @export var rope_cycle_duration: float = 1.05
 @export var final_rope_cycle_duration: float = 0.72
@@ -22,6 +22,8 @@ signal game_lost
 @onready var rope: JumpRopeRope = $Playfield/Rope
 @onready var dog: JumpRopeDog = $Playfield/Dog
 @onready var countdown_timer: Timer = get_node_or_null("CountdownTimer")
+@onready var miss_label: Label = get_node_or_null("HUD/MissLabel") as Label
+@onready var instruction_label: Label = get_node_or_null("HUD/InstructionLabel") as Label
 
 var time_left: float = 0.0
 var start_delay_left: float = 0.0
@@ -169,7 +171,10 @@ func _register_miss() -> void:
 
 
 func _update_hud() -> void:
-	pass
+	if is_instance_valid(miss_label):
+		miss_label.text = "Misses: %d/%d" % [miss_count, max_misses]
+	if is_instance_valid(instruction_label):
+		instruction_label.text = instruction_text
 
 
 func _on_countdown_timer_timeout() -> void:
