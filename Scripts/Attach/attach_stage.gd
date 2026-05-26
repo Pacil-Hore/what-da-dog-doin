@@ -11,8 +11,8 @@ signal game_lost
 @export var control_icon_path: String = "res://assets/generated/mouse_icon.png"
 
 # === Rope settings ===
-@export var rope_length_normal: float = 200.0
-@export var rope_length_extended: float = 500.0
+@export var rope_length_normal: float = 150.0
+@export var rope_length_extended: float = 600.0
 @export var swing_speed: float = 2.0
 @export var swing_amplitude: float = PI / 2
 @export var extend_duration: float = 0.3
@@ -39,13 +39,14 @@ func _ready():
 	if not _has_main_game_manager():
 		_start_standalone_timer()
 
-func _process(delta):
+# Pindah ke _physics_process biar sync sama collision detection
+func _physics_process(delta):
 	if is_finished:
 		return
 	
 	_update_swing(delta)
-	_update_rope_visual()
 	_update_hook_position()
+	_update_rope_visual()
 
 func _input(event):
 	if is_finished:
@@ -59,6 +60,15 @@ func _update_swing(delta: float):
 	swing_phase += swing_speed * delta
 	swing_angle = sin(swing_phase) * swing_amplitude
 
+func _update_hook_position():
+	if not anchor or not hook:
+		return
+	
+	var anchor_pos = anchor.global_position
+	var end_pos = anchor_pos + Vector2(sin(swing_angle), -cos(swing_angle)) * current_rope_length
+	hook.global_position = end_pos
+	hook.rotation = swing_angle
+
 func _update_rope_visual():
 	if not anchor or not rope:
 		return
@@ -69,15 +79,6 @@ func _update_rope_visual():
 	rope.clear_points()
 	rope.add_point(rope.to_local(anchor_pos))
 	rope.add_point(rope.to_local(end_pos))
-
-func _update_hook_position():
-	if not anchor or not hook:
-		return
-	
-	var anchor_pos = anchor.global_position
-	var end_pos = anchor_pos + Vector2(sin(swing_angle), -cos(swing_angle)) * current_rope_length
-	hook.global_position = end_pos
-	hook.rotation = swing_angle
 
 func _extend_rope():
 	if is_extending:
@@ -110,17 +111,11 @@ func _on_lost():
 	print("[Attach] LOSE!")
 
 func _freeze_scene():
-	# Stop anjing
 	if dog:
 		dog.set_physics_process(false)
 		dog.set_process(false)
-		if dog.has_method("set_velocity"):
+		if "velocity" in dog:
 			dog.velocity = Vector2.ZERO
-	
-	# Hentikan tween yang lagi jalan (extend rope)
-	# Tween auto-stop kalau target node-nya pause/disabled,
-	# tapi kita explicit aja: skip _process di Attach itu sendiri
-	# (udah ke-handle di guard is_finished di awal _process)
 
 func _has_main_game_manager() -> bool:
 	var node = get_parent()
