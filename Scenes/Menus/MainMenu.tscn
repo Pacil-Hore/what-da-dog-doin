@@ -36,10 +36,10 @@ custom_minimum_size = Vector2(200, 50)
 layout_mode = 2
 text = "Story Mode"
 
-[node name="PickStageButton" type="Button" parent="VBox" unique_id=1079548891]
+[node name="FreePlayButton" type="Button" parent="VBox" unique_id=1079548891]
 custom_minimum_size = Vector2(200, 50)
 layout_mode = 2
-text = "Pick Stage"
+text = "Free Play"
 
 [node name="QuitButton" type="Button" parent="VBox" unique_id=1531042072]
 custom_minimum_size = Vector2(200, 50)

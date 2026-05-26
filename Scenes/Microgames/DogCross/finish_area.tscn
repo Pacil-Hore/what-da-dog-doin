@@ -1,7 +1,7 @@
 [gd_scene format=4 uid="uid://drc6koxaj0red"]
 
 [ext_resource type="Script" uid="uid://bm1g2srk6ok30" path="res://Scripts/DogCross/finish_area.gd" id="1_jki56"]
-[ext_resource type="PackedScene" uid="uid://b8slxm5toun2f" path="res://Scenes/park/DogCross/WinScreen.tscn" id="2_vopn7"]
+[ext_resource type="PackedScene" uid="uid://b8slxm5toun2f" path="res://Scenes/Microgames/DogCross/WinScreen.tscn" id="2_vopn7"]
 [ext_resource type="Texture2D" uid="uid://d165mlt1vxosg" path="res://Assets/Sprites/Little Dreamyland - Free Pack/Tileset/Autotile_Grass_and_Dirt_Path_Tileset.png" id="3_j4xq3"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ynyjl"]

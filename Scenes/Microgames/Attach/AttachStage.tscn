@@ -1,8 +1,8 @@
 [gd_scene format=3 uid="uid://b7dhacutsb7ry"]
 
 [ext_resource type="Script" uid="uid://dp5iyk37enale" path="res://Scripts/Attach/attach_stage.gd" id="1_v6rhc"]
-[ext_resource type="PackedScene" uid="uid://by27f3y6bpea2" path="res://Scenes/park/Attach/Dog.tscn" id="2_dne04"]
-[ext_resource type="PackedScene" uid="uid://c3sjx7641biem" path="res://Scenes/park/Attach/Hook.tscn" id="3_uk1qp"]
+[ext_resource type="PackedScene" uid="uid://by27f3y6bpea2" path="res://Scenes/Microgames/Attach/Dog.tscn" id="2_dne04"]
+[ext_resource type="PackedScene" uid="uid://c3sjx7641biem" path="res://Scenes/Microgames/Attach/Hook.tscn" id="3_uk1qp"]
 
 [node name="AttachStage" type="Node2D" unique_id=34572571 node_paths=PackedStringArray("anchor", "rope", "hook", "dog")]
 script = ExtResource("1_v6rhc")

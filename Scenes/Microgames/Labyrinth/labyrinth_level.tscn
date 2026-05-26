@@ -1,9 +1,9 @@
 [gd_scene format=3 uid="uid://bcj7gviuuoac1"]
 
-[ext_resource type="PackedScene" uid="uid://crbrwaqq404iv" path="res://Scenes/park/Labyrinth/labyrinth_object.tscn" id="1_wo3la"]
+[ext_resource type="PackedScene" uid="uid://crbrwaqq404iv" path="res://Scenes/Microgames/Labyrinth/labyrinth_object.tscn" id="1_wo3la"]
 [ext_resource type="PackedScene" uid="uid://canpbu2erlkfy" path="res://Scenes/Player.tscn" id="2_jrs6i"]
 [ext_resource type="Script" uid="uid://c5vrtkuahkgl6" path="res://Scripts/labyrinth_level.gd" id="3_857ma"]
-[ext_resource type="PackedScene" path="res://Scenes/park/Labyrinth/ManSprite.tscn" id="4_nhsvf"]
+[ext_resource type="PackedScene" path="res://Scenes/Microgames/Labyrinth/ManSprite.tscn" id="4_nhsvf"]
 [ext_resource type="Script" uid="uid://dcge3i2mbref0" path="res://Scripts/rope_line.gd" id="5_rdsau"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_t8w3n"]

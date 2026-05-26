@@ -7,16 +7,16 @@ signal interstitial_done
 @onready var lives_label = $VBoxContainer/LivesLabel
 @onready var control_icon = $VBoxContainer/ControlIcon
 @onready var speed_up_label = $VBoxContainer/SpeedUpLabel
-@onready var boss_label = $VBoxContainer/BossLabel
+@onready var final_label = $VBoxContainer/FinalLabel
 
-func setup(lives: int, icon: Texture2D, is_speed_up: bool, is_boss: bool):
+func setup(lives: int, icon: Texture2D, is_speed_up: bool, is_final: bool):
 	if icon != null:
 		control_icon.texture = icon
 		
 	lives_label.text = "Lives: " + str(lives)
 	
 	speed_up_label.visible = is_speed_up
-	boss_label.visible = is_boss
+	final_label.visible = is_final
 
 func _ready():
 	await get_tree().create_timer(display_duration, false).timeout
