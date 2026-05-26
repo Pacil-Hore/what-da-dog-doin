@@ -23,7 +23,7 @@ MicrogameTestHelper="*res://Scripts/microgame_test_helper.gd"
 
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/godot_mcp/plugin.cfg")
+enabled=PackedStringArray()
 
 [physics]
 
