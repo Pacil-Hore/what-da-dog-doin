@@ -25,7 +25,7 @@ signal game_lost
 var gauge_value := 0.5 # starts in the middle (0.5). 1.0 is full human, 0.0 is full dog
 var time_left := 5.0
 var is_finished := false
-var game_started := false
+var game_started := true
 
 # Dog AI state
 var next_yank_timer := 0.8
@@ -37,7 +37,7 @@ func _ready() -> void:
 	gauge_value = 0.5
 	is_finished = false
 	is_yanking = false
-	game_started = false
+	game_started = true
 	next_yank_timer = randf_range(0.8, 1.4)
 	
 	warning_label.visible = false
@@ -138,8 +138,9 @@ func _update_positions() -> void:
 	dog.set_tension(gauge_value)
 	
 	# Slide dog and human horizontally depending on the gauge
-	# If gauge_value -> 1.0, both get pulled left. If gauge_value -> 0.0, both get pulled right.
-	var center_shift = (gauge_value - 0.5) * 200.0
+	# If gauge_value -> 1.0, both get pulled toward the human.
+	# If gauge_value -> 0.0, both get pulled toward the dog.
+	var center_shift = (0.5 - gauge_value) * 200.0
 	
 	human.position.x = 260.0 + center_shift
 	dog.position.x = 890.0 + center_shift

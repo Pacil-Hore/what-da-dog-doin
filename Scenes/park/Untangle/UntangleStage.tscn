@@ -2,40 +2,61 @@
 
 [ext_resource type="Script" uid="uid://cplqkn3fsov70" path="res://Scripts/Untangle/untangle_stage.gd" id="1_stage"]
 [ext_resource type="Script" uid="uid://iidldyukbeg7" path="res://Scripts/Untangle/untangle_state_object.gd" id="2_state_object"]
+[ext_resource type="Texture2D" uid="uid://c1fbew4bsn4lx" path="res://Assets/generated/placeholder_icon.png" id="3_2j3mm"]
 [ext_resource type="Script" uid="uid://c8hu466j2o10s" path="res://Scripts/Untangle/circular_motion_detector.gd" id="3_motion_detector"]
 [ext_resource type="Script" uid="uid://dybqpcu20o231" path="res://Scripts/Untangle/motion_guide.gd" id="4_motion_guide"]
-[ext_resource type="Script" uid="uid://6bk5d4wovt3r" path="res://Scripts/Untangle/untangle_background.gd" id="5_background"]
-[ext_resource type="Script" uid="uid://bnxd0bnyr3hkr" path="res://Scripts/Untangle/untangle_placeholder_state_visual.gd" id="6_placeholder_visual"]
+[ext_resource type="Texture2D" uid="uid://dg5ekpbw835er" path="res://Assets/generated/player_placeholder.png" id="5_r2ppw"]
+[ext_resource type="Texture2D" uid="uid://bb03ew2g4h3kc" path="res://icon.svg" id="6_h4b4f"]
 
 [node name="UntangleStage" type="Node2D" unique_id=1568640092]
 script = ExtResource("1_stage")
 
 [node name="Background" type="Node2D" parent="." unique_id=868099395]
 z_index = -100
-script = ExtResource("5_background")
+
+[node name="BgRect" type="ColorRect" parent="Background" unique_id=627021931]
+offset_right = 1152.0
+offset_bottom = 645.0
+color = Color(0.97, 0.965, 0.95, 1)
+
+[node name="FloorRect" type="ColorRect" parent="Background" unique_id=1489306362]
+offset_top = 510.0
+offset_right = 1152.0
+offset_bottom = 645.0
+color = Color(0.88, 0.88, 0.84, 1)
 
 [node name="StateObject" type="Node2D" parent="." unique_id=2142597992]
 position = Vector2(576, 322)
 script = ExtResource("2_state_object")
+hydrant_texture = null
 
 [node name="Visuals" type="Node2D" parent="StateObject" unique_id=1515389688]
 
 [node name="StateAVisual" type="Node2D" parent="StateObject/Visuals" unique_id=1673751879]
-script = ExtResource("6_placeholder_visual")
+
+[node name="StateSprite" type="Sprite2D" parent="StateObject/Visuals/StateAVisual" unique_id=1724366782]
+modulate = Color(1, 0.82, 0.82, 1)
+scale = Vector2(0.48, 0.48)
+texture = ExtResource("3_2j3mm")
 
 [node name="StateBVisual" type="Node2D" parent="StateObject/Visuals" unique_id=1207757330]
 visible = false
-script = ExtResource("6_placeholder_visual")
-visual_state = 1
-accent_color = Color(0.96, 0.78, 0.26, 1)
+
+[node name="StateSprite" type="Sprite2D" parent="StateObject/Visuals/StateBVisual" unique_id=1872221136]
+modulate = Color(1, 0.94, 0.72, 1)
+scale = Vector2(0.44, 0.44)
+texture = ExtResource("3_2j3mm")
 
 [node name="StateCVisual" type="Node2D" parent="StateObject/Visuals" unique_id=1245131410]
 visible = false
-script = ExtResource("6_placeholder_visual")
-visual_state = 2
-accent_color = Color(0.24, 0.82, 0.52, 1)
+
+[node name="StateSprite" type="Sprite2D" parent="StateObject/Visuals/StateCVisual" unique_id=1160774284]
+modulate = Color(0.72, 1, 0.78, 1)
+scale = Vector2(0.4, 0.4)
+texture = ExtResource("3_2j3mm")
 
 [node name="StateLabel" type="Label" parent="StateObject" unique_id=980348929]
+visible = false
 offset_left = -24.0
 offset_top = -24.0
 offset_right = 24.0
@@ -46,10 +67,33 @@ text = "A"
 horizontal_alignment = 1
 vertical_alignment = 1
 
+[node name="HydrantSprite" type="Sprite2D" parent="StateObject" unique_id=870177304]
+z_index = -1
+scale = Vector2(0.55, 0.55)
+
 [node name="MotionGuide" type="Node2D" parent="." unique_id=1273949567]
 z_index = -1
 position = Vector2(576, 322)
 script = ExtResource("4_motion_guide")
+
+[node name="GuideLine" type="Line2D" parent="MotionGuide" unique_id=23424572]
+points = PackedVector2Array(154, 0, 153.25845, 15.09464, 151.04092, 30.04391, 147.36882, 44.70384, 142.27745, 58.933247, 135.81587, 72.5951, 128.04631, 85.557816, 119.04361, 97.69656, 108.89444, 108.89444, 97.69656, 119.04361, 85.557816, 128.04631, 72.5951, 135.81587, 58.933247, 142.27745, 44.70384, 147.36882, 30.04391, 151.04092, 15.09464, 153.25845, 9.429469e-15, 154, -15.09464, 153.25845, -30.04391, 151.04092, -44.70384, 147.36882, -58.933247, 142.27745, -72.5951, 135.81587, -85.557816, 128.04631, -97.69656, 119.04361, -108.89444, 108.89444, -119.04361, 97.69656, -128.04631, 85.557816, -135.81587, 72.5951, -142.27745, 58.933247, -147.36882, 44.70384, -151.04092, 30.04391, -153.25845, 15.09464, -154, 1.8858938e-14, -153.25845, -15.09464, -151.04092, -30.04391, -147.36882, -44.70384, -142.27745, -58.933247, -135.81587, -72.5951, -128.04631, -85.557816, -119.04361, -97.69656, -108.89444, -108.89444, -97.69656, -119.04361, -85.557816, -128.04631, -72.5951, -135.81587, -58.933247, -142.27745, -44.70384, -147.36882, -30.04391, -151.04092, -15.09464, -153.25845, -2.8288407e-14, -154, 15.09464, -153.25845, 30.04391, -151.04092, 44.70384, -147.36882, 58.933247, -142.27745, 72.5951, -135.81587, 85.557816, -128.04631, 97.69656, -119.04361, 108.89444, -108.89444, 119.04361, -97.69656, 128.04631, -85.557816, 135.81587, -72.5951, 142.27745, -58.933247, 147.36882, -44.70384, 151.04092, -30.04391, 153.25845, -15.09464, 154, -3.7717876e-14)
+width = 3.0
+default_color = Color(0.02, 0.02, 0.02, 0.16)
+
+[node name="InnerLine" type="Line2D" parent="MotionGuide" unique_id=846977712]
+points = PackedVector2Array(48, 0, 47.768867, 4.7048225, 47.07769, 9.364336, 45.933136, 13.933664, 44.346214, 18.368805, 42.332222, 22.627045, 39.91054, 26.667372, 37.1045, 30.450878, 33.941124, 33.941124, 30.450878, 37.1045, 26.667372, 39.91054, 22.627045, 42.332222, 18.368805, 44.346214, 13.933664, 45.933136, 9.364336, 47.07769, 4.7048225, 47.768867, 2.9390552e-15, 48, -4.7048225, 47.768867, -9.364336, 47.07769, -13.933664, 45.933136, -18.368805, 44.346214, -22.627045, 42.332222, -26.667372, 39.91054, -30.450878, 37.1045, -33.941124, 33.941124, -37.1045, 30.450878, -39.91054, 26.667372, -42.332222, 22.627045, -44.346214, 18.368805, -45.933136, 13.933664, -47.07769, 9.364336, -47.768867, 4.7048225, -48, 5.8781105e-15, -47.768867, -4.7048225, -47.07769, -9.364336, -45.933136, -13.933664, -44.346214, -18.368805, -42.332222, -22.627045, -39.91054, -26.667372, -37.1045, -30.450878, -33.941124, -33.941124, -30.450878, -37.1045, -26.667372, -39.91054, -22.627045, -42.332222, -18.368805, -44.346214, -13.933664, -45.933136, -9.364336, -47.07769, -4.7048225, -47.768867, -8.817166e-15, -48, 4.7048225, -47.768867, 9.364336, -47.07769, 13.933664, -45.933136, 18.368805, -44.346214, 22.627045, -42.332222, 26.667372, -39.91054, 30.450878, -37.1045, 33.941124, -33.941124, 37.1045, -30.450878, 39.91054, -26.667372, 42.332222, -22.627045, 44.346214, -18.368805, 45.933136, -13.933664, 47.07769, -9.364336, 47.768867, -4.7048225, 48, -1.1756221e-14)
+width = 2.0
+default_color = Color(0.02, 0.02, 0.02, 0.08)
+
+[node name="OuterLine" type="Line2D" parent="MotionGuide" unique_id=1318885553]
+points = PackedVector2Array(260, 0, 258.74802, 25.484457, 255.00417, 50.723484, 248.80449, 75.474014, 240.20866, 99.49769, 229.29953, 122.563156, 216.1821, 144.44826, 200.98271, 164.94225, 183.84776, 183.84776, 164.94225, 200.98271, 144.44826, 216.1821, 122.563156, 229.29953, 99.49769, 240.20866, 75.474014, 248.80449, 50.723484, 255.00417, 25.484457, 258.74802, 1.5919883e-14, 260, -25.484457, 258.74802, -50.723484, 255.00417, -75.474014, 248.80449, -99.49769, 240.20866, -122.563156, 229.29953, -144.44826, 216.1821, -164.94225, 200.98271, -183.84776, 183.84776, -200.98271, 164.94225, -216.1821, 144.44826, -229.29953, 122.563156, -240.20866, 99.49769, -248.80449, 75.474014, -255.00417, 50.723484, -258.74802, 25.484457, -260, 3.1839765e-14, -258.74802, -25.484457, -255.00417, -50.723484, -248.80449, -75.474014, -240.20866, -99.49769, -229.29953, -122.563156, -216.1821, -144.44826, -200.98271, -164.94225, -183.84776, -183.84776, -164.94225, -200.98271, -144.44826, -216.1821, -122.563156, -229.29953, -99.49769, -240.20866, -75.474014, -248.80449, -50.723484, -255.00417, -25.484457, -258.74802, -4.7759648e-14, -260, 25.484457, -258.74802, 50.723484, -255.00417, 75.474014, -248.80449, 99.49769, -240.20866, 122.563156, -229.29953, 144.44826, -216.1821, 164.94225, -200.98271, 183.84776, -183.84776, 200.98271, -164.94225, 216.1821, -144.44826, 229.29953, -122.563156, 240.20866, -99.49769, 248.80449, -75.474014, 255.00417, -50.723484, 258.74802, -25.484457, 260, -6.367953e-14)
+width = 2.0
+default_color = Color(0.02, 0.02, 0.02, 0.08)
+
+[node name="ProgressLine" type="Line2D" parent="MotionGuide" unique_id=369202663]
+width = 7.0
+default_color = Color(0.02, 0.02, 0.02, 0.7)
 
 [node name="CircularMotionDetector" type="Node" parent="." unique_id=1994326596]
 script = ExtResource("3_motion_detector")
@@ -58,6 +102,7 @@ script = ExtResource("3_motion_detector")
 layer = 101
 
 [node name="ProgressLabel" type="Label" parent="HUD" unique_id=1651123996]
+visible = false
 anchors_preset = 5
 anchor_left = 0.5
 anchor_right = 0.5
@@ -71,4 +116,49 @@ theme_override_font_sizes/font_size = 28
 text = "Step A: 0 / 5"
 horizontal_alignment = 1
 
+[node name="SpinProgressBar" type="ProgressBar" parent="HUD" unique_id=605219064]
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -220.0
+offset_top = 86.0
+offset_right = 220.0
+offset_bottom = 116.0
+grow_horizontal = 2
+max_value = 10.0
+show_percentage = false
+
 [node name="CountdownTimer" type="Timer" parent="." unique_id=213101904]
+
+[node name="SceneArt" type="Node2D" parent="." unique_id=1653145530]
+z_index = -10
+
+[node name="HumanSprite" type="Sprite2D" parent="SceneArt" unique_id=1285965084]
+position = Vector2(206, 376)
+scale = Vector2(0.55, 0.55)
+texture = ExtResource("5_r2ppw")
+
+[node name="DogSprite" type="Sprite2D" parent="SceneArt" unique_id=680602219]
+position = Vector2(862, 384)
+scale = Vector2(1.85, 1.85)
+texture = ExtResource("6_h4b4f")
+
+[node name="TitleLabel" type="Label" parent="SceneArt" unique_id=129435756]
+offset_left = 376.0
+offset_top = 20.0
+offset_right = 776.0
+offset_bottom = 80.0
+theme_override_colors/font_color = Color(0.05, 0.05, 0.05, 1)
+theme_override_font_sizes/font_size = 54
+text = "UNTANGLE!"
+horizontal_alignment = 1
+
+[node name="LeftLeash" type="Line2D" parent="SceneArt" unique_id=1013069947]
+points = PackedVector2Array(248, 372, 344, 320, 498, 348)
+width = 3.0
+default_color = Color(0.03, 0.03, 0.03, 1)
+
+[node name="RightLeash" type="Line2D" parent="SceneArt" unique_id=39052140]
+points = PackedVector2Array(648, 338, 720, 346, 820, 374)
+width = 3.0
+default_color = Color(0.03, 0.03, 0.03, 1)

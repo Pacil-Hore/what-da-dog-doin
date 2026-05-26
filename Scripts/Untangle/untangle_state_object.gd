@@ -1,7 +1,15 @@
 @tool
 extends Node2D
 
+## Represents the central hydrant/post object that the leash wraps around.
+## The HydrantSprite child is the editable placeholder for final art.
+
 signal state_changed(state_index: int)
+
+@export var hydrant_texture: Texture2D = preload("res://Assets/generated/placeholder_icon.png"):
+	set(value):
+		hydrant_texture = value
+		_refresh_sprite()
 
 @export var current_state_index := 0:
 	set(value):
@@ -16,8 +24,11 @@ signal state_changed(state_index: int)
 @export var visual_container_path := NodePath("Visuals")
 @export var state_label_path := NodePath("StateLabel")
 
+var _sprite: Sprite2D
+
 
 func _ready() -> void:
+	_ensure_sprite()
 	_sync_state()
 
 
@@ -40,11 +51,29 @@ func get_state_count() -> int:
 	return max(state_labels.size(), completed_state_index + 1)
 
 
-func _draw() -> void:
-	draw_circle(Vector2(0.0, 10.0), 80.0, Color(0.0, 0.0, 0.0, 0.25))
-	draw_circle(Vector2.ZERO, 76.0, Color(0.05, 0.06, 0.075))
-	draw_circle(Vector2.ZERO, 69.0, Color(0.18, 0.21, 0.24))
-	draw_arc(Vector2.ZERO, 76.0, -PI * 0.8, PI * 0.2, 64, Color(1.0, 1.0, 1.0, 0.12), 4.0)
+func _ensure_sprite() -> void:
+	_sprite = get_node_or_null("HydrantSprite") as Sprite2D
+	if _sprite == null:
+		_sprite = Sprite2D.new()
+		_sprite.name = "HydrantSprite"
+		_sprite.z_index = -1
+		add_child(_sprite)
+		if Engine.is_editor_hint():
+			_sprite.owner = get_tree().edited_scene_root
+
+
+func _refresh_sprite() -> void:
+	if not is_inside_tree():
+		return
+	_ensure_sprite()
+	if is_instance_valid(_sprite):
+		if hydrant_texture != null:
+			_sprite.texture = hydrant_texture
+		if _sprite.texture:
+			var target_size := 120.0
+			var tex_size := _sprite.texture.get_size()
+			var s := target_size / maxf(tex_size.x, tex_size.y)
+			_sprite.scale = Vector2(s, s)
 
 
 func _sync_state() -> void:
@@ -53,7 +82,6 @@ func _sync_state() -> void:
 
 	_sync_visuals()
 	_sync_label()
-	queue_redraw()
 	state_changed.emit(current_state_index)
 
 
