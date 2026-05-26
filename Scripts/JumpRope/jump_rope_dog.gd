@@ -2,33 +2,30 @@
 extends Node2D
 class_name JumpRopeDog
 
-@export var fur_color: Color = Color(0.84, 0.56, 0.29):
-	set(value):
-		fur_color = value
-		queue_redraw()
-@export var patch_color: Color = Color(0.28, 0.18, 0.12):
-	set(value):
-		patch_color = value
-		queue_redraw()
-@export var collar_color: Color = Color(0.2, 0.62, 0.78):
-	set(value):
-		collar_color = value
-		queue_redraw()
+@export var body_sprite_path: NodePath = ^"BodySprite"
+@export var shadow_path: NodePath = ^"Shadow"
 @export var jump_height: float = 92.0:
 	set(value):
 		jump_height = value
-		queue_redraw()
+		_sync_visuals()
 
 var rest_position: Vector2 = Vector2.ZERO
 var has_rest_position: bool = false
 var jump_elapsed: float = 0.0
 var current_jump_duration: float = 0.42
 var jump_active: bool = false
+var default_frame_index: int = 0
+var shadow_rest_position: Vector2 = Vector2.ZERO
+var shadow_rest_scale: Vector2 = Vector2.ONE
+
+@onready var body_sprite: Sprite2D = get_node_or_null(body_sprite_path) as Sprite2D
+@onready var shadow_node: Node2D = get_node_or_null(shadow_path) as Node2D
 
 
 func _ready() -> void:
 	_cache_rest_position()
-	queue_redraw()
+	_cache_visual_defaults()
+	_sync_visuals()
 
 
 func _process(delta: float) -> void:
@@ -41,13 +38,13 @@ func _process(delta: float) -> void:
 	jump_elapsed += delta
 	var progress: float = minf(jump_elapsed / current_jump_duration, 1.0)
 	position = rest_position + Vector2(0.0, -sin(progress * PI) * jump_height)
-	queue_redraw()
 
 	if progress >= 1.0:
 		jump_active = false
 		jump_elapsed = 0.0
 		position = rest_position
-		queue_redraw()
+
+	_sync_visuals()
 
 
 func start_jump(duration: float) -> void:
@@ -55,7 +52,7 @@ func start_jump(duration: float) -> void:
 	current_jump_duration = maxf(duration, 0.01)
 	jump_elapsed = 0.0
 	jump_active = true
-	queue_redraw()
+	_sync_visuals()
 
 
 func reset_pose() -> void:
@@ -63,65 +60,26 @@ func reset_pose() -> void:
 	jump_active = false
 	jump_elapsed = 0.0
 	position = rest_position
-	queue_redraw()
+	_sync_visuals()
 
 
 func is_jump_active() -> bool:
 	return jump_active
 
 
-func _draw() -> void:
-	var airborne: float = _get_airborne_amount()
-	var shadow_radius: float = 28.0 - airborne * 10.0
-	var shadow_center: Vector2 = Vector2(0.0, 72.0 + airborne * jump_height)
-	var body_center: Vector2 = Vector2(-8.0, 8.0)
-	var head_center: Vector2 = Vector2(42.0, -16.0)
-	var foot_y: float = 66.0 - airborne * 18.0
-
-	draw_circle(shadow_center, shadow_radius, Color(0.0, 0.0, 0.0, 0.18))
-	draw_line(Vector2(-18.0, 32.0), Vector2(-30.0, foot_y), Color(0.17, 0.11, 0.08), 10.0)
-	draw_line(Vector2(2.0, 32.0), Vector2(-4.0, foot_y), Color(0.17, 0.11, 0.08), 10.0)
-	draw_line(Vector2(18.0, 32.0), Vector2(18.0, foot_y), Color(0.17, 0.11, 0.08), 10.0)
-	draw_line(Vector2(34.0, 30.0), Vector2(36.0, foot_y), Color(0.17, 0.11, 0.08), 10.0)
-	draw_line(Vector2(-18.0, 32.0), Vector2(-30.0, foot_y), fur_color.darkened(0.16), 6.0)
-	draw_line(Vector2(2.0, 32.0), Vector2(-4.0, foot_y), fur_color.darkened(0.16), 6.0)
-	draw_line(Vector2(18.0, 32.0), Vector2(18.0, foot_y), fur_color.darkened(0.16), 6.0)
-	draw_line(Vector2(34.0, 30.0), Vector2(36.0, foot_y), fur_color.darkened(0.16), 6.0)
-
-	draw_line(Vector2(-42.0, 0.0), Vector2(-64.0, -18.0 - airborne * 10.0), Color(0.17, 0.11, 0.08), 8.0)
-	draw_line(Vector2(-42.0, 0.0), Vector2(-64.0, -18.0 - airborne * 10.0), fur_color.darkened(0.12), 4.0)
-
-	draw_circle(body_center, 34.0, fur_color)
-	draw_circle(Vector2(-30.0, 8.0), 24.0, fur_color.darkened(0.06))
-	draw_circle(head_center, 24.0, fur_color)
-	draw_circle(head_center + Vector2(15.0, 10.0), 12.0, Color(0.94, 0.89, 0.8))
-	draw_circle(head_center + Vector2(6.0, -2.0), 8.0, patch_color)
-	draw_circle(head_center + Vector2(12.0, -5.0), 3.0, Color(0.06, 0.04, 0.03))
-	draw_circle(head_center + Vector2(-5.0, -4.0), 3.0, Color(0.06, 0.04, 0.03))
-	draw_circle(head_center + Vector2(18.0, 4.0), 3.0, Color(0.06, 0.04, 0.03))
-	draw_arc(head_center + Vector2(8.0, 10.0), 7.0, 0.15, PI - 0.2, 16, Color(0.46, 0.18, 0.18), 2.0)
-	draw_rect(Rect2(Vector2(10.0, -2.0), Vector2(20.0, 7.0)), collar_color, true)
-
-	var left_ear: PackedVector2Array = PackedVector2Array([
-		head_center + Vector2(-10.0, -16.0),
-		head_center + Vector2(-20.0, -36.0),
-		head_center + Vector2(0.0, -24.0),
-	])
-	var right_ear: PackedVector2Array = PackedVector2Array([
-		head_center + Vector2(10.0, -18.0),
-		head_center + Vector2(18.0, -36.0),
-		head_center + Vector2(20.0, -14.0),
-	])
-	draw_colored_polygon(left_ear, fur_color.darkened(0.18))
-	draw_colored_polygon(right_ear, fur_color.darkened(0.18))
-
-
 func _cache_rest_position() -> void:
-	if has_rest_position:
-		return
+	if not has_rest_position:
+		rest_position = position
+		has_rest_position = true
 
-	rest_position = position
-	has_rest_position = true
+
+func _cache_visual_defaults() -> void:
+	if is_instance_valid(body_sprite):
+		default_frame_index = body_sprite.frame
+
+	if is_instance_valid(shadow_node):
+		shadow_rest_position = shadow_node.position
+		shadow_rest_scale = shadow_node.scale
 
 
 func _get_airborne_amount() -> float:
@@ -129,3 +87,37 @@ func _get_airborne_amount() -> float:
 		return 0.0
 
 	return sin(clampf(jump_elapsed / current_jump_duration, 0.0, 1.0) * PI)
+
+
+func _get_sprite_frame_index(safe_frame_count: int) -> int:
+	if not jump_active:
+		return clampi(default_frame_index, 0, safe_frame_count - 1)
+
+	var progress: float = clampf(jump_elapsed / current_jump_duration, 0.0, 1.0)
+	return clampi(int(progress * float(safe_frame_count)), 0, safe_frame_count - 1)
+
+
+func _sync_visuals() -> void:
+	if not is_node_ready():
+		return
+
+	_sync_body_sprite()
+	_sync_shadow()
+
+
+func _sync_body_sprite() -> void:
+	if not is_instance_valid(body_sprite):
+		return
+
+	var safe_frame_count: int = maxi(body_sprite.hframes, 1)
+	body_sprite.frame = _get_sprite_frame_index(safe_frame_count)
+
+
+func _sync_shadow() -> void:
+	if not is_instance_valid(shadow_node):
+		return
+
+	var airborne: float = _get_airborne_amount()
+	var shrink: float = lerpf(1.0, 0.65, airborne)
+	shadow_node.position = shadow_rest_position + Vector2(0.0, airborne * jump_height)
+	shadow_node.scale = shadow_rest_scale * shrink
