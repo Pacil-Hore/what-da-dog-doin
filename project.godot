@@ -25,10 +25,15 @@ MicrogameTestHelper="*res://Scripts/microgame_test_helper.gd"
 
 enabled=PackedStringArray()
 
+[gui]
+
+theme/custom="res://Resource/global_theme.tres"
+
 [physics]
 
 3d/physics_engine="Jolt Physics"
 
 [rendering]
 
+textures/canvas_textures/default_texture_filter=0
 rendering_device/driver.windows="d3d12"
