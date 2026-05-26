@@ -13,6 +13,7 @@ signal run_lost
 
 @export_group("Scenes")
 @export var interstitial_scene: PackedScene
+@export var game_over_scene: PackedScene = preload("res://Scenes/Menus/GameOverScreen.tscn")
 
 @export_group("UI")
 @export var objective_overlay_template_path: NodePath = ^"ObjectiveOverlayTemplate"
@@ -65,21 +66,33 @@ func start_game_loop():
 	_load_interstitial()
 
 func _pick_next_game():
-	if games_played == total_games_per_run - 1:
-		next_game_scene = final_game
+	var is_endless = (AppManager.current_mode == AppManager.Mode.ENDLESS)
+	var next_game_num = games_played + 1
+	
+	if is_endless:
+		if next_game_num % 20 == 0:
+			next_game_scene = final_game
+		else:
+			_pick_random_scenario_game()
 	else:
-		if scenario_games.size() == 0:
-			push_error("No scenario games assigned to GameManager")
-			return
-		
-		# If the deck/pool is empty, refill it
-		if _remaining_scenario_games.is_empty():
-			_refill_scenario_game_pool()
-		
-		# Draw from the deck
-		var picked_game = _remaining_scenario_games.pop_back()
-		next_game_scene = picked_game
-		_last_played_game = picked_game
+		if games_played == total_games_per_run - 1:
+			next_game_scene = final_game
+		else:
+			_pick_random_scenario_game()
+
+func _pick_random_scenario_game():
+	if scenario_games.size() == 0:
+		push_error("No scenario games assigned to GameManager")
+		return
+	
+	# If the deck/pool is empty, refill it
+	if _remaining_scenario_games.is_empty():
+		_refill_scenario_game_pool()
+	
+	# Draw from the deck
+	var picked_game = _remaining_scenario_games.pop_back()
+	next_game_scene = picked_game
+	_last_played_game = picked_game
 
 func _refill_scenario_game_pool():
 	var pool = scenario_games.duplicate()
@@ -105,12 +118,24 @@ func _load_interstitial():
 		AppManager.go_to_main_menu()
 		return
 
-	var is_speed_up = (games_played == speed_up_threshold)
-	if is_speed_up:
-		speed_multiplier = speed_up_multiplier
-		Engine.time_scale = speed_multiplier
-
-	current_game_is_final = (games_played == total_games_per_run - 1)
+	var is_endless = (AppManager.current_mode == AppManager.Mode.ENDLESS)
+	var is_speed_up = false
+	if is_endless:
+		if games_played <= 20:
+			is_speed_up = (games_played > 0 and games_played % 10 == 0)
+		else:
+			is_speed_up = (games_played % 5 == 0)
+			
+		if is_speed_up:
+			speed_multiplier += 0.2
+			Engine.time_scale = speed_multiplier
+		current_game_is_final = ((games_played + 1) % 20 == 0)
+	else:
+		is_speed_up = (games_played == speed_up_threshold)
+		if is_speed_up:
+			speed_multiplier = speed_up_multiplier
+			Engine.time_scale = speed_multiplier
+		current_game_is_final = (games_played == total_games_per_run - 1)
 
 	if interstitial_scene == null:
 		push_error("GameManager: interstitial_scene is null!")
@@ -130,7 +155,7 @@ func _load_interstitial():
 		icon = load(temp_game.control_icon_path)
 	temp_game.queue_free()
 
-	interstitial.setup(lives, icon, is_speed_up, current_game_is_final)
+	interstitial.setup(lives, icon, is_speed_up, current_game_is_final, games_played + 1, total_games_per_run, is_endless)
 	interstitial.interstitial_done.connect(_on_interstitial_done)
 
 func _on_interstitial_done():
@@ -141,6 +166,13 @@ func _on_interstitial_done():
 	var game_instance = next_game_scene.instantiate()
 	add_child(game_instance)
 	current_instance = game_instance
+	
+	if AppManager.current_mode == AppManager.Mode.ENDLESS:
+		if "show_win_screen" in game_instance:
+			game_instance.show_win_screen = false
+		var manager = game_instance.get_node_or_null("GameManager")
+		if manager and "show_win_screen" in manager:
+			manager.show_win_screen = false
 	
 	# Pause gameplay until objective is shown
 	game_instance.process_mode = Node.PROCESS_MODE_DISABLED
@@ -199,7 +231,8 @@ func _on_game_won():
 	feedback_label.show()
 	
 	games_played += 1
-	if games_played == total_games_per_run:
+	var is_endless = (AppManager.current_mode == AppManager.Mode.ENDLESS)
+	if not is_endless and games_played == total_games_per_run:
 		Engine.time_scale = 1.0
 		emit_signal("run_won")
 		AppManager.on_run_won()
@@ -215,6 +248,12 @@ func _on_game_won():
 func _on_game_lost():
 	# Immediate visual freeze and feedback
 	timer_bar.stop()
+	if is_instance_valid(current_instance):
+		var disable_freeze = false
+		if "disable_freeze_on_loss" in current_instance:
+			disable_freeze = current_instance.disable_freeze_on_loss
+		if not disable_freeze:
+			current_instance.process_mode = Node.PROCESS_MODE_DISABLED
 	
 	var msg = "LOSE..."
 	if current_game_is_final:
@@ -229,20 +268,30 @@ func _on_game_lost():
 	lives -= 1
 	if lives <= 0:
 		Engine.time_scale = 1.0
-		emit_signal("run_lost")
-		AppManager.on_run_lost()
+		if AppManager.current_mode == AppManager.Mode.ENDLESS:
+			await get_tree().create_timer(feedback_duration).timeout
+			_show_game_over_screen()
+		else:
+			emit_signal("run_lost")
+			AppManager.on_run_lost()
 		return
 	
 	await get_tree().create_timer(feedback_duration).timeout
 	feedback_label.hide()
 	timer_bar.hide()
 	
-	if games_played < total_games_per_run - 1:
-		games_played += 1
+	var is_endless = (AppManager.current_mode == AppManager.Mode.ENDLESS)
+	if is_endless:
+		if not current_game_is_final:
+			games_played += 1
 		_pick_next_game()
 	else:
-		# Retry final game
-		_pick_next_game()
+		if games_played < total_games_per_run - 1:
+			games_played += 1
+			_pick_next_game()
+		else:
+			# Retry final game
+			_pick_next_game()
 	
 	_load_interstitial()
 
@@ -257,3 +306,25 @@ func _show_feedback(text: String, color: Color):
 	feedback_label.text = text
 	feedback_label.modulate = color
 	feedback_label.show()
+
+func _show_game_over_screen():
+	# Hide HUD elements
+	timer_bar.hide()
+	feedback_label.hide()
+	
+	if game_over_scene == null:
+		push_error("GameManager: game_over_scene is null!")
+		AppManager.go_to_main_menu()
+		return
+		
+	var game_over_screen = game_over_scene.instantiate()
+	$HUDLayer.add_child(game_over_screen)
+	game_over_screen.setup(games_played)
+	game_over_screen.restart_requested.connect(func():
+		game_over_screen.queue_free()
+		start_game_loop()
+	)
+	game_over_screen.menu_requested.connect(func():
+		game_over_screen.queue_free()
+		AppManager.go_to_main_menu()
+	)

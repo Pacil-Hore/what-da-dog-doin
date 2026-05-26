@@ -12,6 +12,7 @@ signal game_lost
 @export var win_label_text: String = "Good dog!"
 @export var lose_label_text: String = "That spot won't work!"
 @export var timeout_label_text: String = "Time is up!"
+@export var disable_freeze_on_loss := true
 
 @onready var billboard_spot: ToiletSpot = $Hotspots/BillboardSpot
 @onready var grass_spot: ToiletSpot = $Hotspots/GrassSpot

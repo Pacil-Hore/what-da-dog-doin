@@ -10,7 +10,7 @@ extends Node
 @export var scenario_games: Array[PackedScene] = []
 @export var final_game: PackedScene
 
-enum Mode { NONE, FREE_PLAY, STORY }
+enum Mode { NONE, ENDLESS, STORY }
 
 var current_mode: Mode = Mode.NONE
 var story_stage: int = 0  # 0=cutscene_a, 1=gameplay, 2=cutscene_c
@@ -34,8 +34,8 @@ func story_cutscene_done():
 		# After cutscene C -> go to main menu
 		go_to_main_menu()
 
-func start_free_play():
-	current_mode = Mode.FREE_PLAY
+func start_endless_mode():
+	current_mode = Mode.ENDLESS
 	_launch_game_manager()
 
 func _launch_game_manager():

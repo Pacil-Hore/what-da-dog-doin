@@ -12,6 +12,7 @@ signal game_lost
 @export var lose_label_text := "Wrong trash can!"
 @export var timeout_label_text := "Time is up!"
 @export var auto_randomize_clue := true
+@export var disable_freeze_on_loss := true
 
 @onready var left_trash_can: PickMeTrashCan = $TrashCans/LeftTrashCan
 @onready var right_trash_can: PickMeTrashCan = $TrashCans/RightTrashCan
