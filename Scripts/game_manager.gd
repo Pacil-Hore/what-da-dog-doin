@@ -30,6 +30,10 @@ var current_game_is_boss: bool = false
 var current_instance: Node
 var next_game_scene: PackedScene = null
 
+# Non-repeating randomizer state variables
+var _remaining_microgames: Array[PackedScene] = []
+var _last_played_game: PackedScene = null
+
 func _ready():
 	# Load config from AppManager (set before scene was changed)
 	if AppManager.pending_microgames.is_empty():
@@ -52,6 +56,11 @@ func start_game_loop():
 	games_played = 0
 	speed_multiplier = 1.0
 	Engine.time_scale = speed_multiplier
+	
+	# Reset randomizer pool
+	_remaining_microgames.clear()
+	_last_played_game = null
+	
 	_pick_next_game()
 	_load_interstitial()
 
@@ -62,7 +71,29 @@ func _pick_next_game():
 		if microgames.size() == 0:
 			push_error("No microgames assigned to GameManager")
 			return
-		next_game_scene = microgames.pick_random()
+		
+		# If the deck/pool is empty, refill it
+		if _remaining_microgames.is_empty():
+			_refill_microgame_pool()
+		
+		# Draw from the deck
+		var picked_game = _remaining_microgames.pop_back()
+		next_game_scene = picked_game
+		_last_played_game = picked_game
+
+func _refill_microgame_pool():
+	var pool = microgames.duplicate()
+	pool.shuffle()
+	
+	# Prevent back-to-back repetition across resets
+	if pool.size() > 1 and _last_played_game != null and pool[pool.size() - 1] == _last_played_game:
+		# Since we pop from the back, pool[pool.size() - 1] is the first game drawn.
+		# Swap it with the item at index 0 to avoid immediate repeat.
+		var temp = pool[pool.size() - 1]
+		pool[pool.size() - 1] = pool[0]
+		pool[0] = temp
+		
+	_remaining_microgames = pool
 
 func _load_interstitial():
 	if current_instance != null:
