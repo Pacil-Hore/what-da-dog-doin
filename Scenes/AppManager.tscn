@@ -2,42 +2,35 @@
 
 [ext_resource type="Script" uid="uid://22xg8exwfu5l" path="res://Scripts/app_manager.gd" id="1_uhbg8"]
 [ext_resource type="PackedScene" uid="uid://brxhdkdban0ai" path="res://Scenes/Menus/MainMenu.tscn" id="2_mg4ys"]
-[ext_resource type="PackedScene" uid="uid://ekidbqn534r1" path="res://Scenes/Menus/StageSelect.tscn" id="3_86k5y"]
 [ext_resource type="PackedScene" uid="uid://cp2omeuda1f6g" path="res://Scenes/Cutscenes/CutsceneA.tscn" id="4_i1bw7"]
-[ext_resource type="PackedScene" uid="uid://batg24qc07luw" path="res://Scenes/Cutscenes/CutsceneB.tscn" id="5_luyt5"]
 [ext_resource type="PackedScene" uid="uid://b40hs5lmo5tdb" path="res://Scenes/Cutscenes/CutsceneC.tscn" id="6_d7d5k"]
 [ext_resource type="PackedScene" uid="uid://bgb41qmrmaxtl" path="res://Scenes/GameManager.tscn" id="7_x057w"]
-[ext_resource type="PackedScene" uid="uid://bcj7gviuuoac1" path="res://Scenes/park/Labyrinth/labyrinth_level.tscn" id="8_tbdtn"]
-[ext_resource type="PackedScene" uid="uid://dbd08m2tcy3gu" path="res://Scenes/park/JumpRope/JumpRopeStage.tscn" id="9_q8wbe"]
-[ext_resource type="PackedScene" uid="uid://bueqw03mgerp6" path="res://Scenes/park/PickMe/PickMeStage.tscn" id="10_h5en5"]
-[ext_resource type="PackedScene" uid="uid://dgy4f1s322mnv" path="res://Scenes/park/Untangle/UntangleStage.tscn" id="11_5qyke"]
-[ext_resource type="PackedScene" uid="uid://6cbowj4ykug0" path="res://Scenes/park/PlaceholderPark1.tscn" id="12_g8enm"]
-[ext_resource type="PackedScene" uid="uid://bwa5tn6w8qpbt" path="res://Scenes/park/PlaceholderPark2.tscn" id="13_gmk5h"]
-[ext_resource type="PackedScene" uid="uid://4kh2olneh1hr" path="res://Scenes/park/PlaceholderPark3.tscn" id="14_7pil5"]
-[ext_resource type="PackedScene" uid="uid://d31wwcomdmsb1" path="res://Scenes/park/PlaceholderPark4.tscn" id="15_i50ik"]
-[ext_resource type="PackedScene" uid="uid://b1mitdmf22s86" path="res://Scenes/park/DogCross/main_level.tscn" id="16_mg4ys"]
-[ext_resource type="PackedScene" uid="uid://b8u6ka63wdt75" path="res://Scenes/street/PickTheRope/PickTheRopeStage.tscn" id="17_2cd0w"]
-[ext_resource type="PackedScene" uid="uid://bcl845c0mn1io" path="res://Scenes/street/Toilet/ToiletStage.tscn" id="18_oaig6"]
-[ext_resource type="PackedScene" uid="uid://byqjm0x05a3xh" path="res://Scenes/street/PlaceholderStreet1.tscn" id="19_ow0sn"]
-[ext_resource type="PackedScene" uid="uid://vjadbvw6f4cc" path="res://Scenes/street/PlaceholderStreet2.tscn" id="20_8g0j6"]
-[ext_resource type="PackedScene" uid="uid://baupc4cdv3xie" path="res://Scenes/street/PlaceholderStreet3.tscn" id="21_deeb1"]
-[ext_resource type="PackedScene" uid="uid://b5iubbya3dbp6" path="res://Scenes/street/PlaceholderStreet4.tscn" id="22_ih7s3"]
-[ext_resource type="PackedScene" uid="uid://bc1f6bwylbfsg" path="res://Scenes/street/PlaceholderStreet5.tscn" id="23_wm7q4"]
-[ext_resource type="PackedScene" uid="uid://dh2as3dfbunu0" path="res://Scenes/street/PlaceholderStreet6.tscn" id="24_vc0jl"]
-[ext_resource type="PackedScene" uid="uid://q18rgbv2731s" path="res://Scenes/street/PlaceholderStreetBoss.tscn" id="25_c1y88"]
+[ext_resource type="PackedScene" uid="uid://bcj7gviuuoac1" path="res://Scenes/Microgames/Labyrinth/labyrinth_level.tscn" id="8_tbdtn"]
+[ext_resource type="PackedScene" uid="uid://dbd08m2tcy3gu" path="res://Scenes/Microgames/JumpRope/JumpRopeStage.tscn" id="9_q8wbe"]
+[ext_resource type="PackedScene" uid="uid://bueqw03mgerp6" path="res://Scenes/Microgames/PickMe/PickMeStage.tscn" id="10_h5en5"]
+[ext_resource type="PackedScene" uid="uid://dgy4f1s322mnv" path="res://Scenes/Microgames/Untangle/UntangleStage.tscn" id="11_5qyke"]
+[ext_resource type="PackedScene" path="res://Scenes/Microgames/TugOfWar/TugOfWarStage.tscn" id="12_g8enm"]
+[ext_resource type="PackedScene" uid="uid://bwa5tn6w8qpbt" path="res://Scenes/Microgames/PlaceholderPark2.tscn" id="13_gmk5h"]
+[ext_resource type="PackedScene" uid="uid://4kh2olneh1hr" path="res://Scenes/Microgames/PlaceholderPark3.tscn" id="14_7pil5"]
+[ext_resource type="PackedScene" uid="uid://d31wwcomdmsb1" path="res://Scenes/Microgames/PlaceholderPark4.tscn" id="15_i50ik"]
+[ext_resource type="PackedScene" uid="uid://b1mitdmf22s86" path="res://Scenes/Microgames/DogCross/main_level.tscn" id="16_mg4ys"]
+[ext_resource type="PackedScene" uid="uid://b8u6ka63wdt75" path="res://Scenes/Microgames/PickTheRope/PickTheRopeStage.tscn" id="17_2cd0w"]
+[ext_resource type="PackedScene" uid="uid://bcl845c0mn1io" path="res://Scenes/Microgames/Toilet/ToiletStage.tscn" id="18_oaig6"]
+[ext_resource type="PackedScene" uid="uid://byqjm0x05a3xh" path="res://Scenes/Microgames/PlaceholderStreet1.tscn" id="19_ow0sn"]
+[ext_resource type="PackedScene" uid="uid://vjadbvw6f4cc" path="res://Scenes/Microgames/PlaceholderStreet2.tscn" id="20_8g0j6"]
+[ext_resource type="PackedScene" uid="uid://baupc4cdv3xie" path="res://Scenes/Microgames/PlaceholderStreet3.tscn" id="21_deeb1"]
+[ext_resource type="PackedScene" uid="uid://b5iubbya3dbp6" path="res://Scenes/Microgames/PlaceholderStreet4.tscn" id="22_ih7s3"]
+[ext_resource type="PackedScene" uid="uid://bc1f6bwylbfsg" path="res://Scenes/Microgames/PlaceholderStreet5.tscn" id="23_wm7q4"]
+[ext_resource type="PackedScene" uid="uid://dh2as3dfbunu0" path="res://Scenes/Microgames/PlaceholderStreet6.tscn" id="24_vc0jl"]
 
-[ext_resource type="PackedScene" uid="uid://ch6pyvnkr1fxp" path="res://Scenes/street/SpotTheDifference/SpotTheDifferenceStage.tscn" id="26_spot"]
+[ext_resource type="PackedScene" uid="uid://ch6pyvnkr1fxp" path="res://Scenes/Microgames/SpotTheDifference/SpotTheDifferenceStage.tscn" id="26_spot"]
 
 
 [node name="AppManager" type="Node" unique_id=1453838948]
 script = ExtResource("1_uhbg8")
 main_menu_scene = ExtResource("2_mg4ys")
-stage_select_scene = ExtResource("3_86k5y")
 cutscene_a_scene = ExtResource("4_i1bw7")
-cutscene_b_scene = ExtResource("5_luyt5")
 cutscene_c_scene = ExtResource("6_d7d5k")
 game_manager_scene = ExtResource("7_x057w")
-park_microgames = Array[PackedScene]([ExtResource("8_tbdtn"), ExtResource("9_q8wbe"), ExtResource("10_h5en5"), ExtResource("11_5qyke"), ExtResource("12_g8enm"), ExtResource("13_gmk5h"), ExtResource("14_7pil5"), ExtResource("15_i50ik")])
-park_boss = ExtResource("16_mg4ys")
-street_microgames = Array[PackedScene]([ExtResource("17_2cd0w"), ExtResource("18_oaig6"), ExtResource("19_ow0sn"), ExtResource("20_8g0j6"), ExtResource("21_deeb1"), ExtResource("22_ih7s3"), ExtResource("23_wm7q4"), ExtResource("24_vc0jl"), ExtResource("26_spot")])
-street_boss = ExtResource("25_c1y88")
+scenario_games = Array[PackedScene]([ExtResource("8_tbdtn"), ExtResource("9_q8wbe"), ExtResource("10_h5en5"), ExtResource("11_5qyke"), ExtResource("12_g8enm"), ExtResource("13_gmk5h"), ExtResource("14_7pil5"), ExtResource("15_i50ik"), ExtResource("17_2cd0w"), ExtResource("18_oaig6"), ExtResource("19_ow0sn"), ExtResource("20_8g0j6"), ExtResource("21_deeb1"), ExtResource("22_ih7s3"), ExtResource("23_wm7q4"), ExtResource("24_vc0jl"), ExtResource("26_spot")])
+final_game = ExtResource("16_mg4ys")

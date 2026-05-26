@@ -16,6 +16,7 @@ signal game_lost
 @onready var motion_detector = $CircularMotionDetector
 @onready var motion_guide = $MotionGuide
 @onready var countdown_timer: Timer = get_node_or_null("CountdownTimer")
+@onready var spin_progress_bar: ProgressBar = get_node_or_null("HUD/SpinProgressBar")
 
 var is_finished: bool = false
 var rotations_in_current_state := 0
@@ -65,6 +66,10 @@ func finish_game(did_win: bool, _message: String) -> void:
 
 
 func _update_hud() -> void:
+	if is_instance_valid(spin_progress_bar):
+		spin_progress_bar.max_value = _get_total_required_rotations()
+		spin_progress_bar.value = _get_completed_rotation_count()
+
 	var progress_label = get_node_or_null("HUD/ProgressLabel")
 	if is_instance_valid(progress_label):
 		var state_name = "A"
@@ -74,6 +79,18 @@ func _update_hud() -> void:
 				state_name = labels[state_object.current_state_index]
 		
 		progress_label.text = "Step %s: %d / %d" % [state_name, rotations_in_current_state, rotations_per_state]
+
+
+func _get_total_required_rotations() -> int:
+	return max(1, rotations_per_state * state_object.completed_state_index)
+
+
+func _get_completed_rotation_count() -> int:
+	return clampi(
+		state_object.current_state_index * rotations_per_state + rotations_in_current_state,
+		0,
+		_get_total_required_rotations()
+	)
 
 
 func _on_rotation_completed(_total_rotations: int) -> void:

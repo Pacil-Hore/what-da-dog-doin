@@ -1,0 +1,26 @@
+[gd_scene format=3 uid="uid://b7dhacutsb7ry"]
+
+[ext_resource type="Script" uid="uid://dp5iyk37enale" path="res://Scripts/Attach/attach_stage.gd" id="1_v6rhc"]
+[ext_resource type="PackedScene" uid="uid://by27f3y6bpea2" path="res://Scenes/Microgames/Attach/Dog.tscn" id="2_dne04"]
+[ext_resource type="PackedScene" uid="uid://c3sjx7641biem" path="res://Scenes/Microgames/Attach/Hook.tscn" id="3_uk1qp"]
+
+[node name="AttachStage" type="Node2D" unique_id=34572571 node_paths=PackedStringArray("anchor", "rope", "hook", "dog")]
+script = ExtResource("1_v6rhc")
+anchor = NodePath("Marker2D")
+rope = NodePath("Rope")
+hook = NodePath("Hook")
+dog = NodePath("Dog")
+
+[node name="Marker2D" type="Marker2D" parent="." unique_id=32146107]
+position = Vector2(576, 600)
+
+[node name="Rope" type="Line2D" parent="." unique_id=826490736]
+width = 5.0
+default_color = Color(1, 0, 0, 1)
+
+[node name="Dog" parent="." unique_id=484838520 instance=ExtResource("2_dne04")]
+position = Vector2(581, 394)
+field_min_y = 450.0
+sprite_default_facing = -1.571
+
+[node name="Hook" parent="." unique_id=730168452 instance=ExtResource("3_uk1qp")]
