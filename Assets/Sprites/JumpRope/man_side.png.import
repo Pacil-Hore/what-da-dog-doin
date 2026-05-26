@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bs5esn4w53qn2"
-path="res://.godot/imported/dog_walk_spritesheet.png-bf33ae819f7e8882b473b579b4524c7e.ctex"
+uid="uid://bey6vyjtqt0xp"
+path="res://.godot/imported/man_side.png-55f7ae7a65022ff22705b067acb75263.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/Sprites/dog_walk_spritesheet.png"
-dest_files=["res://.godot/imported/dog_walk_spritesheet.png-bf33ae819f7e8882b473b579b4524c7e.ctex"]
+source_file="res://Assets/Sprites/JumpRope/man_side.png"
+dest_files=["res://.godot/imported/man_side.png-55f7ae7a65022ff22705b067acb75263.ctex"]
 
 [params]
 

@@ -1,45 +1,135 @@
 [gd_scene format=3 uid="uid://dbd08m2tcy3gu"]
 
 [ext_resource type="Script" uid="uid://d2m0oj1q0t8k7" path="res://Scripts/JumpRope/jump_rope_stage.gd" id="1_stage"]
-[ext_resource type="Script" uid="uid://b78f6b4wtynt0" path="res://Scripts/JumpRope/jump_rope_background.gd" id="2_background"]
-[ext_resource type="Script" uid="uid://d4cws35ef10yl" path="res://Scripts/JumpRope/jump_rope_child_visual.gd" id="3_child"]
-[ext_resource type="Script" uid="uid://ch2u8n2h7mq2g" path="res://Scripts/JumpRope/jump_rope_dog.gd" id="4_dog"]
-[ext_resource type="Script" uid="uid://d0jlx1u0ocq8h" path="res://Scripts/JumpRope/jump_rope_rope.gd" id="5_rope"]
+[ext_resource type="Script" uid="uid://ch2u8n2h7mq2g" path="res://Scripts/JumpRope/jump_rope_dog.gd" id="3_dog"]
+[ext_resource type="Script" uid="uid://d0jlx1u0ocq8h" path="res://Scripts/JumpRope/jump_rope_rope.gd" id="4_rope"]
+[ext_resource type="Texture2D" uid="uid://bey6vyjtqt0xp" path="res://Assets/Sprites/JumpRope/man_side.png" id="5_man"]
+[ext_resource type="Texture2D" uid="uid://c2hlkx6x5xm03" path="res://Assets/Sprites/JumpRope/dog_walk.png" id="7_it6v4"]
+[ext_resource type="Texture2D" uid="uid://bir6vjcc7h16k" path="res://Assets/Sprites/Little Dreamyland - Free Pack/Sprites/Sprite_Shadow.png" id="7_shadow"]
+[ext_resource type="Texture2D" uid="uid://d06cwuaok516" path="res://Assets/generated/circle_fill.svg" id="8_circle"]
 
 [node name="JumpRopeStage" type="Node2D" unique_id=703288775]
 script = ExtResource("1_stage")
 
 [node name="Background" type="Node2D" parent="." unique_id=572483486]
 z_index = -100
-script = ExtResource("2_background")
+
+[node name="Sky" type="Polygon2D" parent="Background" unique_id=156482804]
+color = Color(0.91, 0.92, 0.84, 1)
+polygon = PackedVector2Array(0, 0, 1152, 0, 1152, 645, 0, 645)
+
+[node name="Grass" type="Polygon2D" parent="Background" unique_id=1726516902]
+color = Color(0.72, 0.81, 0.57, 1)
+polygon = PackedVector2Array(0, 400, 1152, 400, 1152, 645, 0, 645)
+
+[node name="Sun" type="Sprite2D" parent="Background" unique_id=1718345548]
+modulate = Color(0.98, 0.86, 0.48, 0.95)
+position = Vector2(152, 118)
+scale = Vector2(1.75, 1.75)
+texture = ExtResource("8_circle")
+
+[node name="SunGlow" type="Sprite2D" parent="Background" unique_id=1384376311]
+modulate = Color(0.98, 0.86, 0.48, 0.18)
+position = Vector2(152, 118)
+scale = Vector2(2.5, 2.5)
+texture = ExtResource("8_circle")
+
+[node name="CloudA" type="Sprite2D" parent="Background" unique_id=1281918346]
+modulate = Color(1, 1, 1, 0.42)
+position = Vector2(274, 84)
+scale = Vector2(2.2, 0.65)
+texture = ExtResource("8_circle")
+
+[node name="CloudB" type="Sprite2D" parent="Background" unique_id=928131174]
+modulate = Color(1, 1, 1, 0.36)
+position = Vector2(684, 104)
+scale = Vector2(2.5, 0.65)
+texture = ExtResource("8_circle")
 
 [node name="Playfield" type="Node2D" parent="." unique_id=1254204708]
 
 [node name="LeftChild" type="Node2D" parent="Playfield" unique_id=576203807]
-position = Vector2(278, 418)
-script = ExtResource("3_child")
-shorts_color = Color(0.22, 0.32, 0.48, 1)
+position = Vector2(267, 412)
+
+[node name="BodySprite" type="Sprite2D" parent="Playfield/LeftChild" unique_id=1634595709]
+position = Vector2(-74.8, -217.6)
+scale = Vector2(3.4, 3.4)
+texture = ExtResource("5_man")
+centered = false
+hframes = 9
 
 [node name="RightChild" type="Node2D" parent="Playfield" unique_id=1730699395]
-position = Vector2(874, 418)
-script = ExtResource("3_child")
-mirror_character = true
-shirt_color = Color(0.28, 0.67, 0.78, 1)
-shorts_color = Color(0.31, 0.23, 0.48, 1)
-skin_color = Color(0.91, 0.78, 0.63, 1)
+position = Vector2(885, 414)
+
+[node name="BodySprite" type="Sprite2D" parent="Playfield/RightChild" unique_id=342604794]
+position = Vector2(74.8, -217.6)
+scale = Vector2(-3.4, 3.4)
+texture = ExtResource("5_man")
+centered = false
+hframes = 9
+frame = 5
 
 [node name="Dog" type="Node2D" parent="Playfield" unique_id=1570130226]
-position = Vector2(576, 432)
-script = ExtResource("4_dog")
+position = Vector2(576, 447.505)
+script = ExtResource("3_dog")
+
+[node name="Shadow" type="Sprite2D" parent="Playfield/Dog" unique_id=527301238]
+modulate = Color(0, 0, 0, 0.18)
+position = Vector2(7.3000035, 55.76)
+scale = Vector2(8.587501, 3.412)
+texture = ExtResource("7_shadow")
+
+[node name="BodySprite" type="Sprite2D" parent="Playfield/Dog" unique_id=671510402]
+position = Vector2(-62.577, -86.87)
+scale = Vector2(3.3, 3.3)
+texture = ExtResource("7_it6v4")
+centered = false
+hframes = 6
 
 [node name="Rope" type="Node2D" parent="Playfield" unique_id=561475856]
-position = Vector2(576, 292)
-script = ExtResource("5_rope")
+position = Vector2(576, 316.335)
+script = ExtResource("4_rope")
 left_handle_position = Vector2(-258, 86)
 right_handle_position = Vector2(258, 86)
 top_center_y = -128.0
 bottom_center_y = 204.0
 lateral_sway = 78.0
+
+[node name="ShadowLine" type="Line2D" parent="Playfield/Rope" unique_id=1254461924]
+points = PackedVector2Array(-258, 86, -241.35484, 100.73465, -224.70969, 114.48699, -208.06451, 127.25703, -191.41936, 139.04474, -174.7742, 149.85016, -158.12903, 159.67326, -141.48387, 168.51405, -124.838715, 176.37253, -108.19356, 183.2487, -91.548386, 189.14256, -74.90323, 194.05411, -58.25807, 197.98335, -41.612915, 200.93028, -24.967743, 202.8949, -8.322586, 203.87721, 8.322571, 203.87721, 24.967743, 202.8949, 41.612885, 200.93028, 58.258057, 197.98335, 74.90323, 194.05411, 91.5484, 189.14256, 108.19354, 183.2487, 124.838715, 176.37253, 141.48386, 168.51405, 158.12903, 159.67326, 174.77417, 149.85016, 191.41934, 139.04474, 208.06451, 127.25703, 224.70969, 114.48699, 241.35483, 100.73465, 258, 86)
+width = 7.0
+default_color = Color(0.07, 0.07, 0.09, 0.35)
+
+[node name="RopeLine" type="Line2D" parent="Playfield/Rope" unique_id=308086864]
+points = PackedVector2Array(-258, 86, -241.35484, 100.73465, -224.70969, 114.48699, -208.06451, 127.25703, -191.41936, 139.04474, -174.7742, 149.85016, -158.12903, 159.67326, -141.48387, 168.51405, -124.838715, 176.37253, -108.19356, 183.2487, -91.548386, 189.14256, -74.90323, 194.05411, -58.25807, 197.98335, -41.612915, 200.93028, -24.967743, 202.8949, -8.322586, 203.87721, 8.322571, 203.87721, 24.967743, 202.8949, 41.612885, 200.93028, 58.258057, 197.98335, 74.90323, 194.05411, 91.5484, 189.14256, 108.19354, 183.2487, 124.838715, 176.37253, 141.48386, 168.51405, 158.12903, 159.67326, 174.77417, 149.85016, 191.41934, 139.04474, 208.06451, 127.25703, 224.70969, 114.48699, 241.35483, 100.73465, 258, 86)
+width = 4.0
+default_color = Color(0.79, 0.63, 0.38, 0.6)
+
+[node name="LeftHandle" type="Node2D" parent="Playfield/Rope" unique_id=360559915]
+position = Vector2(-258, 86)
+
+[node name="Shadow" type="Line2D" parent="Playfield/Rope/LeftHandle" unique_id=128342205]
+points = PackedVector2Array(0, -14, 0, 14)
+width = 6.0
+default_color = Color(0.18, 0.11, 0.08, 1)
+
+[node name="Grip" type="Line2D" parent="Playfield/Rope/LeftHandle" unique_id=608457196]
+points = PackedVector2Array(0, -14, 0, 14)
+width = 3.0
+default_color = Color(0.63, 0.38, 0.21, 1)
+
+[node name="RightHandle" type="Node2D" parent="Playfield/Rope" unique_id=353673723]
+position = Vector2(258, 86)
+
+[node name="Shadow" type="Line2D" parent="Playfield/Rope/RightHandle" unique_id=470332918]
+points = PackedVector2Array(0, -14, 0, 14)
+width = 6.0
+default_color = Color(0.18, 0.11, 0.08, 1)
+
+[node name="Grip" type="Line2D" parent="Playfield/Rope/RightHandle" unique_id=1027073965]
+points = PackedVector2Array(0, -14, 0, 14)
+width = 3.0
+default_color = Color(0.63, 0.38, 0.21, 1)
 
 [node name="HUD" type="CanvasLayer" parent="." unique_id=643048976]
 
@@ -56,15 +146,5 @@ theme_override_font_sizes/font_size = 24
 text = "Misses: 0/3"
 horizontal_alignment = 1
 
-[node name="InstructionLabel" type="Label" parent="HUD" unique_id=741245982]
-anchors_preset = 10
-anchor_right = 1.0
-offset_left = 80.0
-offset_top = 566.0
-offset_right = -80.0
-offset_bottom = 612.0
-grow_horizontal = 2
-theme_override_colors/font_color = Color(0.18, 0.2, 0.16, 1)
-theme_override_font_sizes/font_size = 22
-text = "Press Space or left click before the rope hits the dog's paws."
-horizontal_alignment = 1
+[node name="CountdownTimer" type="Timer" parent="." unique_id=1892543933]
+one_shot = true

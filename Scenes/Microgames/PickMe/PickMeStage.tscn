@@ -8,18 +8,20 @@ script = ExtResource("1_stage")
 
 [node name="Background" type="ColorRect" parent="." unique_id=1830702712]
 z_index = -100
-offset_right = 1152.0
-offset_bottom = 645.0
+offset_left = 6.0
+offset_top = 5.0
+offset_right = 1158.0
+offset_bottom = 650.0
 mouse_filter = 2
 color = Color(0.16, 0.18, 0.2, 1)
 
 [node name="TrashCans" type="Node2D" parent="." unique_id=787488037]
 
 [node name="LeftTrashCan" parent="TrashCans" unique_id=886485557 instance=ExtResource("2_trash_can")]
-position = Vector2(374, 420)
+position = Vector2(449, 420)
 reveal_rotation_degrees = -10.0
 
 [node name="RightTrashCan" parent="TrashCans" unique_id=1685062148 instance=ExtResource("2_trash_can")]
-position = Vector2(650, 420)
+position = Vector2(725, 420)
 
 [node name="HUD" type="CanvasLayer" parent="." unique_id=448253309]
