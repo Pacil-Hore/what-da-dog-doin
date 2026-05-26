@@ -24,11 +24,10 @@ func _ready() -> void:
 		dog_cross_manager.dog_cross_lost.connect(_on_level_lost)
 
 func _on_level_won() -> void:
-	print("PUNYA DOG_CROSS_STAGE jalan")
-	#if is_finished:
-		#return
-	#is_finished = true
-	#game_won.emit()
+	if is_finished:
+		return
+	is_finished = true
+	game_won.emit()
 
 func _on_level_lost() -> void:
 	if is_finished:

@@ -18,6 +18,7 @@ signal game_lost
 @onready var win_area: Area2D = $WinArea
 @onready var start_point: Marker2D = $StartPoint
 @onready var time_limit_timer: Timer = get_node_or_null("TimeLimit")
+@onready var man_sprite: Node2D = get_node_or_null("ManSprite")
 
 var is_finished := false
 var maze_bounds := Rect2()
@@ -37,6 +38,8 @@ func reset_level() -> void:
 	is_finished = false
 	player.enabled = false # Disable until mouse is warped
 	player.global_position = start_point.global_position
+	if is_instance_valid(man_sprite) and man_sprite.has_method("reset_ragdoll"):
+		man_sprite.reset_ragdoll(start_point.global_position + Vector2(0, 40))
 	player.movement_bounds = maze_bounds.grow(-player.collision_radius)
 	player.has_movement_bounds = true
 	if is_instance_valid(time_limit_timer):

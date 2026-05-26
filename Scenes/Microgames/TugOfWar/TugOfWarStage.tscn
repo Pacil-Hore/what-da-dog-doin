@@ -1,0 +1,149 @@
+[gd_scene format=3 uid="uid://7kvn6hth3btf"]
+
+[ext_resource type="Script" uid="uid://cghev3svqsitd" path="res://Scripts/TugOfWar/tug_of_war.gd" id="1_script"]
+[ext_resource type="Script" uid="uid://cupoxhf8hx0gq" path="res://Scripts/TugOfWar/tug_of_war_human.gd" id="2_human"]
+[ext_resource type="Script" uid="uid://dm5cebgxsmxt8" path="res://Scripts/TugOfWar/tug_of_war_dog.gd" id="3_dog"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_prompt"]
+font_size = 28
+outline_size = 8
+outline_color = Color(0.176471, 0.176471, 0.176471, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bg"]
+bg_color = Color(0.243137, 0.176471, 0.176471, 0.501961)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(1, 1, 1, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+expand_margin_left = 3.0
+expand_margin_top = 3.0
+expand_margin_right = 3.0
+expand_margin_bottom = 3.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_fg"]
+bg_color = Color(0.180392, 0.8, 0.443137, 1)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+
+[sub_resource type="LabelSettings" id="LabelSettings_lbl"]
+font_size = 18
+font_color = Color(1, 1, 1, 0.705882)
+
+[sub_resource type="LabelSettings" id="LabelSettings_tug"]
+font_size = 72
+font_color = Color(0.92549, 0.184314, 0.184314, 1)
+outline_size = 12
+
+[node name="TugOfWarStage" type="Node2D" unique_id=991766760]
+script = ExtResource("1_script")
+
+[node name="Sky" type="ColorRect" parent="." unique_id=824925894]
+offset_right = 1152.0
+offset_bottom = 360.0
+color = Color(0.501961, 0.866667, 0.921569, 1)
+
+[node name="Grass" type="ColorRect" parent="." unique_id=1807517649]
+offset_top = 360.0
+offset_right = 1152.0
+offset_bottom = 648.0
+color = Color(0.482353, 0.752941, 0.486275, 1)
+
+[node name="Human" type="Node2D" parent="." unique_id=1734058691]
+position = Vector2(260, 420)
+script = ExtResource("2_human")
+
+[node name="Dog" type="Node2D" parent="." unique_id=299819889]
+position = Vector2(890, 420)
+scale = Vector2(-1.5, 1.5)
+script = ExtResource("3_dog")
+
+[node name="LeashLine" type="Line2D" parent="." unique_id=487599290]
+width = 4.0
+default_color = Color(0.243137, 0.152941, 0.137255, 1)
+
+[node name="HUD" type="CanvasLayer" parent="." unique_id=2066800930]
+
+[node name="CenterContainer" type="CenterContainer" parent="HUD" unique_id=814537801]
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -250.0
+offset_top = 60.0
+offset_right = 250.0
+offset_bottom = 180.0
+grow_horizontal = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="HUD/CenterContainer" unique_id=1597636404]
+custom_minimum_size = Vector2(500, 0)
+layout_mode = 2
+theme_override_constants/separation = 12
+alignment = 1
+
+[node name="PromptLabel" type="Label" parent="HUD/CenterContainer/VBoxContainer" unique_id=1977084029]
+layout_mode = 2
+text = "MASH SPACE!"
+label_settings = SubResource("LabelSettings_prompt")
+horizontal_alignment = 1
+
+[node name="WinMeter" type="ProgressBar" parent="HUD/CenterContainer/VBoxContainer" unique_id=1816116976]
+custom_minimum_size = Vector2(500, 32)
+layout_mode = 2
+theme_override_styles/background = SubResource("StyleBoxFlat_bg")
+theme_override_styles/fill = SubResource("StyleBoxFlat_fg")
+value = 50.0
+show_percentage = false
+
+[node name="Labels" type="Control" parent="HUD/CenterContainer/VBoxContainer" unique_id=720591638]
+custom_minimum_size = Vector2(500, 24)
+layout_mode = 2
+
+[node name="PlayerLabel" type="Label" parent="HUD/CenterContainer/VBoxContainer/Labels" unique_id=596436984]
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_top = -26.0
+offset_right = 80.0
+grow_vertical = 0
+text = "HUMAN"
+label_settings = SubResource("LabelSettings_lbl")
+
+[node name="DogLabel" type="Label" parent="HUD/CenterContainer/VBoxContainer/Labels" unique_id=1181560990]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -80.0
+offset_top = -26.0
+grow_horizontal = 0
+grow_vertical = 0
+text = "DOG"
+label_settings = SubResource("LabelSettings_lbl")
+horizontal_alignment = 2
+
+[node name="WarningLabel" type="Label" parent="HUD" unique_id=584108043]
+visible = false
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -100.0
+offset_top = -120.0
+offset_right = 100.0
+offset_bottom = -21.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "TUG!"
+label_settings = SubResource("LabelSettings_tug")
+horizontal_alignment = 1
+vertical_alignment = 1
