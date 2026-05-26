@@ -1,15 +1,19 @@
 [gd_scene format=3 uid="uid://da5xgdajrdusf"]
 
 [ext_resource type="Script" uid="uid://delsy5mis636f" path="res://Scripts/DogCross/platform.gd" id="1_ba0x2"]
+[ext_resource type="Texture2D" uid="uid://ec0eluuerr23" path="res://Assets/Sprites/Dog Cross/stone.png" id="2_mgxxj"]
+[ext_resource type="Texture2D" uid="uid://cb8twvm43tx5n" path="res://Assets/Sprites/Dog Cross/log.png" id="3_mgxxj"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_dgmfy"]
 size = Vector2(1, 1)
 
 [node name="Platform" type="Area2D" unique_id=540400719]
 script = ExtResource("1_ba0x2")
-
-[node name="ColorRect" type="ColorRect" parent="." unique_id=1999999494]
-color = Color(0.41960785, 0.23137255, 0.12941177, 1)
+small_rock_texture = ExtResource("2_mgxxj")
+big_rock_texture = ExtResource("2_mgxxj")
+wood_log_texture = ExtResource("3_mgxxj")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1392308068]
 shape = SubResource("RectangleShape2D_dgmfy")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1133907295]
