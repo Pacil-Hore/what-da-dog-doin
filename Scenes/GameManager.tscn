@@ -7,7 +7,6 @@
 
 [node name="GameManager" type="Node" unique_id=536985573]
 script = ExtResource("1_m2tc1")
-total_games_per_run = 10
 interstitial_scene = ExtResource("2_bwyv8")
 
 [node name="HUDLayer" type="CanvasLayer" parent="." unique_id=125613773]
