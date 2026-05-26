@@ -22,5 +22,6 @@ default_color = Color(1, 0, 0, 1)
 position = Vector2(581, 394)
 field_min_y = 450.0
 sprite_default_facing = -1.571
+show_debug_visuals = false
 
 [node name="Hook" parent="." unique_id=730168452 instance=ExtResource("3_uk1qp")]
