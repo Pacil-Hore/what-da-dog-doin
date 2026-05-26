@@ -17,7 +17,7 @@ signal game_lost
 @export var swing_amplitude: float = PI / 2       # 90 derajat (total 180° kiri-kanan)
 @export var arrow_influence: float = 3.0          # seberapa kuat arrow key push swing
 @export var extend_duration: float = 0.3          # durasi extend tali (lempar)
-@onready var collar: Area2D = dog.get_node("collar")
+@onready var collar: Area2D = dog.get_node_or_null("Collar")
 
 # === References ===
 @export var anchor: Marker2D
@@ -32,6 +32,7 @@ var arrow_velocity: float = 0.0        # velocity dari arrow key input
 var current_rope_length: float = 200.0
 var is_extending: bool = false
 var is_finished: bool = false
+var active_tween: Tween = null
 
 func _ready():
 	current_rope_length = rope_length_normal
@@ -61,22 +62,16 @@ func _input(event):
 		if event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
 			_extend_rope()
 
-func _update_swing(delta: float):
-	# Swing otomatis (sin wave biar smooth)
-	swing_phase += swing_speed * delta
-	var auto_angle = sin(swing_phase) * swing_amplitude
+func _update_swing(_delta: float):
+	if not anchor:
+		return
+		
+	# Point and click: Tali mengikuti posisi mouse
+	var mouse_pos = get_global_mouse_position()
+	var dir = (mouse_pos - anchor.global_position).normalized()
 	
-	# Arrow key influence (akumulasi velocity)
-	var input_dir = 0.0
-	if Input.is_action_pressed("ui_left"):
-		input_dir -= 1.0
-	if Input.is_action_pressed("ui_right"):
-		input_dir += 1.0
-	
-	arrow_velocity = lerp(arrow_velocity, input_dir * arrow_influence, delta * 5.0)
-	
-	# Combine auto + manual
-	swing_angle = auto_angle + arrow_velocity
+	# angle 0 berarti lurus ke atas (0, -1)
+	swing_angle = atan2(dir.x, -dir.y)
 	swing_angle = clamp(swing_angle, -swing_amplitude, swing_amplitude)
 
 func _update_rope_visual():
@@ -108,10 +103,10 @@ func _extend_rope():
 	is_extending = true
 	
 	# Animate tali extend & retract
-	var tween = create_tween()
-	tween.tween_property(self, "current_rope_length", rope_length_extended, extend_duration)
-	tween.tween_property(self, "current_rope_length", rope_length_normal, extend_duration)
-	tween.tween_callback(func(): is_extending = false)
+	active_tween = create_tween()
+	active_tween.tween_property(self, "current_rope_length", rope_length_extended, extend_duration)
+	active_tween.tween_property(self, "current_rope_length", rope_length_normal, extend_duration)
+	active_tween.tween_callback(func(): is_extending = false)
 
 func _on_hook_area_entered(area: Area2D):
 	# Hook nyentuh sesuatu — cek apakah itu collar
@@ -126,15 +121,21 @@ func _on_won():
 	if is_finished:
 		return
 	is_finished = true
+	if active_tween and active_tween.is_valid():
+		active_tween.kill()
 	emit_signal("game_won")
 	print("[Attach] WIN!")
+	set_deferred("process_mode", Node.PROCESS_MODE_DISABLED)
 
 func _on_lost():
 	if is_finished:
 		return
 	is_finished = true
+	if active_tween and active_tween.is_valid():
+		active_tween.kill()
 	emit_signal("game_lost")
 	print("[Attach] LOSE!")
+	set_deferred("process_mode", Node.PROCESS_MODE_DISABLED)
 
 # === Standalone timer (kalau gak ada GameManager pusat) ===
 func _has_main_game_manager() -> bool:

@@ -1,10 +1,16 @@
 extends Node2D
 
 signal game_finished(did_win: bool)
+signal game_won
+signal game_lost
 
 @export var time_limit := 10.0
 @export var total_differences := 4
 @export var instruction_text := "TOUCH 4 DIFFERENCES!"
+@export var objective_text: String = "Spot it!"
+@export var control_hint: String = "Mouse"
+@export var control_icon_path: String = "res://assets/generated/mouse_icon.png"
+@export var disable_freeze_on_loss := true
 
 @onready var title_label: Label = $GameCanvas/MainLayout/Header/Title
 @onready var game_canvas: CanvasLayer = $GameCanvas
@@ -180,10 +186,12 @@ func finish_game(did_win: bool) -> void:
 	if did_win:
 		result_label.text = "CLEAN!"
 		result_label.modulate = Color("#4caf50")
+		game_won.emit()
 	else:
 		result_label.text = "TOO SLOW!"
 		result_label.modulate = Color("#f44336")
 		_handle_miss()
+		game_lost.emit()
 		
 	game_finished.emit(did_win)
 

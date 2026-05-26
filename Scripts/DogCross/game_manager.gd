@@ -71,7 +71,7 @@ func _trigger_win():
 	dog_cross_won.emit()
 	if show_win_screen and win_screen_scene:
 		var win_screen = win_screen_scene.instantiate()
-		get_tree().current_scene.add_child(win_screen)
+		add_child(win_screen)
 
 func _stop_play():
 	if camera and "auto_scroll" in camera:

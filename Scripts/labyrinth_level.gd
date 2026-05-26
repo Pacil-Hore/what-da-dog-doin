@@ -19,8 +19,10 @@ signal game_lost
 @onready var start_point: Marker2D = $StartPoint
 @onready var time_limit_timer: Timer = get_node_or_null("TimeLimit")
 @onready var man_sprite: Node2D = get_node_or_null("ManSprite")
+@onready var joint: DampedSpringJoint2D = get_node_or_null("DampedSpringJoint2D")
 
 var is_finished := false
+var is_started := false
 var maze_bounds := Rect2()
 
 
@@ -36,10 +38,16 @@ func _process(_delta: float) -> void:
 
 func reset_level() -> void:
 	is_finished = false
-	player.enabled = false # Disable until mouse is warped
+	is_started = false
+	player.enabled = false # Disable until physics process starts
 	player.global_position = start_point.global_position
 	if is_instance_valid(man_sprite) and man_sprite.has_method("reset_ragdoll"):
 		man_sprite.reset_ragdoll(start_point.global_position + Vector2(0, 40))
+		
+	if is_instance_valid(joint):
+		# Destroy old joint to prevent physics bugs when teleporting/pausing
+		joint.queue_free()
+		joint = null
 	player.movement_bounds = maze_bounds.grow(-player.collision_radius)
 	player.has_movement_bounds = true
 	if is_instance_valid(time_limit_timer):
@@ -49,11 +57,25 @@ func reset_level() -> void:
 	
 	if hide_system_cursor:
 		Input.mouse_mode = Input.MOUSE_MODE_HIDDEN
-	
-	# Small delay to ensure mouse is warped before enabling movement
-	await get_tree().create_timer(0.1).timeout
-	player.enabled = true
 
+func _physics_process(delta: float) -> void:
+	if not is_started:
+		is_started = true
+		player.enabled = true
+		
+		# Recreate joint after unpause to ensure physics constraint is fresh
+		joint = DampedSpringJoint2D.new()
+		joint.global_position = player.global_position
+		joint.length = 40.0
+		joint.rest_length = 30.0
+		joint.stiffness = 64.0
+		joint.damping = 2.0
+		add_child(joint)
+		joint.node_a = joint.get_path_to(player)
+		joint.node_b = joint.get_path_to(man_sprite)
+		
+		if man_sprite is RigidBody2D:
+			man_sprite.sleeping = false
 
 func finish_level(message: String) -> void:
 	if is_finished:

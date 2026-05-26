@@ -15,6 +15,7 @@ signal game_lost
 @export var win_label_text: String = "You found the right leash!"
 @export var lose_label_text: String = "Wrong hook!"
 @export var timeout_label_text: String = "Time is up!"
+@export var disable_freeze_on_loss := true
 
 @onready var board: PickTheRopeBoard = $Board
 @onready var countdown_timer: Timer = get_node_or_null("CountdownTimer")
