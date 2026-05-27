@@ -105,7 +105,7 @@ hframes = 6
 [node name="Hotspots" type="Node2D" parent="." unique_id=996759008]
 
 [node name="BillboardSpot" type="Area2D" parent="Hotspots" unique_id=1359180416]
-position = Vector2(160, 142)
+position = Vector2(352, 171)
 script = ExtResource("3_spot")
 layout_bounds = Rect2(-56, -82, 112, 164)
 
@@ -144,7 +144,7 @@ position = Vector2(-5, -21.5)
 shape = SubResource("RectangleShape2D_billboard")
 
 [node name="GrassSpot" type="Area2D" parent="Hotspots" unique_id=1379268721]
-position = Vector2(360, 356)
+position = Vector2(364, 440)
 script = ExtResource("3_spot")
 spot_type = 1
 layout_bounds = Rect2(-74, -74, 148, 148)
@@ -205,7 +205,7 @@ position = Vector2(0, -30)
 shape = SubResource("RectangleShape2D_grass")
 
 [node name="PoleSpot" type="Area2D" parent="Hotspots" unique_id=1301405048]
-position = Vector2(940, 152)
+position = Vector2(828, 140)
 script = ExtResource("3_spot")
 spot_type = 2
 layout_bounds = Rect2(-76, -66, 152, 132)
@@ -263,7 +263,7 @@ texture = ExtResource("8_circle")
 shape = SubResource("RectangleShape2D_pole")
 
 [node name="CarSpot" type="Area2D" parent="Hotspots" unique_id=2055850279]
-position = Vector2(912, 398)
+position = Vector2(843, 386)
 script = ExtResource("3_spot")
 spot_type = 3
 layout_bounds = Rect2(-78, -48, 156, 96)
