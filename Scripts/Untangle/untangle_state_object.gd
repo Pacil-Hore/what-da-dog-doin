@@ -11,6 +11,13 @@ signal state_changed(state_index: int)
 		hydrant_texture = value
 		_refresh_sprite()
 
+@export var state_textures: Array[Texture2D] = [
+	preload("res://Assets/Sprites/untangle/hydrant_tangled.png"),
+	preload("res://Assets/Sprites/untangle/hydrant_half_tangled.png"),
+	preload("res://Assets/Sprites/untangle/hydrant_untangled.png"),
+]
+@export var state_sprite_scale := Vector2(3.0, 3.0)
+
 @export var current_state_index := 0:
 	set(value):
 		current_state_index = clampi(value, 0, max(get_state_count() - 1, 0))
@@ -29,6 +36,9 @@ var _sprite: Sprite2D
 
 func _ready() -> void:
 	_ensure_sprite()
+	if is_instance_valid(_sprite):
+		_sprite.visible = false
+	_prepare_state_sprite_textures()
 	_sync_state()
 
 
@@ -94,6 +104,42 @@ func _sync_visuals() -> void:
 		var visual: Node = visual_container.get_child(index)
 		if visual is CanvasItem:
 			visual.visible = index == current_state_index
+
+
+func _prepare_state_sprite_textures() -> void:
+	var visual_container: Node = get_node_or_null(visual_container_path)
+	if visual_container == null:
+		return
+
+	for index in range(visual_container.get_child_count()):
+		var visual := visual_container.get_child(index)
+		var state_sprite := visual.get_node_or_null("StateSprite") as Sprite2D
+		if state_sprite == null:
+			continue
+
+		if index < state_textures.size() and state_textures[index] != null:
+			state_sprite.texture = state_textures[index]
+		if state_sprite.texture == null:
+			continue
+		state_sprite.texture = _make_black_transparent(state_sprite.texture)
+		state_sprite.centered = true
+		state_sprite.modulate = Color.WHITE
+		state_sprite.scale = state_sprite_scale
+
+
+func _make_black_transparent(texture: Texture2D) -> Texture2D:
+	var image := texture.get_image()
+	if image == null:
+		return texture
+
+	var size := image.get_size()
+	for y in range(size.y):
+		for x in range(size.x):
+			var color := image.get_pixel(x, y)
+			if color.r < 0.05 and color.g < 0.05 and color.b < 0.05:
+				color.a = 0.0
+				image.set_pixel(x, y, color)
+	return ImageTexture.create_from_image(image)
 
 
 func _sync_label() -> void:

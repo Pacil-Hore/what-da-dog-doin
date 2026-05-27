@@ -5,13 +5,30 @@ extends Node2D
 	set(value):
 		has_clue = value
 		queue_redraw()
+@export_range(1, 3, 1) var bin_variant := 1:
+	set(value):
+		bin_variant = value
+		queue_redraw()
 @export var can_size := Vector2(128.0, 150.0):
 	set(value):
 		can_size = value
 		queue_redraw()
 
+const BIN_TEXTURES := [
+	preload("res://Assets/Sprites/PickMe/FREE Pixel Art Trash Pack - Animated/Trash Bins - No Animations/Dumpster 1 - With Lid.png"),
+	preload("res://Assets/Sprites/PickMe/FREE Pixel Art Trash Pack - Animated/Trash Bins - No Animations/Dumpster 2 - With Lid.png"),
+	preload("res://Assets/Sprites/PickMe/FREE Pixel Art Trash Pack - Animated/Trash Bins - No Animations/Dumpster 3 - With Lid.png"),
+]
+
 
 func _draw() -> void:
+	var texture_index := clampi(bin_variant - 1, 0, BIN_TEXTURES.size() - 1)
+	var bin_texture: Texture2D = BIN_TEXTURES[texture_index]
+	if bin_texture:
+		var draw_size := Vector2(210.0, 183.0)
+		draw_texture_rect(bin_texture, Rect2(-draw_size * 0.5, draw_size), false)
+		return
+
 	var half_width := can_size.x * 0.5
 	var top_y := -can_size.y * 0.5
 	var bottom_y := can_size.y * 0.5

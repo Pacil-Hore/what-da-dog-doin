@@ -109,6 +109,9 @@ func _refill_scenario_game_pool():
 	_remaining_scenario_games = pool
 
 func _load_interstitial():
+	# Reset time scale to current speed multiplier to clear any level-specific slow-motion
+	Engine.time_scale = speed_multiplier
+
 	if current_instance != null:
 		current_instance.queue_free()
 		current_instance = null
@@ -218,6 +221,7 @@ func _on_interstitial_done():
 		game_instance.game_lost.connect(_on_game_lost)
 
 func _on_game_won():
+	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 	# Immediate visual freeze and feedback
 	timer_bar.stop()
 	
@@ -246,6 +250,7 @@ func _on_game_won():
 	_load_interstitial()
 
 func _on_game_lost():
+	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 	# Immediate visual freeze and feedback
 	timer_bar.stop()
 	if is_instance_valid(current_instance):

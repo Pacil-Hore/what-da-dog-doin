@@ -5,10 +5,10 @@
 [ext_resource type="PackedScene" uid="uid://canpbu2erlkfy" path="res://Scenes/Player.tscn" id="2_jrs6i"]
 [ext_resource type="Script" uid="uid://c5vrtkuahkgl6" path="res://Scripts/labyrinth_level.gd" id="3_857ma"]
 [ext_resource type="PackedScene" path="res://Scenes/Microgames/Labyrinth/ManSprite.tscn" id="4_nhsvf"]
-[ext_resource type="Script" path="res://Scripts/rope_line.gd" id="5_rdsau"]
+[ext_resource type="Script" uid="uid://dcge3i2mbref0" path="res://Scripts/rope_line.gd" id="5_rdsau"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_t8w3n"]
-size = Vector2(127, 16)
+size = Vector2(120, 42)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_top_border"]
 size = Vector2(735.0002, 18)
@@ -35,6 +35,7 @@ position = Vector2(584, 70)
 
 [node name="WinArea" type="Area2D" parent="." unique_id=465826932]
 position = Vector2(470, 574)
+collision_mask = 5
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="WinArea" unique_id=896327398]
 position = Vector2(5, -11)
@@ -79,5 +80,7 @@ damping = 2.0
 [node name="RopeLine" type="Line2D" parent="." unique_id=803758483]
 z_index = 2
 script = ExtResource("5_rdsau")
+
+[node name="TileMapLayer" type="TileMapLayer" parent="." unique_id=2113049306]
 
 [connection signal="body_entered" from="WinArea" to="." method="_on_win_area_body_entered"]

@@ -17,6 +17,7 @@ var story_stage: int = 0  # 0=cutscene_a, 1=gameplay, 2=cutscene_c
 
 func go_to_main_menu():
 	Engine.time_scale = 1.0
+	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 	get_tree().change_scene_to_packed(main_menu_scene)
 
 func start_story_mode():
