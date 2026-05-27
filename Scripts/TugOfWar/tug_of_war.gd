@@ -5,7 +5,7 @@ signal game_lost
 
 @export var objective_text: String = "Pull!"
 @export var control_hint: String = "Space"
-@export var control_icon_path: String = "res://assets/generated/mouse_icon.png" # Fallback icon
+@export var control_icon: Texture2D
 @export var time_limit: float = 5.0
 
 # Node references

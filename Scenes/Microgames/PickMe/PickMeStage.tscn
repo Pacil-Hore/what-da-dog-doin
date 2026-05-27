@@ -2,9 +2,11 @@
 
 [ext_resource type="Script" uid="uid://b2kmi41kwlbo1" path="res://Scripts/PickMe/pick_me_stage.gd" id="1_stage"]
 [ext_resource type="PackedScene" uid="uid://c3x8fiyss1j45" path="res://Scenes/Microgames/PickMe/TrashCan.tscn" id="2_trash_can"]
+[ext_resource type="Texture2D" uid="uid://ct6k6ah4ktf42" path="res://Assets/Sprites/Keyboard & Mouse/Double/mouse_left.png" id="2_vqg4i"]
 
 [node name="PickMeStage" type="Node2D" unique_id=1633197040]
 script = ExtResource("1_stage")
+control_icon = ExtResource("2_vqg4i")
 
 [node name="Background" type="ColorRect" parent="." unique_id=1830702712]
 z_index = -100

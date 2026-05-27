@@ -5,7 +5,7 @@ signal game_lost
 
 @export var objective_text: String = "Jump!"
 @export var control_hint: String = "Spacebar"
-@export var control_icon_path: String = "res://assets/generated/spacebar_icon.png"
+@export var control_icon: Texture2D
 
 @export var start_delay_duration: float = 0.2
 @export var round_duration: float = 5.0

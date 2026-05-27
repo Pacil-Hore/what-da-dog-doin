@@ -1,6 +1,7 @@
 [gd_scene format=3 uid="uid://bcl845c0mn1io"]
 
 [ext_resource type="Script" uid="uid://conlewyut0p40" path="res://Scripts/Toilet/toilet_stage.gd" id="1_stage"]
+[ext_resource type="Texture2D" uid="uid://ct6k6ah4ktf42" path="res://Assets/Sprites/Keyboard & Mouse/Double/mouse_left.png" id="2_61rn6"]
 [ext_resource type="Script" uid="uid://wpha24s04wkl" path="res://Scripts/Toilet/toilet_background.gd" id="2_background"]
 [ext_resource type="Script" uid="uid://dh3yicttsk5ir" path="res://Scripts/Toilet/toilet_spot.gd" id="3_spot"]
 [ext_resource type="Texture2D" uid="uid://5am1kshahj0y" path="res://Assets/Sprites/Toilet/CP_V1.0.4.png" id="4_atlas"]
@@ -25,6 +26,7 @@ size = Vector2(156, 96)
 
 [node name="ToiletStage" type="Node2D" unique_id=1552928677]
 script = ExtResource("1_stage")
+control_icon = ExtResource("2_61rn6")
 
 [node name="Background" type="Node2D" parent="." unique_id=152521112]
 z_index = -100

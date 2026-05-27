@@ -9,7 +9,8 @@ signal game_lost
 @export var instruction_text := "TOUCH 4 DIFFERENCES!"
 @export var objective_text: String = "Spot it!"
 @export var control_hint: String = "Mouse"
-@export var control_icon_path: String = "res://assets/generated/mouse_icon.png"
+@export var control_icon: Texture2D
+
 @export var disable_freeze_on_loss := true
 
 @onready var title_label: Label = $GameCanvas/MainLayout/Header/Title

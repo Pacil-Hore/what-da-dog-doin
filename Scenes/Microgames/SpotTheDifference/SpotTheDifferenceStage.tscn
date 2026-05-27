@@ -1,8 +1,8 @@
 [gd_scene format=3 uid="uid://ch6pyvnkr1fxp"]
 
 [ext_resource type="Script" uid="uid://cdkvu7gcom17l" path="res://Scripts/SpotTheDifference/spot_the_difference_stage.gd" id="1_3to8w"]
+[ext_resource type="Texture2D" uid="uid://ct6k6ah4ktf42" path="res://Assets/Sprites/Keyboard & Mouse/Double/mouse_left.png" id="2_lm3k8"]
 [ext_resource type="Texture2D" uid="uid://bd3xdyhul2nlb" path="res://Assets/Sprites/street/SpotTheDifference/street spot the difference.png" id="2_street"]
-[ext_resource type="Script" uid="uid://ceq52yr6ud5up" path="res://Scripts/SpotTheDifference/difference_region.gd" id="4_nfrx4"]
 [ext_resource type="Script" uid="uid://ion7ydgfa5k3" path="res://Scripts/SpotTheDifference/distraction_manager.gd" id="5_3to8w"]
 [ext_resource type="Script" uid="uid://ceq52yr6ud5up" path="res://Scripts/SpotTheDifference/difference_region.gd" id="5_geuvt"]
 [ext_resource type="Texture2D" uid="uid://bdjwga44jg1jb" path="res://Assets/Sprites/street/SpotTheDifference/dog_icon_progress.png" id="5_kms0k"]
@@ -33,7 +33,9 @@ atlas = ExtResource("2_street")
 region = Rect2(0, 0, 768, 1024)
 
 [node name="SpotTheDifferenceStage" type="Node2D" unique_id=240863752]
+visible = false
 script = ExtResource("1_3to8w")
+control_icon = ExtResource("2_lm3k8")
 
 [node name="GameCanvas" type="CanvasLayer" parent="." unique_id=1542537067]
 layer = 0
@@ -178,7 +180,7 @@ offset_left = 195.0
 offset_top = 76.0
 offset_right = 265.0
 offset_bottom = 176.0
-script = ExtResource("4_nfrx4")
+script = ExtResource("5_geuvt")
 
 [node name="Bottle1" type="Control" parent="GameCanvas/MainLayout/GameArea/ImageContainer/ModifiedImage/Differences" unique_id=1696800360]
 layout_mode = 1

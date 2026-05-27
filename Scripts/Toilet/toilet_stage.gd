@@ -5,7 +5,7 @@ signal game_lost
 
 @export var objective_text: String = "Pick the right place!"
 @export var control_hint: String = "Mouse"
-@export var control_icon_path: String = "res://assets/generated/mouse_icon.png"
+@export var control_icon: Texture2D
 
 @export var time_limit: float = 3.0
 @export var instruction_text: String = "Left click the best toilet spot before time runs out."
