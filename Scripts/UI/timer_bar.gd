@@ -20,6 +20,7 @@ func stop():
 	active = false
 	progress_bar.value = time_left
 	progress_bar.modulate = _get_timer_color()
+	progress_bar.scale = Vector2.ONE
 	# Don't hide yet, show frozen state until GameManager hides it
 
 func _process(delta: float):
@@ -30,16 +31,26 @@ func _process(delta: float):
 	progress_bar.value = time_left
 	progress_bar.modulate = _get_timer_color()
 	
+	var ratio = time_left / total_time
+	if ratio <= 0.25:
+		progress_bar.pivot_offset = progress_bar.size / 2
+		var pulse = 1.0 + 0.08 * abs(sin(time_left * 12.0))
+		progress_bar.scale = Vector2(pulse, pulse)
+	else:
+		progress_bar.scale = Vector2.ONE
+	
 	if time_left <= 0:
 		time_left = 0
 		active = false
+		progress_bar.scale = Vector2.ONE
 		emit_signal("timeout")
 
 func _get_timer_color() -> Color:
 	var ratio = time_left / total_time
 	if ratio > 0.5:
 		return Color.GREEN
-	elif ratio > 0.2:
+	elif ratio > 0.25:
 		return Color.YELLOW
 	else:
-		return Color.RED
+		var pulse = abs(sin(time_left * 12.0))
+		return Color.RED.lerp(Color(1.0, 0.45, 0.45), pulse)

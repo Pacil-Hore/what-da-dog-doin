@@ -23,10 +23,6 @@ func _ready() -> void:
 		texture_mode = texture_tiling_mode
 	
 	antialiased = true
-	
-	clear_points()
-	add_point(Vector2.ZERO)
-	add_point(Vector2.ZERO)
 
 func _process(_delta: float) -> void:
 	if is_instance_valid(node_a) and is_instance_valid(node_b):
@@ -39,8 +35,26 @@ func _process(_delta: float) -> void:
 			end_pos = hand.global_position
 		
 		# Convert global positions to local coordinates of the Line2D
-		set_point_position(0, to_local(start_pos))
-		set_point_position(1, to_local(end_pos))
+		var local_start = to_local(start_pos)
+		var local_end = to_local(end_pos)
+		
+		# Calculate tension (from 60px rest to 80px stretched)
+		var distance = start_pos.distance_to(end_pos)
+		var tension = clampf((distance - 60.0) / 20.0, 0.0, 1.0)
+		
+		# Dynamic sagging curve
+		var num_points = 12
+		clear_points()
+		var sag_amount = maxf(0.0, 60.0 - distance) * 0.6
+		
+		for i in range(num_points):
+			var t = float(i) / float(num_points - 1)
+			var point_pos = local_start.lerp(local_end, t)
+			var sag_offset = Vector2(0, 4.0 * t * (1.0 - t) * sag_amount)
+			add_point(point_pos + sag_offset)
+		
+		default_color = rope_color.lerp(Color(0.9, 0.2, 0.2), tension)
+		width = lerpf(rope_width, rope_width * 0.6, tension)
 	else:
 		# Fallback search if not found initially (e.g. during reset)
 		node_a = get_parent().get_node_or_null("Player")

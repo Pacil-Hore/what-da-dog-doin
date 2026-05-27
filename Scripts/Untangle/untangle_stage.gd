@@ -11,6 +11,8 @@ signal game_lost
 @export var rotations_per_state := 5
 @export var win_label_text := "Untangled!"
 @export var timeout_label_text := "Time is up!"
+@export var state_art_position := Vector2(576.0, 360.0)
+@export var hide_legacy_scene_art := true
 
 @onready var state_object = $StateObject
 @onready var motion_detector = $CircularMotionDetector
@@ -23,6 +25,10 @@ var rotations_in_current_state := 0
 
 
 func _ready() -> void:
+	state_object.position = state_art_position
+	motion_guide.position = state_art_position
+	if hide_legacy_scene_art:
+		_hide_legacy_scene_art()
 	motion_guide.min_radius = motion_detector.min_radius
 	motion_guide.max_radius = motion_detector.max_radius
 	motion_detector.rotation_completed.connect(_on_rotation_completed)
@@ -115,3 +121,14 @@ func _on_motion_progress_changed(progress: float) -> void:
 
 func _on_countdown_timer_timeout() -> void:
 	finish_game(false, timeout_label_text)
+
+
+func _hide_legacy_scene_art() -> void:
+	var scene_art := get_node_or_null("SceneArt")
+	if scene_art == null:
+		return
+
+	for node_name in ["HumanSprite", "DogSprite", "LeftLeash", "RightLeash"]:
+		var item := scene_art.get_node_or_null(node_name) as CanvasItem
+		if item != null:
+			item.visible = false

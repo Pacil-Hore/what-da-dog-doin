@@ -3,7 +3,7 @@ extends Node2D
 signal game_won
 signal game_lost
 
-@export var objective_text: String = "Pick the right one!"
+@export var objective_text: String = "Blink and you'll miss it!"
 @export var control_hint: String = "Mouse"
 @export var control_icon: Texture2D
 
@@ -13,17 +13,22 @@ signal game_lost
 @export var timeout_label_text := "Time is up!"
 @export var auto_randomize_clue := true
 @export var disable_freeze_on_loss := true
+@export var reveal_delay := 0.2
 
-@onready var left_trash_can: PickMeTrashCan = $TrashCans/LeftTrashCan
-@onready var right_trash_can: PickMeTrashCan = $TrashCans/RightTrashCan
+@onready var trash_cans_parent: Node2D = $TrashCans
 @onready var countdown_timer: Timer = get_node_or_null("CountdownTimer")
 
 var trash_cans: Array[PickMeTrashCan] = []
 var is_finished := false
+var round_elapsed := 0.0
+var clue_cued := false
 
 
 func _ready() -> void:
-	trash_cans = [left_trash_can, right_trash_can]
+	for child in trash_cans_parent.get_children():
+		if child is PickMeTrashCan:
+			trash_cans.append(child)
+
 	for trash_can in trash_cans:
 		trash_can.trash_can_picked.connect(_on_trash_can_picked)
 
@@ -36,9 +41,22 @@ func _process(_delta: float) -> void:
 	if is_finished:
 		return
 
+	round_elapsed += _delta
+	if not clue_cued and round_elapsed >= time_limit * 0.5:
+		clue_cued = true
+		for trash_can in trash_cans:
+			if trash_can.has_clue:
+				trash_can.play_clue_cue()
+				break
+
+	if round_elapsed >= time_limit:
+		finish_game(false, timeout_label_text)
+
 
 func reset_game() -> void:
 	is_finished = false
+	round_elapsed = 0.0
+	clue_cued = false
 
 	var clue_index := randi_range(0, trash_cans.size() - 1) if auto_randomize_clue else 0
 	for index in range(trash_cans.size()):
@@ -48,7 +66,7 @@ func reset_game() -> void:
 		countdown_timer.start(time_limit)
 
 
-func finish_game(did_win: bool, _message: String) -> void:
+func finish_game(did_win: bool, _message: String, selected_trash_can: PickMeTrashCan = null) -> void:
 	if is_finished:
 		return
 
@@ -57,7 +75,17 @@ func finish_game(did_win: bool, _message: String) -> void:
 		countdown_timer.stop()
 	for trash_can in trash_cans:
 		trash_can.set_pick_enabled(false)
-		trash_can.reveal()
+		trash_can.scale = trash_can.default_scale
+
+	if is_instance_valid(selected_trash_can):
+		selected_trash_can.play_pick_feedback(did_win)
+
+	await get_tree().create_timer(reveal_delay, false).timeout
+
+	for trash_can in trash_cans:
+		if trash_can.has_clue:
+			trash_can.reveal(did_win)
+			break
 	
 	if did_win:
 		emit_signal("game_won")
@@ -67,9 +95,9 @@ func finish_game(did_win: bool, _message: String) -> void:
 
 func _on_trash_can_picked(trash_can: PickMeTrashCan) -> void:
 	if trash_can.has_clue:
-		finish_game(true, win_label_text)
+		finish_game(true, win_label_text, trash_can)
 	else:
-		finish_game(false, lose_label_text)
+		finish_game(false, lose_label_text, trash_can)
 
 
 func _on_countdown_timer_timeout() -> void:

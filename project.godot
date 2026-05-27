@@ -11,19 +11,19 @@ config_version=5
 [application]
 
 config/name="What Da Dog Doin"
-run/main_scene="uid://brxhdkdban0ai"
+run/main_scene="uid://dgy4f1s322mnv"
 config/features=PackedStringArray("4.6", "Mobile")
 config/icon="res://icon.svg"
 
 [autoload]
 
-MCPRuntime="*res://addons/godot_mcp/runtime/mcp_runtime.gd"
+MCPRuntime="*uid://thnk5lnwxx8b"
 AppManager="*res://Scenes/AppManager.tscn"
 MicrogameTestHelper="*res://Scripts/microgame_test_helper.gd"
 
 [editor_plugins]
 
-enabled=PackedStringArray()
+enabled=PackedStringArray("res://addons/godot_mcp/plugin.cfg")
 
 [gui]
 
