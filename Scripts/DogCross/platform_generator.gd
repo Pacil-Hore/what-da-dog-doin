@@ -59,21 +59,60 @@ func _generate_lane(config: LaneConfig, lane_y: float) -> void:
 			_spawn_mixed(lane_container, config)
 
 func _spawn_rocks(container: Node2D, config: LaneConfig) -> void:
-	# Distribusi rock secara horizontal, dengan random size
-	var available_width = level_config.level_width
-	var positions = _distribute_positions(config.platform_count, available_width, config.min_gap)
+	var spawned = _spawn_platforms_sequential(container, config, [
+		{"type": Platform.PlatformType.SMALL_ROCK, "size": Vector2(90, 90)},
+		{"type": Platform.PlatformType.BIG_ROCK, "size": Vector2(180, 90)},
+	])
+
+func _spawn_mixed(container: Node2D, config: LaneConfig) -> void:
+	var spawned = _spawn_platforms_sequential(container, config, [
+		{"type": Platform.PlatformType.SMALL_ROCK, "size": Vector2(120, 120)},
+		{"type": Platform.PlatformType.BIG_ROCK, "size": Vector2(220, 120)},
+	])
+
+# Helper baru: spawn platforms dengan edge-to-edge gap guarantee
+func _spawn_platforms_sequential(container: Node2D, config: LaneConfig, platform_types: Array) -> int:
+	var margin = 50.0  # margin dari edge level
+	var current_x = margin  # mulai dari kiri
+	var spawned_count = 0
 	
-	for pos_x in positions:
-		var rock = platform_scene.instantiate()
-		# Random pilih small atau big rock
-		if randf() > 0.5:
-			rock.type = Platform.PlatformType.SMALL_ROCK
-			rock.size = Vector2(90, 90)
-		else:
-			rock.type = Platform.PlatformType.BIG_ROCK
-			rock.size = Vector2(180, 90)
-		rock.position = Vector2(pos_x, 0)
-		container.add_child(rock)
+	for i in range(config.platform_count):
+		# Pilih random tipe platform
+		var chosen = platform_types.pick_random()
+		var chosen_size: Vector2 = chosen["size"]
+		var chosen_type = chosen["type"]
+		
+		# Cek apakah masih muat
+		# Butuh: current_x + width + margin <= level_width
+		if current_x + chosen_size.x + margin > level_config.level_width:
+			print("Lane penuh, cuma muat ", spawned_count, " dari ", config.platform_count, " platform")
+			break
+		
+		# Random extra offset (biar gak terlalu rapi/predictable)
+		var max_extra = 50.0  # max offset acak ke kanan
+		var extra_offset = randf_range(0, max_extra)
+		
+		# Cek kalau ditambah extra_offset masih muat
+		if current_x + extra_offset + chosen_size.x + margin > level_config.level_width:
+			extra_offset = 0
+		
+		current_x += extra_offset
+		
+		# Center platform = current_x + half width
+		var center_x = current_x + chosen_size.x / 2
+		
+		# Spawn
+		var platform = platform_scene.instantiate()
+		platform.type = chosen_type
+		platform.size = chosen_size
+		platform.position = Vector2(center_x, 0)
+		container.add_child(platform)
+		spawned_count += 1
+		
+		# Update current_x ke edge kanan + min_gap untuk platform berikutnya
+		current_x = center_x + chosen_size.x / 2 + config.min_gap
+	
+	return spawned_count
 
 func _spawn_logs(container: Node2D, config: LaneConfig):
 	# Hitung interval spawn berdasarkan speed & desired spacing
@@ -127,22 +166,6 @@ func _spawn_log_at_edge(container: Node2D, config: LaneConfig):
 		spawn_x = level_config.level_width + 200.0 # arus ke kiri → spawn dari kanan
 	
 	_create_log(container, config, spawn_x)
-
-func _spawn_mixed(container: Node2D, config: LaneConfig):
-	# Mixed lane = campur small rock & big rock (tanpa log)
-	var positions = _distribute_positions(config.platform_count, level_config.level_width, config.min_gap)
-	
-	for pos_x in positions:
-		var platform = platform_scene.instantiate()
-		# Random small atau big rock aja
-		if randf() > 0.5:
-			platform.type = Platform.PlatformType.SMALL_ROCK
-			platform.size = Vector2(120, 120)
-		else:
-			platform.type = Platform.PlatformType.BIG_ROCK
-			platform.size = Vector2(220, 120)
-		platform.position = Vector2(pos_x, 0)
-		container.add_child(platform)
 
 func _distribute_positions(count: int, total_width: float, min_gap: float) -> Array:
 	# Bagi width jadi N segment, taruh platform di tengah-tengah segment dengan random offset
