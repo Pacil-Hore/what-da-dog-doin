@@ -3,7 +3,7 @@
 [ext_resource type="Script" uid="uid://4djs03jfufgd" path="res://Scripts/main_menu.gd" id="1_v3fht"]
 [ext_resource type="Texture2D" uid="uid://uiw75sm5xcpl" path="res://Assets/wtdd title text new.png" id="2_10t8h"]
 [ext_resource type="FontFile" uid="uid://bjdunpg0quy55" path="res://Assets/Jersey25-Regular.ttf" id="3_cj4vb"]
-[ext_resource type="Script" path="res://Scripts/UI/hover_prefix_button.gd" id="4_e8h4m"]
+[ext_resource type="Script" uid="uid://b5xo26mbif88f" path="res://Scripts/UI/hover_prefix_button.gd" id="4_e8h4m"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_44l8m"]
 
@@ -44,7 +44,7 @@ offset_right = 420.0
 offset_bottom = 74.0
 theme_override_colors/font_color = Color(0.9843137, 0.28235295, 0.29411766, 1)
 theme_override_colors/font_focus_color = Color(0.0627451, 0.4392157, 0.78039217, 1)
-theme_override_colors/font_pressed_color = Color(1, 0.7411765, 0.32156864, 1)
+theme_override_colors/font_pressed_color = Color(0.02745098, 0.15686275, 0.30588236, 1)
 theme_override_colors/font_hover_color = Color(0.0627451, 0.4392157, 0.78039217, 1)
 theme_override_colors/font_outline_color = Color(1, 1, 1, 1)
 theme_override_constants/outline_size = 12
@@ -68,7 +68,7 @@ offset_right = 420.0
 offset_bottom = 156.0
 theme_override_colors/font_color = Color(0.9843137, 0.28235295, 0.29411766, 1)
 theme_override_colors/font_focus_color = Color(0.0627451, 0.4392157, 0.78039217, 1)
-theme_override_colors/font_pressed_color = Color(1, 0.7411765, 0.32156864, 1)
+theme_override_colors/font_pressed_color = Color(0.02745098, 0.15686275, 0.30588236, 1)
 theme_override_colors/font_hover_color = Color(0.0627451, 0.4392157, 0.78039217, 1)
 theme_override_colors/font_outline_color = Color(1, 1, 1, 1)
 theme_override_constants/outline_size = 12
@@ -92,7 +92,7 @@ offset_right = 420.0
 offset_bottom = 238.0
 theme_override_colors/font_color = Color(0.9843137, 0.28235295, 0.29411766, 1)
 theme_override_colors/font_focus_color = Color(0.0627451, 0.4392157, 0.78039217, 1)
-theme_override_colors/font_pressed_color = Color(1, 0.7411765, 0.32156864, 1)
+theme_override_colors/font_pressed_color = Color(0.02745098, 0.15686275, 0.30588236, 1)
 theme_override_colors/font_hover_color = Color(0.0627451, 0.4392157, 0.78039217, 1)
 theme_override_colors/font_outline_color = Color(1, 1, 1, 1)
 theme_override_constants/outline_size = 12
