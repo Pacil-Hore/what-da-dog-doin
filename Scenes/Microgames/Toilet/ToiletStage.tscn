@@ -3,18 +3,25 @@
 [ext_resource type="Script" uid="uid://conlewyut0p40" path="res://Scripts/Toilet/toilet_stage.gd" id="1_stage"]
 [ext_resource type="Script" uid="uid://wpha24s04wkl" path="res://Scripts/Toilet/toilet_background.gd" id="2_background"]
 [ext_resource type="Script" uid="uid://dh3yicttsk5ir" path="res://Scripts/Toilet/toilet_spot.gd" id="3_spot"]
+[ext_resource type="Texture2D" uid="uid://5am1kshahj0y" path="res://Assets/Sprites/Toilet/CP_V1.0.4.png" id="4_atlas"]
+[ext_resource type="Texture2D" uid="uid://ua22h2hi2fol" path="res://Assets/Sprites/Toilet/man_side.png" id="5_man"]
+[ext_resource type="Texture2D" uid="uid://bw67nmetlq1eo" path="res://Assets/Sprites/Toilet/dog_walk.png" id="6_dog"]
+[ext_resource type="Texture2D" uid="uid://bir6vjcc7h16k" path="res://Assets/Sprites/Little Dreamyland - Free Pack/Sprites/Sprite_Shadow.png" id="7_shadow"]
+[ext_resource type="Texture2D" uid="uid://d06cwuaok516" path="res://Assets/generated/circle_fill.svg" id="8_circle"]
+[ext_resource type="Texture2D" uid="uid://cx5p1dfbo342f" path="res://Assets/Sprites/Toilet/tree_big 128x128.png" id="9_tree_big"]
+[ext_resource type="Texture2D" uid="uid://dvw5k4p2sj3b6" path="res://Assets/Sprites/Toilet/assets.png" id="10_uqa1u"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_billboard"]
-size = Vector2(196, 164)
+size = Vector2(102, 121)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_grass"]
-size = Vector2(210, 110)
+size = Vector2(148, 208)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_pole"]
-size = Vector2(160, 190)
+size = Vector2(152, 132)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_car"]
-size = Vector2(208, 96)
+size = Vector2(156, 96)
 
 [node name="ToiletStage" type="Node2D" unique_id=1552928677]
 script = ExtResource("1_stage")
@@ -23,50 +30,274 @@ script = ExtResource("1_stage")
 z_index = -100
 script = ExtResource("2_background")
 
+[node name="Sky" type="Polygon2D" parent="Background" unique_id=771220279]
+position = Vector2(7, -1)
+color = Color(0.92, 0.95, 0.89, 1)
+polygon = PackedVector2Array(0, 0, 1152, 0, 1152, 645, 0, 645)
+
+[node name="Grass" type="Polygon2D" parent="Background" unique_id=1466384747]
+position = Vector2(8, 6)
+color = Color(0.69, 0.82, 0.61, 1)
+polygon = PackedVector2Array(0, 400, 1152, 400, 1152, 645, 0, 645)
+
+[node name="Road" type="Polygon2D" parent="Background" unique_id=144240222]
+color = Color(0.29, 0.33, 0.37, 1)
+polygon = PackedVector2Array(462, 0, 690, 0, 690, 645, 462, 645)
+
+[node name="LeftCurb" type="Polygon2D" parent="Background" unique_id=1788083564]
+color = Color(0.79, 0.76, 0.69, 1)
+polygon = PackedVector2Array(446, 0, 462, 0, 462, 645, 446, 645)
+
+[node name="RightCurb" type="Polygon2D" parent="Background" unique_id=1483202623]
+color = Color(0.79, 0.76, 0.69, 1)
+polygon = PackedVector2Array(690, 0, 706, 0, 706, 645, 690, 645)
+
+[node name="LaneDash1" type="Polygon2D" parent="Background" unique_id=1081868240]
+color = Color(0.94, 0.92, 0.82, 1)
+polygon = PackedVector2Array(570, 54, 582, 54, 582, 106, 570, 106)
+
+[node name="LaneDash2" type="Polygon2D" parent="Background" unique_id=1255727463]
+color = Color(0.94, 0.92, 0.82, 1)
+polygon = PackedVector2Array(570, 156, 582, 156, 582, 208, 570, 208)
+
+[node name="LaneDash3" type="Polygon2D" parent="Background" unique_id=16631504]
+color = Color(0.94, 0.92, 0.82, 1)
+polygon = PackedVector2Array(570, 258, 582, 258, 582, 310, 570, 310)
+
+[node name="LaneDash4" type="Polygon2D" parent="Background" unique_id=1763134381]
+color = Color(0.94, 0.92, 0.82, 1)
+polygon = PackedVector2Array(570, 360, 582, 360, 582, 412, 570, 412)
+
+[node name="LaneDash5" type="Polygon2D" parent="Background" unique_id=2120435935]
+color = Color(0.94, 0.92, 0.82, 1)
+polygon = PackedVector2Array(570, 462, 582, 462, 582, 514, 570, 514)
+
+[node name="LaneDash6" type="Polygon2D" parent="Background" unique_id=87744424]
+color = Color(0.94, 0.92, 0.82, 1)
+polygon = PackedVector2Array(570, 564, 582, 564, 582, 616, 570, 616)
+
+[node name="DogShadow" type="Sprite2D" parent="Background" unique_id=1532357255]
+modulate = Color(0, 0, 0, 0.16)
+position = Vector2(240, 591)
+scale = Vector2(3.8, 1)
+texture = ExtResource("7_shadow")
+
+[node name="Leash" type="Line2D" parent="Background" unique_id=1707133428]
+position = Vector2(-4, 7)
+points = PackedVector2Array(148, 502, 258, 558)
+width = 4.0
+default_color = Color(0.28, 0.25, 0.21, 1)
+
+[node name="OwnerSprite" type="Sprite2D" parent="Background" unique_id=115517359]
+position = Vector2(86, 406)
+scale = Vector2(1.65, 1.65)
+texture = ExtResource("5_man")
+centered = false
+hframes = 9
+
+[node name="DogSprite" type="Sprite2D" parent="Background" unique_id=1939335242]
+position = Vector2(194, 496)
+scale = Vector2(2.05, 2.05)
+texture = ExtResource("6_dog")
+centered = false
+hframes = 6
+
 [node name="Hotspots" type="Node2D" parent="." unique_id=996759008]
 
 [node name="BillboardSpot" type="Area2D" parent="Hotspots" unique_id=1359180416]
-position = Vector2(162, 122)
+position = Vector2(160, 142)
 script = ExtResource("3_spot")
+layout_bounds = Rect2(-56, -82, 112, 164)
+
+[node name="VisualSprite" type="Sprite2D" parent="Hotspots/BillboardSpot" unique_id=874899733]
+scale = Vector2(3, 3)
+texture = ExtResource("4_atlas")
+region_enabled = true
+region_rect = Rect2(496, 176, 32, 50)
+
+[node name="Feedback" type="Node2D" parent="Hotspots/BillboardSpot" unique_id=1696144243]
+visible = false
+z_index = 20
+
+[node name="Fill" type="Polygon2D" parent="Hotspots/BillboardSpot/Feedback" unique_id=2129278233]
+position = Vector2(-5.5, -21)
+scale = Vector2(0.9166667, 0.7717391)
+color = Color(1, 1, 1, 0.08)
+polygon = PackedVector2Array(-66, -92, 66, -92, 66, 92, -66, 92)
+
+[node name="Outline" type="Line2D" parent="Hotspots/BillboardSpot/Feedback" unique_id=747912079]
+position = Vector2(-7, -22)
+scale = Vector2(0.90140843, 0.77319586)
+points = PackedVector2Array(-66, -92, 66, -92, 66, 92, -66, 92, -66, -92)
+width = 5.0
+default_color = Color(1, 1, 1, 0.28)
+
+[node name="CorrectMarker" type="Sprite2D" parent="Hotspots/BillboardSpot/Feedback" unique_id=1055285209]
+visible = false
+modulate = Color(1, 1, 1, 0.28)
+position = Vector2(0, -100)
+scale = Vector2(0.34, 0.34)
+texture = ExtResource("8_circle")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Hotspots/BillboardSpot" unique_id=1403780298]
+position = Vector2(-5, -21.5)
 shape = SubResource("RectangleShape2D_billboard")
 
 [node name="GrassSpot" type="Area2D" parent="Hotspots" unique_id=1379268721]
-position = Vector2(182, 290)
+position = Vector2(360, 356)
 script = ExtResource("3_spot")
 spot_type = 1
+layout_bounds = Rect2(-74, -74, 148, 148)
+
+[node name="VisualSprite" type="Sprite2D" parent="Hotspots/GrassSpot" unique_id=1298439988]
+position = Vector2(0, -29.6)
+scale = Vector2(1.98, 1.98)
+texture = ExtResource("9_tree_big")
+
+[node name="BlockedOverlaySprite" type="Sprite2D" parent="Hotspots/GrassSpot" unique_id=409636666]
+visible = false
+position = Vector2(-49.34, 37)
+scale = Vector2(2.402, 2.422)
+texture = ExtResource("4_atlas")
+region_enabled = true
+region_rect = Rect2(495.26627, 127.69493, 18.330658, 18.467438)
+
+[node name="BlockedOverlaySprite2" type="Sprite2D" parent="Hotspots/GrassSpot/BlockedOverlaySprite" unique_id=921523539]
+position = Vector2(39.504517, 0.99634516)
+scale = Vector2(0.9169012, 0.9325099)
+texture = ExtResource("4_atlas")
+region_enabled = true
+region_rect = Rect2(495.26627, 127.69493, 18.330658, 18.467438)
+
+[node name="BlockedOverlaySprite" type="Sprite2D" parent="Hotspots/GrassSpot/BlockedOverlaySprite" unique_id=1262107802]
+position = Vector2(20.04864, -9.417534e-06)
+scale = Vector2(1.0446337, 1.0534879)
+texture = ExtResource("4_atlas")
+region_enabled = true
+region_rect = Rect2(495.26627, 127.69493, 18.330658, 18.467438)
+
+[node name="Feedback" type="Node2D" parent="Hotspots/GrassSpot" unique_id=177665915]
+visible = false
+z_index = 20
+
+[node name="Fill" type="Polygon2D" parent="Hotspots/GrassSpot/Feedback" unique_id=1896272703]
+position = Vector2(0, -27.5)
+scale = Vector2(1, 1.3273809)
+color = Color(1, 1, 1, 0.08)
+polygon = PackedVector2Array(-84, -84, 84, -84, 84, 84, -84, 84)
+
+[node name="Outline" type="Line2D" parent="Hotspots/GrassSpot/Feedback" unique_id=1732835610]
+position = Vector2(1, -25.499989)
+scale = Vector2(1, 1.275281)
+points = PackedVector2Array(-84, -84, 84, -84, 84, 84, -84, 84, -84, -84)
+width = 5.0
+default_color = Color(1, 1, 1, 0.28)
+
+[node name="CorrectMarker" type="Sprite2D" parent="Hotspots/GrassSpot/Feedback" unique_id=209803858]
+visible = false
+modulate = Color(1, 1, 1, 0.28)
+position = Vector2(0, -92)
+scale = Vector2(0.34, 0.34)
+texture = ExtResource("8_circle")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Hotspots/GrassSpot" unique_id=1784137043]
+position = Vector2(0, -30)
 shape = SubResource("RectangleShape2D_grass")
 
 [node name="PoleSpot" type="Area2D" parent="Hotspots" unique_id=1301405048]
-position = Vector2(954, 166)
+position = Vector2(940, 152)
 script = ExtResource("3_spot")
 spot_type = 2
+layout_bounds = Rect2(-76, -66, 152, 132)
+
+[node name="VisualSprite" type="Sprite2D" parent="Hotspots/PoleSpot" unique_id=1744261065]
+position = Vector2(1.0000038, 2)
+scale = Vector2(2.234, 2.234)
+texture = ExtResource("10_uqa1u")
+region_enabled = true
+region_rect = Rect2(173.02844, 494.57495, 69.14316, 48.400208)
+
+[node name="BlockedOverlaySprite" type="Sprite2D" parent="Hotspots/PoleSpot" unique_id=1207962846]
+visible = false
+position = Vector2(-40.000004, 36)
+scale = Vector2(2.182, 2.222)
+texture = ExtResource("4_atlas")
+region_enabled = true
+region_rect = Rect2(495.81003, 126.78197, 16.794281, 17.593994)
+
+[node name="BlockedOverlaySprite2" type="Sprite2D" parent="Hotspots/PoleSpot/BlockedOverlaySprite" unique_id=943469731]
+position = Vector2(17.873512, -2.7002668)
+scale = Vector2(1.1286006, 1.1703584)
+texture = ExtResource("4_atlas")
+region_enabled = true
+region_rect = Rect2(394.66656, 121.9727, 27.723846, 25.591263)
+
+[node name="BlockedOverlaySprite" type="Sprite2D" parent="Hotspots/PoleSpot/BlockedOverlaySprite" unique_id=28397170]
+position = Vector2(35.747025, -0.9000932)
+scale = Vector2(1.0623561, 1.081831)
+texture = ExtResource("4_atlas")
+region_enabled = true
+region_rect = Rect2(495.81003, 126.78197, 16.794281, 17.593994)
+
+[node name="Feedback" type="Node2D" parent="Hotspots/PoleSpot" unique_id=162602659]
+visible = false
+z_index = 20
+
+[node name="Fill" type="Polygon2D" parent="Hotspots/PoleSpot/Feedback" unique_id=852844581]
+color = Color(1, 1, 1, 0.08)
+polygon = PackedVector2Array(-86, -76, 86, -76, 86, 76, -86, 76)
+
+[node name="Outline" type="Line2D" parent="Hotspots/PoleSpot/Feedback" unique_id=1111763723]
+points = PackedVector2Array(-86, -76, 86, -76, 86, 76, -86, 76, -86, -76)
+width = 5.0
+default_color = Color(1, 1, 1, 0.28)
+
+[node name="CorrectMarker" type="Sprite2D" parent="Hotspots/PoleSpot/Feedback" unique_id=1915993930]
+visible = false
+modulate = Color(1, 1, 1, 0.28)
+position = Vector2(0, -84)
+scale = Vector2(0.34, 0.34)
+texture = ExtResource("8_circle")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Hotspots/PoleSpot" unique_id=461084841]
 shape = SubResource("RectangleShape2D_pole")
 
 [node name="CarSpot" type="Area2D" parent="Hotspots" unique_id=2055850279]
-position = Vector2(900, 398)
+position = Vector2(912, 398)
 script = ExtResource("3_spot")
 spot_type = 3
+layout_bounds = Rect2(-78, -48, 156, 96)
+
+[node name="VisualSprite" type="Sprite2D" parent="Hotspots/CarSpot" unique_id=455685896]
+scale = Vector2(3.304, 3.288)
+texture = ExtResource("4_atlas")
+region_enabled = true
+region_rect = Rect2(128, 448, 64, 42)
+
+[node name="Feedback" type="Node2D" parent="Hotspots/CarSpot" unique_id=1754349424]
+visible = false
+z_index = 20
+
+[node name="Fill" type="Polygon2D" parent="Hotspots/CarSpot/Feedback" unique_id=1541294658]
+position = Vector2(-26, -10)
+color = Color(1, 1, 1, 0.08)
+polygon = PackedVector2Array(-88, -58, 88, -58, 88, 58, -88, 58)
+
+[node name="Outline" type="Line2D" parent="Hotspots/CarSpot/Feedback" unique_id=161307531]
+position = Vector2(-26, -10)
+points = PackedVector2Array(-88, -58, 88, -58, 88, 58, -88, 58, -88, -58)
+width = 5.0
+default_color = Color(1, 1, 1, 0.28)
+
+[node name="CorrectMarker" type="Sprite2D" parent="Hotspots/CarSpot/Feedback" unique_id=387107090]
+visible = false
+modulate = Color(1, 1, 1, 0.28)
+position = Vector2(0, -66)
+scale = Vector2(0.34, 0.34)
+texture = ExtResource("8_circle")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Hotspots/CarSpot" unique_id=895642079]
+position = Vector2(-26, -7)
 shape = SubResource("RectangleShape2D_car")
 
 [node name="HUD" type="CanvasLayer" parent="." unique_id=1130635532]
-
-[node name="InstructionLabel" type="Label" parent="HUD" unique_id=533729864]
-anchors_preset = 10
-anchor_right = 1.0
-offset_left = 80.0
-offset_top = 564.0
-offset_right = -80.0
-offset_bottom = 604.0
-grow_horizontal = 2
-theme_override_colors/font_color = Color(0.18, 0.2, 0.16, 1)
-theme_override_font_sizes/font_size = 22
-text = "Left click the best toilet spot before time runs out."
-horizontal_alignment = 1
