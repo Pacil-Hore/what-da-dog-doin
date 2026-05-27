@@ -1,6 +1,7 @@
 [gd_scene format=3 uid="uid://7kvn6hth3btf"]
 
 [ext_resource type="Script" uid="uid://cghev3svqsitd" path="res://Scripts/TugOfWar/tug_of_war.gd" id="1_script"]
+[ext_resource type="Texture2D" uid="uid://bwf1w67twkhks" path="res://Assets/Sprites/Keyboard & Mouse/Default/keyboard_space.png" id="2_1me0w"]
 [ext_resource type="Script" uid="uid://cupoxhf8hx0gq" path="res://Scripts/TugOfWar/tug_of_war_human.gd" id="2_human"]
 [ext_resource type="Script" uid="uid://dm5cebgxsmxt8" path="res://Scripts/TugOfWar/tug_of_war_dog.gd" id="3_dog"]
 
@@ -43,6 +44,7 @@ outline_size = 12
 
 [node name="TugOfWarStage" type="Node2D" unique_id=991766760]
 script = ExtResource("1_script")
+control_icon = ExtResource("2_1me0w")
 
 [node name="Sky" type="ColorRect" parent="." unique_id=824925894]
 offset_right = 1152.0

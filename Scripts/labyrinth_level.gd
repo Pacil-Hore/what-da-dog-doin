@@ -5,7 +5,7 @@ signal game_lost
 
 @export var objective_text: String = "Exit the labyrinth!"
 @export var control_hint: String = "Mouse"
-@export var control_icon_path: String = "res://assets/generated/mouse_icon.png"
+@export var control_icon: Texture2D
 
 @export var time_limit := 5.0
 @export var win_label_text := "You Win"

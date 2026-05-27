@@ -8,7 +8,7 @@ signal game_lost
 @export var win_label_text: String = "Got it!"
 @export var lose_label_text: String = "Too late..."
 @export var time_limit: float = 15.0
-@export var control_icon_path: String = "res://assets/generated/mouse_icon.png"
+@export var control_icon: Texture2D
 
 # === Rope settings ===
 @export var rope_length_normal: float = 150.0     # panjang tali pas idle

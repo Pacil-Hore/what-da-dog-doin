@@ -1,6 +1,7 @@
 [gd_scene format=3 uid="uid://b8u6ka63wdt75"]
 
 [ext_resource type="Script" uid="uid://dmw1b2f4sxj6p" path="res://Scripts/PickTheRope/pick_the_rope_stage.gd" id="1_stage"]
+[ext_resource type="Texture2D" uid="uid://ct6k6ah4ktf42" path="res://Assets/Sprites/Keyboard & Mouse/Double/mouse_left.png" id="2_1nw4c"]
 [ext_resource type="Script" uid="uid://cgq2vq36r41do" path="res://Scripts/PickTheRope/pick_the_rope_background.gd" id="2_background"]
 [ext_resource type="Script" uid="uid://ct6nviu5f8s1a" path="res://Scripts/PickTheRope/pick_the_rope_board.gd" id="3_board"]
 [ext_resource type="Script" uid="uid://d3ng5w6xxv2kq" path="res://Scripts/PickTheRope/pick_the_rope_hook.gd" id="4_hook"]
@@ -10,6 +11,7 @@ radius = 30.0
 
 [node name="PickTheRopeStage" type="Node2D" unique_id=1733788327]
 script = ExtResource("1_stage")
+control_icon = ExtResource("2_1nw4c")
 
 [node name="Background" type="Node2D" parent="." unique_id=42559939]
 z_index = -100

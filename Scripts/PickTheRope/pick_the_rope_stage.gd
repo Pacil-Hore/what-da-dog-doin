@@ -6,7 +6,7 @@ signal game_lost
 
 @export var objective_text: String = "Pick your dog!"
 @export var control_hint: String = "Mouse"
-@export var control_icon_path: String = "res://assets/generated/mouse_icon.png"
+@export var control_icon: Texture2D
 
 @export var start_delay_duration: float = 0.0
 @export var time_limit: float = 4.0

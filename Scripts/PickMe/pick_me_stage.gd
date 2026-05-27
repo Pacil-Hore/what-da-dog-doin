@@ -5,7 +5,7 @@ signal game_lost
 
 @export var objective_text: String = "Pick the right one!"
 @export var control_hint: String = "Mouse"
-@export var control_icon_path: String = "res://assets/generated/mouse_icon.png"
+@export var control_icon: Texture2D
 
 @export var time_limit := 3.0
 @export var win_label_text := "You picked the clue!"
