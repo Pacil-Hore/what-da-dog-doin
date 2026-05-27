@@ -27,7 +27,7 @@ func try_hop_forward():
 		current_platform = null
 	
 	hop_to(target_pos)
-
+	
 func hop_to(target: Vector2):
 	is_moving = true
 	var tween = create_tween()

@@ -1,11 +1,67 @@
 [gd_scene format=3 uid="uid://b24xjwcc07ct2"]
 
 [ext_resource type="Script" uid="uid://bew8hlftj38gu" path="res://Scripts/DogCross/player.gd" id="1_3vyb7"]
-[ext_resource type="Texture2D" path="res://Assets/Sprites/man_top.png" id="2_ux6ck"]
+[ext_resource type="Texture2D" uid="uid://bh1h3s7alkljd" path="res://Assets/Sprites/Character/man_top (anim).png" id="2_pskt0"]
+[ext_resource type="Texture2D" uid="uid://brnl33fdvb5i4" path="res://Assets/Sprites/man_top.png" id="2_ux6ck"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_4bv6r"]
 radius = 17.9
 height = 81.0
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_8r7f1"]
+atlas = ExtResource("2_pskt0")
+region = Rect2(96, 0, 48, 48)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_1grrr"]
+atlas = ExtResource("2_pskt0")
+region = Rect2(96, 0, 48, 48)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_gbj0c"]
+atlas = ExtResource("2_pskt0")
+region = Rect2(48, 0, 48, 48)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_8k02b"]
+atlas = ExtResource("2_pskt0")
+region = Rect2(0, 0, 48, 48)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_cgpvy"]
+atlas = ExtResource("2_pskt0")
+region = Rect2(336, 0, 48, 48)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_uh4rd"]
+atlas = ExtResource("2_pskt0")
+region = Rect2(288, 0, 48, 48)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_8gcv6"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_8r7f1")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_1grrr")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_gbj0c")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_8k02b")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_cgpvy")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_uh4rd")
+}],
+"loop": false,
+"name": &"jump",
+"speed": 10.0
+}]
 
 [node name="Player" type="CharacterBody2D" unique_id=1662722633]
 motion_mode = 1
@@ -15,7 +71,16 @@ script = ExtResource("1_3vyb7")
 rotation = 1.5707964
 shape = SubResource("CapsuleShape2D_4bv6r")
 
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1046437428]
+position = Vector2(0, 2)
+scale = Vector2(2.2, 2.2)
+sprite_frames = SubResource("SpriteFrames_8gcv6")
+animation = &"jump"
+frame = 4
+frame_progress = 1.0
+
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=1351458633]
+visible = false
 position = Vector2(0, 2)
 scale = Vector2(2.2, 2.2)
 texture = ExtResource("2_ux6ck")
