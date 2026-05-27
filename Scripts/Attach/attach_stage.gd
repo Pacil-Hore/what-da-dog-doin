@@ -11,8 +11,8 @@ signal game_lost
 @export var control_icon_path: String = "res://assets/generated/mouse_icon.png"
 
 # === Rope settings ===
-@export var rope_length_normal: float = 200.0     # panjang tali pas idle
-@export var rope_length_extended: float = 500.0   # panjang tali pas dilempar
+@export var rope_length_normal: float = 150.0     # panjang tali pas idle
+@export var rope_length_extended: float = 600.0   # panjang tali pas dilempar
 @export var swing_speed: float = 2.0              # kecepatan swing otomatis (radians/sec)
 @export var swing_amplitude: float = PI / 2       # 90 derajat (total 180° kiri-kanan)
 @export var arrow_influence: float = 3.0          # seberapa kuat arrow key push swing
