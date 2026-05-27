@@ -181,13 +181,14 @@ player = NodePath("../Player")
 dog = NodePath("../Dog")
 
 [node name="Player" parent="." unique_id=1662722633 instance=ExtResource("2_6we3w")]
+hand_offset_idle = Vector2(25, -6.5)
+hand_offset_forward = Vector2(25, -20)
 
 [node name="Dog" parent="." unique_id=2021155083 instance=ExtResource("2_brl4o")]
 
 [node name="Rope" parent="." unique_id=289791178 node_paths=PackedStringArray("entity_a", "entity_b") instance=ExtResource("5_5vydb")]
 entity_a = NodePath("../Player")
 entity_b = NodePath("../Dog")
-offset_a = Vector2(25, -8)
 offset_b = Vector2(0, -10)
 
 [node name="GameManager" parent="." unique_id=275895558 node_paths=PackedStringArray("player", "dog", "rope", "camera") instance=ExtResource("9_1nidl")]
