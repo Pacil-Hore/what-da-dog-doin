@@ -1,0 +1,38 @@
+[gd_resource type="TileSet" format=3 uid="uid://61mgkkn03beo"]
+
+[ext_resource type="Texture2D" uid="uid://dcqjfoomxm2uq" path="res://Assets/Sprites/CP_V1.1.0_nyknck/CP_V1.0.4_nyknck/CP_V1.0.4.png" id="1_atlas"]
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_ground"]
+texture = ExtResource("1_atlas")
+3:38/0 = 0
+5:42/0 = 0
+14:48/0 = 0
+16:48/0 = 0
+18:48/0 = 0
+14:50/0 = 0
+16:50/0 = 0
+18:50/0 = 0
+14:52/0 = 0
+16:52/0 = 0
+18:52/0 = 0
+13:44/0 = 0
+15:44/0 = 0
+17:44/0 = 0
+19:44/0 = 0
+19:42/0 = 0
+17:42/0 = 0
+15:42/0 = 0
+13:42/0 = 0
+13:40/0 = 0
+15:40/0 = 0
+17:40/0 = 0
+19:40/0 = 0
+19:38/0 = 0
+17:38/0 = 0
+15:38/0 = 0
+13:38/0 = 0
+5:40/0 = 0
+9:40/0 = 0
+
+[resource]
+sources/0 = SubResource("TileSetAtlasSource_ground")

@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bs5esn4w53qn2"
-path="res://.godot/imported/dog_walk_spritesheet.png-bf33ae819f7e8882b473b579b4524c7e.ctex"
+uid="uid://bqcdlb7b5c2f5"
+path="res://.godot/imported/dog_idle.png-31313736bf77014272ae77bb699f4517.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/Sprites/dog_walk_spritesheet.png"
-dest_files=["res://.godot/imported/dog_walk_spritesheet.png-bf33ae819f7e8882b473b579b4524c7e.ctex"]
+source_file="res://Assets/Sprites/dog_idle.png"
+dest_files=["res://.godot/imported/dog_idle.png-31313736bf77014272ae77bb699f4517.ctex"]
 
 [params]
 

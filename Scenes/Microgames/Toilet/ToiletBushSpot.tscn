@@ -1,0 +1,74 @@
+[gd_scene format=4 uid="uid://d4jr25hfcxr7u"]
+
+[ext_resource type="Script" uid="uid://dh3yicttsk5ir" path="res://Scripts/Toilet/toilet_spot.gd" id="1_spot"]
+[ext_resource type="TileSet" path="res://Scenes/Microgames/Toilet/toilet_ground_tileset.tres" id="2_ground"]
+[ext_resource type="Texture2D" uid="uid://dvw5k4p2sj3b6" path="res://Assets/Sprites/Toilet/assets.png" id="3_assets"]
+[ext_resource type="Texture2D" uid="uid://5am1kshahj0y" path="res://Assets/Sprites/Toilet/CP_V1.0.4.png" id="4_atlas"]
+[ext_resource type="Texture2D" uid="uid://d06cwuaok516" path="res://Assets/generated/circle_fill.svg" id="5_circle"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_bush"]
+size = Vector2(152, 132)
+
+[node name="ToiletBushSpot" type="Area2D" unique_id=2101389361]
+script = ExtResource("1_spot")
+spot_type = 2
+layout_bounds = Rect2(-76, -66, 152, 132)
+
+[node name="GroundTileMapLayer" type="TileMapLayer" parent="." unique_id=1400395461]
+position = Vector2(-44, -41)
+scale = Vector2(2, 2)
+tile_map_data = PackedByteArray("AAAAAAIAAAANACwAAAABAAIAAAARACwAAAACAAIAAAATACwAAAABAAEAAAAQADIAAAACAAEAAAASADIAAAAAAAEAAAAOADIAAAAAAAAAAAANACYAAAABAAAAAAAPACYAAAACAAAAAAATACYAAAA=")
+tile_set = ExtResource("2_ground")
+
+[node name="VisualSprite" type="Sprite2D" parent="." unique_id=808666152]
+position = Vector2(1.0000038, 2)
+scale = Vector2(2.234, 2.234)
+texture = ExtResource("3_assets")
+offset = Vector2(0.24, 0)
+region_enabled = true
+region_rect = Rect2(173.02844, 494.57495, 69.14316, 48.400208)
+
+[node name="BlockedOverlaySprite" type="Sprite2D" parent="." unique_id=647090455]
+visible = false
+position = Vector2(-40.000004, 36)
+scale = Vector2(2.182, 2.222)
+texture = ExtResource("4_atlas")
+region_enabled = true
+region_rect = Rect2(495.81003, 126.78197, 16.794281, 17.593994)
+
+[node name="BlockedOverlaySprite2" type="Sprite2D" parent="BlockedOverlaySprite" unique_id=60950805]
+position = Vector2(17.873512, -2.7002668)
+scale = Vector2(1.1286006, 1.1703584)
+texture = ExtResource("4_atlas")
+region_enabled = true
+region_rect = Rect2(394.66656, 121.9727, 27.723846, 25.591263)
+
+[node name="BlockedOverlaySprite" type="Sprite2D" parent="BlockedOverlaySprite" unique_id=131519138]
+position = Vector2(35.747025, -0.9000932)
+scale = Vector2(1.0623561, 1.081831)
+texture = ExtResource("4_atlas")
+region_enabled = true
+region_rect = Rect2(495.81003, 126.78197, 16.794281, 17.593994)
+
+[node name="Feedback" type="Node2D" parent="." unique_id=1327823689]
+visible = false
+z_index = 20
+
+[node name="Fill" type="Polygon2D" parent="Feedback" unique_id=1893518707]
+color = Color(1, 1, 1, 0.08)
+polygon = PackedVector2Array(-86, -76, 86, -76, 86, 76, -86, 76)
+
+[node name="Outline" type="Line2D" parent="Feedback" unique_id=1018308454]
+points = PackedVector2Array(-86, -76, 86, -76, 86, 76, -86, 76, -86, -76)
+width = 5.0
+default_color = Color(1, 1, 1, 0.28)
+
+[node name="CorrectMarker" type="Sprite2D" parent="Feedback" unique_id=1797322301]
+visible = false
+modulate = Color(1, 1, 1, 0.28)
+position = Vector2(0, -84)
+scale = Vector2(0.34, 0.34)
+texture = ExtResource("5_circle")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=890275792]
+shape = SubResource("RectangleShape2D_bush")
