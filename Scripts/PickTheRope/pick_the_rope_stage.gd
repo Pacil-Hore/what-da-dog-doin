@@ -4,14 +4,14 @@ class_name PickTheRopeStage
 signal game_won
 signal game_lost
 
-@export var objective_text: String = "Pick your dog!"
+@export var objective_text: String = "Pick your dog! (the red one)"
 @export var control_hint: String = "Mouse"
 @export var control_icon: Texture2D
 
 @export var start_delay_duration: float = 0.0
 @export var time_limit: float = 4.0
 @export var rope_count: int = 4
-@export var instruction_text: String = "Trace your dog's leash and click the right hook before time runs out."
+@export var instruction_text: String = "Trace the red-collared dog's leash and click the right hook before time runs out."
 @export var win_label_text: String = "You found the right leash!"
 @export var lose_label_text: String = "Wrong hook!"
 @export var timeout_label_text: String = "Time is up!"
