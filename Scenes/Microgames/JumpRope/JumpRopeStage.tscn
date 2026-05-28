@@ -10,6 +10,11 @@
 [ext_resource type="SpriteFrames" uid="uid://dx73yr8t1h2qh" path="res://Resource/JumpRope/dog_jump_rope_frames.tres" id="7_dog_frames"]
 [ext_resource type="Texture2D" uid="uid://bir6vjcc7h16k" path="res://Assets/Sprites/Little Dreamyland - Free Pack/Sprites/Sprite_Shadow.png" id="7_shadow"]
 
+[sub_resource type="LabelSettings" id="LabelSettings_em52f"]
+font_size = 48
+outline_size = 12
+outline_color = Color(0, 0, 0, 1)
+
 [node name="JumpRopeStage" type="Node2D" unique_id=703288775]
 script = ExtResource("1_stage")
 control_icon = ExtResource("2_u5jfx")
@@ -113,9 +118,9 @@ offset_top = 68.525
 offset_right = -24.0
 offset_bottom = 106.52501
 grow_horizontal = 2
-theme_override_colors/font_color = Color(0.8, 0.15686275, 0, 1)
-theme_override_font_sizes/font_size = 64
-text = "Misses: 0/3"
+theme_override_font_sizes/font_size = 48
+text = "Miss: 0/3"
+label_settings = SubResource("LabelSettings_em52f")
 horizontal_alignment = 1
 
 [node name="CountdownTimer" type="Timer" parent="." unique_id=1892543933]
