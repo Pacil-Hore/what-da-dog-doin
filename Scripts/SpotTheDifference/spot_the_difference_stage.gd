@@ -21,8 +21,8 @@ signal game_lost
 # ── Node references ────────────────────────────────────────────────────────
 @onready var game_canvas: CanvasLayer       = $GameCanvas
 @onready var image_container: HBoxContainer = $GameCanvas/MainLayout/GameArea/ImageContainer
-@onready var left_image: TextureRect        = $GameCanvas/MainLayout/GameArea/ImageContainer/LeftImage
-@onready var right_image: TextureRect       = $GameCanvas/MainLayout/GameArea/ImageContainer/RightImage
+@onready var left_image: Control            = $GameCanvas/MainLayout/GameArea/ImageContainer/LeftImage
+@onready var right_image: Control           = $GameCanvas/MainLayout/GameArea/ImageContainer/RightImage
 @onready var result_label: Label            = $GameCanvas/ResultLabel
 @onready var countdown_timer: Timer         = $CountdownTimer
 @onready var distraction_manager: CanvasLayer = $DistractionLayer
@@ -123,9 +123,7 @@ func _ready() -> void:
 func _set_matching_panel_properties() -> void:
 	for panel in [left_image, right_image]:
 		panel.custom_minimum_size = PANEL_SIZE
-		panel.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
-		panel.stretch_mode = TextureRect.STRETCH_SCALE
-		panel.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
+		panel.clip_contents = true
 
 func _set_region_layering() -> void:
 	for regions in [left_regions, right_regions]:

@@ -1,7 +1,6 @@
 [gd_scene format=4 uid="uid://ch6pyvnkr1fxp"]
 
 [ext_resource type="Script" uid="uid://cdkvu7gcom17l" path="res://Scripts/SpotTheDifference/spot_the_difference_stage.gd" id="1_script"]
-[ext_resource type="Texture2D" uid="uid://ck0uebakebqwi" path="res://Assets/Sprites/spot the difference/background bagian langit.png" id="2_left_bg"]
 [ext_resource type="Texture2D" uid="uid://ck0uebakebqwi" path="res://Assets/Sprites/spot the difference/background bagian langit.png" id="3_right_bg"]
 [ext_resource type="Script" uid="uid://ion7ydgfa5k3" path="res://Scripts/SpotTheDifference/distraction_manager.gd" id="4_distraction"]
 [ext_resource type="Script" uid="uid://ceq52yr6ud5up" path="res://Scripts/SpotTheDifference/difference_region.gd" id="5_region"]
@@ -138,14 +137,16 @@ size_flags_vertical = 3
 layout_mode = 2
 theme_override_constants/separation = 4
 
-[node name="LeftImage" type="TextureRect" parent="GameCanvas/MainLayout/GameArea/ImageContainer" unique_id=1496418159]
-texture_filter = 1
+[node name="LeftImage" type="Control" parent="GameCanvas/MainLayout/GameArea/ImageContainer" unique_id=1496418159]
 clip_contents = true
 custom_minimum_size = Vector2(574, 648)
 layout_mode = 2
-texture = ExtResource("2_left_bg")
-expand_mode = 1
-stretch_mode = 5
+
+[node name="BackgroundSprite" type="Sprite2D" parent="GameCanvas/MainLayout/GameArea/ImageContainer/LeftImage" unique_id=1910754360]
+texture_filter = 1
+position = Vector2(287, 225.99997)
+scale = Vector2(0.24913195, 0.3487654)
+texture = ExtResource("3_right_bg")
 
 [node name="GroundTileMapLayer" type="TileMapLayer" parent="GameCanvas/MainLayout/GameArea/ImageContainer/LeftImage" unique_id=1092411001]
 position = Vector2(0, 8)
@@ -283,14 +284,16 @@ offset_bottom = 430.0
 mouse_filter = 1
 script = ExtResource("5_region")
 
-[node name="RightImage" type="TextureRect" parent="GameCanvas/MainLayout/GameArea/ImageContainer" unique_id=1422390088]
-texture_filter = 1
+[node name="RightImage" type="Control" parent="GameCanvas/MainLayout/GameArea/ImageContainer" unique_id=1422390088]
 clip_contents = true
 custom_minimum_size = Vector2(574, 648)
 layout_mode = 2
+
+[node name="BackgroundSprite" type="Sprite2D" parent="GameCanvas/MainLayout/GameArea/ImageContainer/RightImage" unique_id=1424979827]
+texture_filter = 1
+position = Vector2(287, 227)
+scale = Vector2(0.24913195, 0.35030866)
 texture = ExtResource("3_right_bg")
-expand_mode = 1
-stretch_mode = 5
 
 [node name="GroundTileMapLayer" type="TileMapLayer" parent="GameCanvas/MainLayout/GameArea/ImageContainer/RightImage" unique_id=1461324002]
 position = Vector2(0, 8)
