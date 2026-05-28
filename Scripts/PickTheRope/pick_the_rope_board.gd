@@ -12,7 +12,11 @@ enum FeedbackState {
 
 const MAX_ROPES: int = 4
 const ROPE_TINT_OFFSETS: Array[float] = [-0.03, 0.02, -0.01, 0.04]
-const PLAYER_COLLAR_COLOR: Color = Color(0.28, 0.74, 0.4)
+const DOG_ANIMATION_NAME: StringName = &"default"
+const DOG_COLLAR_RED: int = 0
+const DOG_COLLAR_BLUE: int = 1
+const DOG_COLLAR_GREEN: int = 2
+const DOG_COLLAR_PURPLE: int = 3
 const TARGET_KNOT_OFFSETS := [
 	Vector2(-16.0, -10.0),
 	Vector2(16.0, 8.0),
@@ -89,6 +93,20 @@ const SPREAD_VARIANTS := [
 			_sync_rope_visuals()
 @export var dog_neck_offset: Vector2 = Vector2(0.0, -30.0)
 
+@export_group("Dog Animation")
+@export var dog_collar_frames: Array[SpriteFrames] = [
+	preload("res://Resource/PickTheRope/dog_front_red_frames.tres"),
+	preload("res://Resource/PickTheRope/dog_front_blue_frames.tres"),
+	preload("res://Resource/PickTheRope/dog_front_green_frames.tres"),
+	preload("res://Resource/PickTheRope/dog_front_purple_frames.tres"),
+]
+@export_range(0.0, 0.25, 0.01) var dog_animation_speed_variance: float = 0.08
+@export_range(0.0, 24.0, 0.5) var target_dog_excited_jump_height: float = 8.0
+@export_range(0.1, 8.0, 0.1) var target_dog_excited_hops_per_second: float = 2.2
+@export_range(0.0, 12.0, 0.5) var target_dog_excited_wiggle_degrees: float = 4.0
+@export_range(0.1, 10.0, 0.1) var target_dog_excited_wiggle_speed: float = 3.8
+@export_group("")
+
 @export_group("Fallback Positions")
 @export var hook_positions: PackedVector2Array = PackedVector2Array([
 	Vector2(916.0, 182.0),
@@ -109,18 +127,23 @@ const SPREAD_VARIANTS := [
 @onready var rope_shadow_nodes: Array[Line2D] = [$RopeShadows/RopeShadowA as Line2D, $RopeShadows/RopeShadowB as Line2D, $RopeShadows/RopeShadowC as Line2D, $RopeShadows/RopeShadowD as Line2D]
 @onready var dog_slot_nodes: Array[Node2D] = [$DogSlots/DogSlotA as Node2D, $DogSlots/DogSlotB as Node2D, $DogSlots/DogSlotC as Node2D, $DogSlots/DogSlotD as Node2D]
 @onready var dog_visual_nodes: Array[Node2D] = [$DogSlots/DogSlotA/Visuals as Node2D, $DogSlots/DogSlotB/Visuals as Node2D, $DogSlots/DogSlotC/Visuals as Node2D, $DogSlots/DogSlotD/Visuals as Node2D]
-@onready var dog_glow_nodes: Array[Sprite2D] = [$DogSlots/DogSlotA/Glow as Sprite2D, $DogSlots/DogSlotB/Glow as Sprite2D, $DogSlots/DogSlotC/Glow as Sprite2D, $DogSlots/DogSlotD/Glow as Sprite2D]
+@onready var dog_sprite_nodes: Array[AnimatedSprite2D] = [$DogSlots/DogSlotA/Visuals/Dog as AnimatedSprite2D, $DogSlots/DogSlotB/Visuals/Dog as AnimatedSprite2D, $DogSlots/DogSlotC/Visuals/Dog as AnimatedSprite2D, $DogSlots/DogSlotD/Visuals/Dog as AnimatedSprite2D]
 
 var rng: RandomNumberGenerator = RandomNumberGenerator.new()
 var dog_slot_for_hook: Array[int] = []
+var dog_collar_for_slot: Array[int] = []
+var dog_animation_frame_for_slot: Array[int] = []
+var dog_animation_progress_for_slot: Array[float] = []
+var dog_animation_speed_scale_for_slot: Array[float] = []
+var dog_animation_applied_for_slot: Array[bool] = []
 var rope_paths: Array[PackedVector2Array] = []
 var rope_states: Array[int] = []
 var correct_hook_index: int = -1
 var player_dog_slot_index: int = 0
 var current_pattern_index: int = 0
 var feedback_tween: Tween
-var player_dog_glow: float = 0.0
 var player_dog_bounce: float = 0.0
+var target_dog_excited_time: float = 0.0
 
 
 func _ready() -> void:
@@ -135,7 +158,13 @@ func _ready() -> void:
 	_reset_feedback_visuals()
 
 
+func _process(delta: float) -> void:
+	target_dog_excited_time += delta
+	_sync_dog_visuals()
+
+
 func reset_round() -> void:
+	target_dog_excited_time = rng.randf_range(0.0, 10.0)
 	current_pattern_index = rng.randi_range(0, KNOT_VARIANTS.size() - 1)
 	_shuffle_assignments()
 	_build_rope_paths()
@@ -150,7 +179,6 @@ func set_pick_enabled(value: bool) -> void:
 func reveal_result(selected_hook_index: int, correct_hook_index_value: int) -> void:
 	correct_hook_index = correct_hook_index_value
 	_clear_feedback_tween()
-	_set_player_dog_glow(0.0)
 	_set_player_dog_bounce(0.0)
 
 	for index in range(rope_states.size()):
@@ -200,6 +228,54 @@ func _shuffle_assignments() -> void:
 
 	player_dog_slot_index = rng.randi_range(0, rope_count - 1)
 	correct_hook_index = dog_slot_for_hook.find(player_dog_slot_index)
+	_assign_dog_collar_colors()
+	_assign_dog_animation_offsets()
+
+
+func _assign_dog_collar_colors() -> void:
+	dog_collar_for_slot.clear()
+	for index in range(MAX_ROPES):
+		dog_collar_for_slot.append(DOG_COLLAR_BLUE)
+
+	var available_non_target_colors: Array[int] = [
+		DOG_COLLAR_BLUE,
+		DOG_COLLAR_GREEN,
+		DOG_COLLAR_PURPLE,
+	]
+
+	for index in range(available_non_target_colors.size() - 1, 0, -1):
+		var swap_index: int = rng.randi_range(0, index)
+		var temp: int = available_non_target_colors[index]
+		available_non_target_colors[index] = available_non_target_colors[swap_index]
+		available_non_target_colors[swap_index] = temp
+
+	var non_target_color_index: int = 0
+	for slot_index in range(rope_count):
+		if slot_index == player_dog_slot_index:
+			dog_collar_for_slot[slot_index] = DOG_COLLAR_RED
+			continue
+
+		dog_collar_for_slot[slot_index] = available_non_target_colors[non_target_color_index]
+		non_target_color_index += 1
+
+
+func _assign_dog_animation_offsets() -> void:
+	dog_animation_frame_for_slot.clear()
+	dog_animation_progress_for_slot.clear()
+	dog_animation_speed_scale_for_slot.clear()
+	dog_animation_applied_for_slot.clear()
+
+	for slot_index in range(MAX_ROPES):
+		var collar_index: int = _get_dog_collar_for_slot(slot_index)
+		var frame_count: int = _get_dog_animation_frame_count(collar_index)
+		var max_frame: int = maxi(frame_count - 1, 0)
+		dog_animation_frame_for_slot.append(rng.randi_range(0, max_frame) if max_frame > 0 else 0)
+		dog_animation_progress_for_slot.append(rng.randf())
+
+		var speed_min: float = maxf(0.1, 1.0 - dog_animation_speed_variance)
+		var speed_max: float = maxf(speed_min, 1.0 + dog_animation_speed_variance)
+		dog_animation_speed_scale_for_slot.append(rng.randf_range(speed_min, speed_max))
+		dog_animation_applied_for_slot.append(false)
 
 
 func _build_rope_paths() -> void:
@@ -292,7 +368,6 @@ func _cubic_bezier_point(p0: Vector2, p1: Vector2, p2: Vector2, p3: Vector2, t: 
 
 func _reset_feedback_visuals() -> void:
 	_clear_feedback_tween()
-	player_dog_glow = 0.0
 	player_dog_bounce = 0.0
 
 	for index in range(hook_nodes.size()):
@@ -341,15 +416,104 @@ func _sync_dog_visuals() -> void:
 		var is_active: bool = index < rope_count
 		var is_player_dog: bool = index == player_dog_slot_index
 		dog_slot_nodes[index].visible = is_active
-		var visual_y: float = -player_dog_bounce if is_player_dog else 0.0
+		var visual_y: float = _get_dog_visual_y(is_player_dog)
+		var visual_rotation: float = _get_dog_visual_rotation(is_player_dog)
 		dog_visual_nodes[index].position = Vector2(0.0, visual_y)
+		dog_visual_nodes[index].rotation = visual_rotation
 
-		var glow: Sprite2D = dog_glow_nodes[index]
-		glow.visible = is_active and is_player_dog
-		var glow_color: Color = PLAYER_COLLAR_COLOR
-		glow_color.a = 0.18 + player_dog_glow * 0.18
-		glow.modulate = glow_color
-		glow.scale = Vector2.ONE * (1.35 + player_dog_glow * 0.18)
+		var dog_sprite: AnimatedSprite2D = dog_sprite_nodes[index]
+		dog_sprite.visible = is_active
+		if not is_active:
+			dog_sprite.stop()
+			continue
+
+		var collar_index: int = _get_dog_collar_for_slot(index)
+		var sprite_frames: SpriteFrames = _get_dog_sprite_frames(collar_index)
+		if sprite_frames == null:
+			continue
+
+		var should_apply_offset: bool = not _is_dog_animation_offset_applied(index)
+		if dog_sprite.sprite_frames != sprite_frames:
+			dog_sprite.sprite_frames = sprite_frames
+			should_apply_offset = true
+
+		if dog_sprite.animation != DOG_ANIMATION_NAME:
+			dog_sprite.animation = DOG_ANIMATION_NAME
+			should_apply_offset = true
+
+		if should_apply_offset:
+			_apply_dog_animation_offset(index, dog_sprite, sprite_frames)
+
+		if not dog_sprite.is_playing():
+			dog_sprite.play(DOG_ANIMATION_NAME)
+
+
+func _get_dog_sprite_frames(collar_index: int) -> SpriteFrames:
+	if dog_collar_frames.is_empty():
+		return null
+
+	var safe_index: int = clampi(collar_index, 0, dog_collar_frames.size() - 1)
+	return dog_collar_frames[safe_index]
+
+
+func _get_dog_visual_y(is_player_dog: bool) -> float:
+	if not is_player_dog:
+		return 0.0
+
+	var hop_phase: float = sin(target_dog_excited_time * TAU * target_dog_excited_hops_per_second)
+	var excited_jump: float = maxf(hop_phase, 0.0) * target_dog_excited_jump_height
+	return -(player_dog_bounce + excited_jump)
+
+
+func _get_dog_visual_rotation(is_player_dog: bool) -> float:
+	if not is_player_dog or target_dog_excited_wiggle_degrees <= 0.0:
+		return 0.0
+
+	var wiggle: float = sin(target_dog_excited_time * TAU * target_dog_excited_wiggle_speed)
+	return deg_to_rad(wiggle * target_dog_excited_wiggle_degrees)
+
+
+func _get_dog_animation_frame_count(collar_index: int) -> int:
+	var sprite_frames: SpriteFrames = _get_dog_sprite_frames(collar_index)
+	if sprite_frames == null or not sprite_frames.has_animation(DOG_ANIMATION_NAME):
+		return 1
+
+	return maxi(sprite_frames.get_frame_count(DOG_ANIMATION_NAME), 1)
+
+
+func _is_dog_animation_offset_applied(slot_index: int) -> bool:
+	return (
+		slot_index >= 0
+		and slot_index < dog_animation_applied_for_slot.size()
+		and dog_animation_applied_for_slot[slot_index]
+	)
+
+
+func _apply_dog_animation_offset(slot_index: int, dog_sprite: AnimatedSprite2D, sprite_frames: SpriteFrames) -> void:
+	var frame_count: int = maxi(sprite_frames.get_frame_count(DOG_ANIMATION_NAME), 1)
+	var frame_index: int = 0
+	var frame_progress: float = 0.0
+	var speed_scale: float = 1.0
+
+	if slot_index >= 0 and slot_index < dog_animation_frame_for_slot.size():
+		frame_index = clampi(dog_animation_frame_for_slot[slot_index], 0, frame_count - 1)
+	if slot_index >= 0 and slot_index < dog_animation_progress_for_slot.size():
+		frame_progress = clampf(dog_animation_progress_for_slot[slot_index], 0.0, 1.0)
+	if slot_index >= 0 and slot_index < dog_animation_speed_scale_for_slot.size():
+		speed_scale = maxf(dog_animation_speed_scale_for_slot[slot_index], 0.1)
+
+	dog_sprite.speed_scale = speed_scale
+	dog_sprite.frame = frame_index
+	dog_sprite.frame_progress = frame_progress
+
+	if slot_index >= 0 and slot_index < dog_animation_applied_for_slot.size():
+		dog_animation_applied_for_slot[slot_index] = true
+
+
+func _get_dog_collar_for_slot(slot_index: int) -> int:
+	if slot_index >= 0 and slot_index < dog_collar_for_slot.size():
+		return dog_collar_for_slot[slot_index]
+	return DOG_COLLAR_BLUE
 
 
 func _get_hook_position(index: int) -> Vector2:
@@ -413,10 +577,8 @@ func _get_rope_shadow_for_state(rope_state: int) -> Color:
 
 func _play_player_success_feedback() -> void:
 	feedback_tween = create_tween()
-	feedback_tween.tween_method(_set_player_dog_glow, 0.0, 1.0, 0.12)
-	feedback_tween.parallel().tween_method(_set_player_dog_bounce, 0.0, 14.0, 0.12).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
-	feedback_tween.tween_method(_set_player_dog_glow, 1.0, 0.34, 0.24)
-	feedback_tween.parallel().tween_method(_set_player_dog_bounce, 14.0, 0.0, 0.24).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN)
+	feedback_tween.tween_method(_set_player_dog_bounce, 0.0, 14.0, 0.12).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
+	feedback_tween.tween_method(_set_player_dog_bounce, 14.0, 0.0, 0.24).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN)
 	feedback_tween.finished.connect(_on_feedback_finished)
 
 
@@ -424,11 +586,6 @@ func _clear_feedback_tween() -> void:
 	if feedback_tween != null:
 		feedback_tween.kill()
 		feedback_tween = null
-
-
-func _set_player_dog_glow(value: float) -> void:
-	player_dog_glow = value
-	_sync_dog_visuals()
 
 
 func _set_player_dog_bounce(value: float) -> void:
