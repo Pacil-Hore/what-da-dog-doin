@@ -32,6 +32,7 @@ signal state_changed(state_index: int)
 @export var state_label_path := NodePath("StateLabel")
 
 var _sprite: Sprite2D
+var _is_ready_done := false
 
 
 func _ready() -> void:
@@ -40,6 +41,7 @@ func _ready() -> void:
 		_sprite.visible = false
 	_prepare_state_sprite_textures()
 	_sync_state()
+	_is_ready_done = true
 
 
 func set_state_index(value: int) -> void:
@@ -103,7 +105,16 @@ func _sync_visuals() -> void:
 	for index in range(visual_container.get_child_count()):
 		var visual: Node = visual_container.get_child(index)
 		if visual is CanvasItem:
+			var was_visible = visual.visible
 			visual.visible = index == current_state_index
+			
+			# Pop animation when state becomes active
+			if _is_ready_done and not was_visible and visual.visible and not Engine.is_editor_hint():
+				var state_sprite = visual.get_node_or_null("StateSprite") as Sprite2D
+				if state_sprite != null:
+					state_sprite.scale = state_sprite_scale * 0.85
+					var tween = create_tween().set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+					tween.tween_property(state_sprite, "scale", state_sprite_scale, 0.2)
 
 
 func _prepare_state_sprite_textures() -> void:
@@ -121,7 +132,7 @@ func _prepare_state_sprite_textures() -> void:
 			state_sprite.texture = state_textures[index]
 		if state_sprite.texture == null:
 			continue
-		state_sprite.texture = _make_black_transparent(state_sprite.texture)
+		# state_sprite.texture = _make_black_transparent(state_sprite.texture)
 		state_sprite.centered = true
 		state_sprite.modulate = Color.WHITE
 		state_sprite.scale = state_sprite_scale

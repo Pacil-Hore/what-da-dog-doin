@@ -3,11 +3,22 @@
 [ext_resource type="Script" uid="uid://cplqkn3fsov70" path="res://Scripts/Untangle/untangle_stage.gd" id="1_stage"]
 [ext_resource type="Texture2D" uid="uid://b5483qcpydf8f" path="res://Assets/Sprites/Keyboard & Mouse/Double/mouse_move.png" id="2_gqux0"]
 [ext_resource type="Script" uid="uid://iidldyukbeg7" path="res://Scripts/Untangle/untangle_state_object.gd" id="2_state_object"]
-[ext_resource type="Texture2D" uid="uid://c1fbew4bsn4lx" path="res://Assets/generated/placeholder_icon.png" id="3_2j3mm"]
 [ext_resource type="Script" uid="uid://c8hu466j2o10s" path="res://Scripts/Untangle/circular_motion_detector.gd" id="3_motion_detector"]
+[ext_resource type="Texture2D" uid="uid://hw1h04vrv7ks" path="res://Assets/Sprites/untangle/hydrant_tangled.png" id="4_gqux0"]
 [ext_resource type="Script" uid="uid://dybqpcu20o231" path="res://Scripts/Untangle/motion_guide.gd" id="4_motion_guide"]
-[ext_resource type="Texture2D" uid="uid://dg5ekpbw835er" path="res://Assets/generated/player_placeholder.png" id="5_r2ppw"]
-[ext_resource type="Texture2D" uid="uid://bb03ew2g4h3kc" path="res://icon.svg" id="6_h4b4f"]
+[ext_resource type="Texture2D" uid="uid://dsjpxtavgpy4n" path="res://Assets/Sprites/untangle/hydrant_half_tangled.png" id="5_wbokc"]
+[ext_resource type="Texture2D" uid="uid://brk14vm6p5btp" path="res://Assets/Sprites/untangle/hydrant_untangled.png" id="6_vuptb"]
+
+[sub_resource type="Gradient" id="Gradient_trail"]
+offsets = PackedFloat32Array(0, 0.5, 1)
+colors = PackedColorArray(1, 0.8, 0.3, 0.5, 1, 0.5, 0.2, 0.3, 1, 0.2, 0.1, 0)
+
+[sub_resource type="Gradient" id="Gradient_victory"]
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0)
+
+[sub_resource type="Gradient" id="Gradient_clear"]
+offsets = PackedFloat32Array(0, 0.5, 1)
+colors = PackedColorArray(0.2, 0.9, 1, 0.8, 1, 0.9, 0.2, 0.6, 1, 1, 1, 0)
 
 [node name="UntangleStage" type="Node2D" unique_id=1568640092]
 script = ExtResource("1_stage")
@@ -31,33 +42,28 @@ color = Color(0.88, 0.88, 0.84, 1)
 position = Vector2(576, 322)
 script = ExtResource("2_state_object")
 hydrant_texture = null
-state_textures = null
-state_sprite_scale = null
 
 [node name="Visuals" type="Node2D" parent="StateObject" unique_id=1515389688]
 
 [node name="StateAVisual" type="Node2D" parent="StateObject/Visuals" unique_id=1673751879]
 
 [node name="StateSprite" type="Sprite2D" parent="StateObject/Visuals/StateAVisual" unique_id=1724366782]
-modulate = Color(1, 0.82, 0.82, 1)
-scale = Vector2(0.48, 0.48)
-texture = ExtResource("3_2j3mm")
+scale = Vector2(3, 3)
+texture = ExtResource("4_gqux0")
 
 [node name="StateBVisual" type="Node2D" parent="StateObject/Visuals" unique_id=1207757330]
 visible = false
 
 [node name="StateSprite" type="Sprite2D" parent="StateObject/Visuals/StateBVisual" unique_id=1872221136]
-modulate = Color(1, 0.94, 0.72, 1)
-scale = Vector2(0.44, 0.44)
-texture = ExtResource("3_2j3mm")
+scale = Vector2(3, 3)
+texture = ExtResource("5_wbokc")
 
 [node name="StateCVisual" type="Node2D" parent="StateObject/Visuals" unique_id=1245131410]
 visible = false
 
 [node name="StateSprite" type="Sprite2D" parent="StateObject/Visuals/StateCVisual" unique_id=1160774284]
-modulate = Color(0.72, 1, 0.78, 1)
-scale = Vector2(0.4, 0.4)
-texture = ExtResource("3_2j3mm")
+scale = Vector2(3, 3)
+texture = ExtResource("6_vuptb")
 
 [node name="StateLabel" type="Label" parent="StateObject" unique_id=980348929]
 visible = false
@@ -72,6 +78,7 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="HydrantSprite" type="Sprite2D" parent="StateObject" unique_id=870177304]
+visible = false
 z_index = -1
 scale = Vector2(0.55, 0.55)
 
@@ -132,38 +139,97 @@ grow_horizontal = 2
 max_value = 10.0
 show_percentage = false
 
+[node name="WinBanner" type="Label" parent="HUD" unique_id=1179538794]
+visible = false
+offset_left = 276.0
+offset_top = 180.0
+offset_right = 876.0
+offset_bottom = 300.0
+pivot_offset = Vector2(300, 60)
+theme_override_colors/font_color = Color(1, 0.85, 0.2, 1)
+theme_override_colors/font_outline_color = Color(0.1, 0.05, 0, 1)
+theme_override_constants/outline_size = 16
+theme_override_font_sizes/font_size = 72
+text = "UNTANGLED!"
+horizontal_alignment = 1
+vertical_alignment = 1
+
 [node name="CountdownTimer" type="Timer" parent="." unique_id=213101904]
 
-[node name="SceneArt" type="Node2D" parent="." unique_id=1653145530]
-z_index = -10
+[node name="SpinTrailParticles" type="CPUParticles2D" parent="." unique_id=2029399906]
+emitting = false
+amount = 10
+lifetime = 0.2
+spread = 180.0
+gravity = Vector2(0, 0)
+initial_velocity_min = 5.0
+initial_velocity_max = 15.0
+scale_amount_max = 3.0
+color_ramp = SubResource("Gradient_trail")
 
-[node name="HumanSprite" type="Sprite2D" parent="SceneArt" unique_id=1285965084]
-position = Vector2(206, 376)
-scale = Vector2(0.55, 0.55)
-texture = ExtResource("5_r2ppw")
+[node name="VictoryConfettiParticles" type="CPUParticles2D" parent="." unique_id=2105115917]
+emitting = false
+amount = 25
+lifetime = 0.8
+one_shot = true
+explosiveness = 0.85
+direction = Vector2(0, -1)
+spread = 180.0
+gravity = Vector2(0, 300)
+initial_velocity_min = 100.0
+initial_velocity_max = 200.0
+scale_amount_min = 3.0
+scale_amount_max = 5.0
+color_ramp = SubResource("Gradient_victory")
+hue_variation_min = -1.0
+hue_variation_max = 1.0
 
-[node name="DogSprite" type="Sprite2D" parent="SceneArt" unique_id=680602219]
-position = Vector2(862, 384)
-scale = Vector2(1.85, 1.85)
-texture = ExtResource("6_h4b4f")
+[node name="StateClearParticles" type="CPUParticles2D" parent="." unique_id=266762835]
+emitting = false
+amount = 15
+lifetime = 0.5
+one_shot = true
+explosiveness = 0.9
+spread = 180.0
+gravity = Vector2(0, 0)
+initial_velocity_min = 80.0
+initial_velocity_max = 150.0
+scale_amount_min = 3.0
+scale_amount_max = 6.0
+color_ramp = SubResource("Gradient_clear")
 
-[node name="TitleLabel" type="Label" parent="SceneArt" unique_id=129435756]
-offset_left = 376.0
-offset_top = 20.0
-offset_right = 776.0
-offset_bottom = 80.0
-theme_override_colors/font_color = Color(0.05, 0.05, 0.05, 1)
-theme_override_font_sizes/font_size = 54
-text = "UNTANGLE!"
-horizontal_alignment = 1
+[node name="LeftConfettiCannon" type="CPUParticles2D" parent="." unique_id=386286320]
+position = Vector2(50, 450)
+emitting = false
+amount = 45
+lifetime = 1.6
+one_shot = true
+explosiveness = 0.9
+direction = Vector2(1, -0.7)
+spread = 30.0
+gravity = Vector2(0, 500)
+initial_velocity_min = 550.0
+initial_velocity_max = 850.0
+scale_amount_min = 4.0
+scale_amount_max = 9.0
+color_ramp = SubResource("Gradient_victory")
+hue_variation_min = -1.0
+hue_variation_max = 1.0
 
-[node name="LeftLeash" type="Line2D" parent="SceneArt" unique_id=1013069947]
-points = PackedVector2Array(248, 372, 344, 320, 498, 348)
-width = 3.0
-default_color = Color(0.03, 0.03, 0.03, 1)
-
-[node name="RightLeash" type="Line2D" parent="SceneArt" unique_id=39052140]
-visible = false
-points = PackedVector2Array(648, 338, 720, 346, 820, 374)
-width = 3.0
-default_color = Color(0.03, 0.03, 0.03, 1)
+[node name="RightConfettiCannon" type="CPUParticles2D" parent="." unique_id=998523290]
+position = Vector2(1102, 450)
+emitting = false
+amount = 45
+lifetime = 1.6
+one_shot = true
+explosiveness = 0.9
+direction = Vector2(-1, -0.7)
+spread = 30.0
+gravity = Vector2(0, 500)
+initial_velocity_min = 550.0
+initial_velocity_max = 850.0
+scale_amount_min = 4.0
+scale_amount_max = 9.0
+color_ramp = SubResource("Gradient_victory")
+hue_variation_min = -1.0
+hue_variation_max = 1.0
