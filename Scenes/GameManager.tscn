@@ -4,6 +4,9 @@
 [ext_resource type="PackedScene" uid="uid://7ugsq80aeecn" path="res://Scenes/Interstitial.tscn" id="2_bwyv8"]
 [ext_resource type="PackedScene" uid="uid://p5fs5nwphm54" path="res://Scenes/UI/TimerBar.tscn" id="3_7cxpe"]
 [ext_resource type="PackedScene" uid="uid://tvjhmo8l8bo5" path="res://Scenes/ObjectiveOverlay.tscn" id="4_b7dir"]
+[ext_resource type="AudioStream" uid="uid://olimjoy4k5y1" path="res://Assets/BGM/Juhani Junkala [Chiptune Adventures] 1. Stage 1.ogg" id="5_xqbpr"]
+[ext_resource type="AudioStream" uid="uid://dpvj2fgendefm" path="res://Assets/BGM/Juhani Junkala [Chiptune Adventures] 2. Stage 2.ogg" id="6_je8vj"]
+[ext_resource type="AudioStream" uid="uid://cw6hkdmut6vc0" path="res://Assets/BGM/hold the line_1.ogg" id="7_je8vj"]
 
 [node name="GameManager" type="Node" unique_id=536985573]
 script = ExtResource("1_m2tc1")
@@ -29,3 +32,12 @@ vertical_alignment = 1
 
 [node name="ObjectiveOverlayTemplate" parent="." unique_id=877309698 instance=ExtResource("4_b7dir")]
 visible = false
+
+[node name="MusicSlow" type="AudioStreamPlayer" parent="." unique_id=1313517778]
+stream = ExtResource("5_xqbpr")
+
+[node name="MusicFast" type="AudioStreamPlayer" parent="." unique_id=1874019099]
+stream = ExtResource("6_je8vj")
+
+[node name="MusicFinal" type="AudioStreamPlayer" parent="." unique_id=206988700]
+stream = ExtResource("7_je8vj")
