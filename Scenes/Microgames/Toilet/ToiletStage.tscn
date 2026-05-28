@@ -616,6 +616,16 @@ texture = ExtResource("3_q433f")
 [sub_resource type="TileSet" id="TileSet_1chfa"]
 sources/0 = SubResource("TileSetAtlasSource_865ev")
 
+[sub_resource type="LabelSettings" id="LabelSettings_uqa1u"]
+font_size = 28
+outline_size = 8
+outline_color = Color(0.176471, 0.176471, 0.176471, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_61rn6"]
+font_size = 28
+outline_size = 16
+outline_color = Color(0.176471, 0.176471, 0.176471, 1)
+
 [node name="ToiletStage" type="Node2D" unique_id=1552928677]
 script = ExtResource("1_stage")
 control_icon = ExtResource("2_61rn6")
@@ -678,3 +688,31 @@ animation = &"idle"
 autoplay = "idle"
 
 [node name="HUD" type="CanvasLayer" parent="." unique_id=1130635532]
+
+[node name="PromptLabel" type="Label" parent="HUD" unique_id=802557868]
+text = "MASH SPACE!"
+label_settings = SubResource("LabelSettings_uqa1u")
+horizontal_alignment = 1
+
+[node name="CenterContainer" type="CenterContainer" parent="HUD" unique_id=401374759]
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -250.0
+offset_top = 60.0
+offset_right = 250.0
+offset_bottom = 180.0
+grow_horizontal = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="HUD/CenterContainer" unique_id=569990562]
+custom_minimum_size = Vector2(500, 0)
+layout_mode = 2
+theme_override_constants/separation = 12
+alignment = 1
+
+[node name="PromptLabel" type="Label" parent="HUD/CenterContainer/VBoxContainer" unique_id=1688812532]
+layout_mode = 2
+text = "Poop is good for plants
+and not so much for metals..."
+label_settings = SubResource("LabelSettings_61rn6")
+horizontal_alignment = 1

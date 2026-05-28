@@ -11,7 +11,7 @@
 
 [sub_resource type="LabelSettings" id="LabelSettings_prompt"]
 font_size = 28
-outline_size = 8
+outline_size = 16
 outline_color = Color(0.176471, 0.176471, 0.176471, 1)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bg"]
@@ -39,7 +39,8 @@ corner_radius_bottom_left = 6
 
 [sub_resource type="LabelSettings" id="LabelSettings_lbl"]
 font_size = 18
-font_color = Color(1, 1, 1, 0.705882)
+outline_size = 11
+outline_color = Color(0, 0, 0, 1)
 
 [sub_resource type="LabelSettings" id="LabelSettings_tug"]
 font_size = 72
