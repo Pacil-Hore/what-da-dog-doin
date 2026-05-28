@@ -91,10 +91,6 @@ func _ready() -> void:
 		camera.make_current()
 	
 	visual_tension = 0.3
-	
-	sky = $Sky
-	if sky:
-		original_sky_color = sky.color
 		
 	# Generate chiptune SFX
 	_init_sfx()
