@@ -48,6 +48,10 @@ var next_game_scene: PackedScene = null
 var _remaining_scenario_games: Array[PackedScene] = []
 var _last_played_game: PackedScene = null
 
+# Prevent multiple concurrent round endings (e.g. timeout + action win/loss at the same second)
+var _round_active: bool = false
+var _active_game_over_screen: Node = null
+
 func _ready():
 	# Load config from AppManager (set before scene was changed)
 	if AppManager.pending_scenario_games.is_empty():
@@ -71,6 +75,14 @@ func start_game_loop():
 	speed_multiplier = 1.0
 	Engine.time_scale = speed_multiplier
 	
+	_round_active = false
+	
+	# Clean up any leftover game over screens or UI elements in HUDLayer
+	for child in $HUDLayer.get_children():
+		if child != timer_bar and child != feedback_label:
+			child.queue_free()
+	_active_game_over_screen = null
+	
 	_play_slow_music()
 	
 	# Reset randomizer pool
@@ -79,6 +91,7 @@ func start_game_loop():
 	
 	_pick_next_game()
 	_load_interstitial()
+
 
 func _pick_next_game():
 	var is_endless = (AppManager.current_mode == AppManager.Mode.ENDLESS)
@@ -163,11 +176,7 @@ func _load_interstitial():
 		AppManager.go_to_main_menu()
 		return
 
-	var interstitial = interstitial_scene.instantiate()
-	add_child(interstitial)
-	current_instance = interstitial
-
-	# To get control icon, instantiate the game without adding it to the tree.
+	# To get control icon, instantiate the game without adding it to the tree first.
 	var temp_game = next_game_scene.instantiate()
 	var icon: Texture2D = null
 	if "control_icon" in temp_game:
@@ -176,7 +185,12 @@ func _load_interstitial():
 		icon = load(temp_game.control_icon_path)
 	temp_game.queue_free()
 
+	# Instantiate and call setup() BEFORE adding to the tree to avoid 1-frame flickers / old icon swaps
+	var interstitial = interstitial_scene.instantiate()
 	interstitial.setup(lives, icon, is_speed_up, current_game_is_final, games_played + 1, total_games_per_run, is_endless)
+	add_child(interstitial)
+	current_instance = interstitial
+
 	interstitial.interstitial_done.connect(_on_interstitial_done)
 
 func _on_interstitial_done():
@@ -220,6 +234,7 @@ func _on_interstitial_done():
 	# Resume gameplay
 	if is_instance_valid(game_instance):
 		game_instance.process_mode = Node.PROCESS_MODE_INHERIT
+		_round_active = true
 		
 		if current_game_is_final:
 			_play_final_music()
@@ -239,7 +254,12 @@ func _on_interstitial_done():
 	if game_instance.has_signal("game_lost"):
 		game_instance.game_lost.connect(_on_game_lost)
 
+
 func _on_game_won():
+	if not _round_active:
+		return
+	_round_active = false
+
 	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 	# Immediate visual freeze and feedback
 	timer_bar.stop()
@@ -271,6 +291,10 @@ func _on_game_won():
 	_load_interstitial()
 
 func _on_game_lost():
+	if not _round_active:
+		return
+	_round_active = false
+
 	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 	# Immediate visual freeze and feedback
 	timer_bar.stop()
@@ -336,6 +360,9 @@ func _show_feedback(text: String, color: Color):
 	feedback_label.show()
 
 func _show_game_over_screen():
+	if _active_game_over_screen != null:
+		return
+		
 	# Hide HUD elements
 	music_slow.stop()
 	music_fast.stop()
@@ -348,16 +375,20 @@ func _show_game_over_screen():
 		return
 		
 	var game_over_screen = game_over_scene.instantiate()
+	_active_game_over_screen = game_over_screen
 	$HUDLayer.add_child(game_over_screen)
 	game_over_screen.setup(games_played)
 	game_over_screen.restart_requested.connect(func():
+		_active_game_over_screen = null
 		game_over_screen.queue_free()
 		start_game_loop()
 	)
 	game_over_screen.menu_requested.connect(func():
+		_active_game_over_screen = null
 		game_over_screen.queue_free()
 		AppManager.go_to_main_menu()
 	)
+
 
 func _play_slow_music():
 	_crossfade_to(music_slow)
