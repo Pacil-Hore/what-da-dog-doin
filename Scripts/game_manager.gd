@@ -28,6 +28,16 @@ var current_game_is_final: bool = false
 @onready var timer_bar = $HUDLayer/TimerBar
 @onready var feedback_label = $HUDLayer/FeedbackLabel
 
+@onready var music_slow = $MusicSlow
+@onready var music_fast = $MusicFast
+@onready var music_final = $MusicFinal
+
+@export var fade_duration: float = 0.8  # durasi crossfade (bisa di-tweak di Inspector)
+const SILENT_DB: float = -40.0          # volume "silent" untuk fade
+
+# Track mana yang lagi aktif (biar gak crossfade ke diri sendiri)
+var _current_music: AudioStreamPlayer = null
+
 var current_instance: Node
 var next_game_scene: PackedScene = null
 
@@ -57,6 +67,8 @@ func start_game_loop():
 	games_played = 0
 	speed_multiplier = 1.0
 	Engine.time_scale = speed_multiplier
+	
+	_play_slow_music()
 	
 	# Reset randomizer pool
 	_remaining_scenario_games.clear()
@@ -132,12 +144,14 @@ func _load_interstitial():
 		if is_speed_up:
 			speed_multiplier += 0.2
 			Engine.time_scale = speed_multiplier
+
 		current_game_is_final = ((games_played + 1) % 20 == 0)
 	else:
 		is_speed_up = (games_played == speed_up_threshold)
 		if is_speed_up:
 			speed_multiplier = speed_up_multiplier
 			Engine.time_scale = speed_multiplier
+			_play_fast_music()
 		current_game_is_final = (games_played == total_games_per_run - 1)
 
 	if interstitial_scene == null:
@@ -204,6 +218,7 @@ func _on_interstitial_done():
 		game_instance.process_mode = Node.PROCESS_MODE_INHERIT
 		
 		if current_game_is_final:
+			_play_final_music()
 			timer_bar.stop()
 			timer_bar.hide()
 		else:
@@ -314,6 +329,8 @@ func _show_feedback(text: String, color: Color):
 
 func _show_game_over_screen():
 	# Hide HUD elements
+	music_slow.stop()
+	music_fast.stop()
 	timer_bar.hide()
 	feedback_label.hide()
 	
@@ -333,3 +350,36 @@ func _show_game_over_screen():
 		game_over_screen.queue_free()
 		AppManager.go_to_main_menu()
 	)
+
+func _play_slow_music():
+	_crossfade_to(music_slow)
+
+func _play_fast_music():
+	_crossfade_to(music_fast)
+
+func _play_final_music():
+	_crossfade_to(music_final)
+
+func _crossfade_to(target: AudioStreamPlayer):
+	# Kalau target udah jadi musik aktif, skip
+	if _current_music == target and target.playing:
+		return
+	
+	var previous = _current_music
+	_current_music = target
+	
+	# Mulai target dari silent
+	target.volume_db = SILENT_DB
+	target.play()
+	
+	var tween = create_tween()
+	tween.set_parallel(true)
+	
+	# Fade in target
+	tween.tween_property(target, "volume_db", 0.0, fade_duration)
+	
+	# Fade out previous (kalau ada & beda dari target)
+	if previous != null and previous != target and previous.playing:
+		tween.tween_property(previous, "volume_db", SILENT_DB, fade_duration)
+		# Stop previous setelah fade selesai
+		tween.chain().tween_callback(previous.stop)
