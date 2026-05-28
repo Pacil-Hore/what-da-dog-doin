@@ -18,6 +18,7 @@ signal trash_can_picked(trash_can: PickMeTrashCan)
 @export var cue_shake_distance := 10.0
 @export var click_squash_duration := 0.18
 @export var wrong_shake_duration := 0.26
+@export var unselected_tint: Color = Color(0.72, 0.72, 0.72, 1.0)
 
 # Dog idle animation config
 const DOG_FRAME_COUNT := 8
@@ -35,8 +36,10 @@ var reveal_tween: Tween
 # Dog idle animation state
 var _dog_frame := 0
 var _idle_playing := false
+var _is_selected_focus := true
 
 @onready var shell: Sprite2D = $Shell
+@onready var collision_shape: CollisionShape2D = $CollisionShape2D
 @onready var contents: Node2D = $Contents
 @onready var clue_sprite: Sprite2D = $Contents/ClueSprite
 @onready var junk_sprite: Sprite2D = $Contents/JunkSprite
@@ -150,6 +153,37 @@ func play_wrong_feedback() -> void:
 	cue_tween.tween_property(self, "position:x", closed_position.x, wrong_shake_duration * 0.28)
 
 
+func set_selected_focus(is_selected: bool) -> void:
+	_is_selected_focus = is_selected
+	if is_instance_valid(shell):
+		shell.modulate = _get_focus_tint()
+	if is_instance_valid(junk_sprite):
+		junk_sprite.modulate = _get_focus_tint()
+	if is_instance_valid(clue_sprite):
+		clue_sprite.modulate = _get_focus_tint(clue_sprite.modulate.a)
+
+
+func _get_focus_tint(alpha: float = 1.0) -> Color:
+	var tint := Color.WHITE if _is_selected_focus else unselected_tint
+	tint.a = alpha
+	return tint
+
+
+func contains_global_point(global_point: Vector2) -> bool:
+	if not pick_enabled:
+		return false
+	if not is_instance_valid(collision_shape) or collision_shape.disabled:
+		return false
+
+	var rectangle_shape := collision_shape.shape as RectangleShape2D
+	if rectangle_shape == null:
+		return false
+
+	var local_point := collision_shape.to_local(global_point)
+	var half_size := rectangle_shape.size * 0.5
+	return absf(local_point.x) <= half_size.x and absf(local_point.y) <= half_size.y
+
+
 func reveal(did_win: bool = true) -> void:
 	if is_revealed:
 		return
@@ -183,6 +217,7 @@ func _reveal_win() -> void:
 		.set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
 
 	# --- Dog pop-in scale: start small → overshoot → settle ---
+	clue_sprite.modulate = _get_focus_tint()
 	clue_sprite.scale = Vector2.ZERO
 	reveal_tween.parallel().tween_property(clue_sprite, "scale", Vector2(2.55, 2.55), duration * 0.55) \
 		.set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
@@ -211,15 +246,15 @@ func _reveal_loss() -> void:
 	var duration := reveal_duration * 1.45
 
 	clue_sprite.visible = has_clue
-	clue_sprite.modulate = Color(0.55, 0.55, 0.55, 0.0)
+	clue_sprite.modulate = _get_focus_tint(0.0)
 	clue_sprite.scale = Vector2(1.6, 1.6)
 
 	# Smooth fluid slide up with cubic ease-out
 	reveal_tween.tween_property(contents, "position:y", revealed_contents_position.y, duration) \
 		.set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
 
-	# Parallel fade-in to the dimmed color
-	reveal_tween.parallel().tween_property(clue_sprite, "modulate", Color(0.55, 0.55, 0.55, 0.8), duration * 0.8) \
+	# Parallel fade-in to the selected/unselected focus tint at full opacity.
+	reveal_tween.parallel().tween_property(clue_sprite, "modulate", _get_focus_tint(), duration * 0.8) \
 		.set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
 
 	# Parallel subtle scale up to standard size
@@ -276,6 +311,7 @@ func reset_trash_can(clue_enabled: bool) -> void:
 
 	# Reset shell rotation
 	shell.rotation_degrees = 0.0
+	set_selected_focus(true)
 
 	_sync_visuals()
 	set_pick_enabled(true)

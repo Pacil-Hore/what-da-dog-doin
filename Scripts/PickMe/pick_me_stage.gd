@@ -53,6 +53,14 @@ func _process(_delta: float) -> void:
 		finish_game(false, timeout_label_text)
 
 
+func _input(event: InputEvent) -> void:
+	if is_finished:
+		return
+
+	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
+		_try_pick_at(event.position)
+
+
 func reset_game() -> void:
 	is_finished = false
 	round_elapsed = 0.0
@@ -73,9 +81,11 @@ func finish_game(did_win: bool, _message: String, selected_trash_can: PickMeTras
 	is_finished = true
 	if is_instance_valid(countdown_timer):
 		countdown_timer.stop()
+	var has_selection := is_instance_valid(selected_trash_can)
 	for trash_can in trash_cans:
 		trash_can.set_pick_enabled(false)
 		trash_can.scale = trash_can.default_scale
+		trash_can.set_selected_focus(has_selection and trash_can == selected_trash_can)
 
 	if is_instance_valid(selected_trash_can):
 		selected_trash_can.play_pick_feedback(did_win)
@@ -98,6 +108,14 @@ func _on_trash_can_picked(trash_can: PickMeTrashCan) -> void:
 		finish_game(true, win_label_text, trash_can)
 	else:
 		finish_game(false, lose_label_text, trash_can)
+
+
+func _try_pick_at(global_point: Vector2) -> void:
+	for trash_can in trash_cans:
+		if trash_can.contains_global_point(global_point):
+			_on_trash_can_picked(trash_can)
+			get_viewport().set_input_as_handled()
+			return
 
 
 func _on_countdown_timer_timeout() -> void:
