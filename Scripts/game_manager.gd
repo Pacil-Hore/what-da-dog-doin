@@ -34,6 +34,20 @@ var current_game_is_final: bool = false
 @onready var dog_bark = $DogBark
 @onready var dog_whimper = $DogWhimper
 @onready var win_sound = $WinSound
+@onready var victory_effects = $HUDLayer/VictoryEffects
+
+@onready var tug_of_war_particles: CPUParticles2D = $HUDLayer/VictoryEffects/TugOfWarParticles
+@onready var toilet_particles: CPUParticles2D = $HUDLayer/VictoryEffects/ToiletParticles
+@onready var dog_cross_particles: CPUParticles2D = $HUDLayer/VictoryEffects/DogCrossParticles
+@onready var jump_rope_particles: CPUParticles2D = $HUDLayer/VictoryEffects/JumpRopeParticles
+@onready var labyrinth_particles: CPUParticles2D = $HUDLayer/VictoryEffects/LabyrinthParticles
+@onready var attach_particles: CPUParticles2D = $HUDLayer/VictoryEffects/AttachParticles
+@onready var pick_me_particles: CPUParticles2D = $HUDLayer/VictoryEffects/PickMeParticles
+@onready var pick_the_rope_particles: CPUParticles2D = $HUDLayer/VictoryEffects/PickTheRopeParticles
+@onready var spot_the_difference_particles: CPUParticles2D = $HUDLayer/VictoryEffects/SpotTheDifferenceParticles
+@onready var default_confetti_particles: CPUParticles2D = $HUDLayer/VictoryEffects/DefaultConfettiParticles
+@onready var left_cannon_particles: CPUParticles2D = $HUDLayer/VictoryEffects/LeftCannonParticles
+@onready var right_cannon_particles: CPUParticles2D = $HUDLayer/VictoryEffects/RightCannonParticles
 
 @export var fade_duration: float = 0.8  # durasi crossfade (bisa di-tweak di Inspector)
 const SILENT_DB: float = -40.0          # volume "silent" untuk fade
@@ -51,6 +65,7 @@ var _last_played_game: PackedScene = null
 # Prevent multiple concurrent round endings (e.g. timeout + action win/loss at the same second)
 var _round_active: bool = false
 var _active_game_over_screen: Node = null
+var _active_win_tweens: Array[Tween] = []
 
 func _ready():
 	# Load config from AppManager (set before scene was changed)
@@ -77,9 +92,15 @@ func start_game_loop():
 	
 	_round_active = false
 	
+	# Reset win tweens
+	for t in _active_win_tweens:
+		if is_instance_valid(t) and t.is_valid():
+			t.kill()
+	_active_win_tweens.clear()
+	
 	# Clean up any leftover game over screens or UI elements in HUDLayer
 	for child in $HUDLayer.get_children():
-		if child != timer_bar and child != feedback_label:
+		if child != timer_bar and child != feedback_label and child != victory_effects:
 			child.queue_free()
 	_active_game_over_screen = null
 	
@@ -140,6 +161,12 @@ func _load_interstitial():
 	# Reset time scale to current speed multiplier to clear any level-specific slow-motion
 	Engine.time_scale = speed_multiplier
 	dog_bark.play()
+
+	# Reset win tweens
+	for t in _active_win_tweens:
+		if is_instance_valid(t) and t.is_valid():
+			t.kill()
+	_active_win_tweens.clear()
 
 	if current_instance != null:
 		current_instance.queue_free()
@@ -267,17 +294,87 @@ func _on_game_won():
 	win_sound.play()
 	
 	var msg = "WIN!"
+	var g_name = ""
 	if is_instance_valid(current_instance):
+		g_name = current_instance.name.to_lower()
 		if "win_label_text" in current_instance:
 			msg = current_instance.win_label_text
-	
-	feedback_label.text = msg
-	feedback_label.modulate = Color.WHITE
-	feedback_label.show()
-	
+
+	# Kill any existing win tweens
+	for t in _active_win_tweens:
+		if is_instance_valid(t) and t.is_valid():
+			t.kill()
+	_active_win_tweens.clear()
+
+	var is_untangle = "untangle" in g_name
+
+	if not is_untangle:
+		# 1. Custom Feedback Label animations and styles
+		_animate_feedback_label(g_name, msg)
+		
+		# 2. Time Dilation
+		var target_time_scale = 0.25
+		var slow_duration = 0.15 # in game seconds
+		var pause_duration = 0.05 # in game seconds
+		
+		if "tugofwar" in g_name:
+			target_time_scale = 0.1
+			pause_duration = 0.02
+			slow_duration = 0.2
+		elif "toilet" in g_name:
+			target_time_scale = 0.3
+			pause_duration = 0.08
+			slow_duration = 0.12
+		elif "dogcross" in g_name:
+			target_time_scale = 0.15
+			pause_duration = 0.04
+			slow_duration = 0.22
+		elif "jumprope" in g_name:
+			target_time_scale = 0.2
+			pause_duration = 0.05
+			slow_duration = 0.2
+		elif "labyrinth" in g_name:
+			target_time_scale = 0.25
+			pause_duration = 0.0
+			slow_duration = 0.3
+		elif "attach" in g_name:
+			target_time_scale = 0.05
+			pause_duration = 0.01
+			slow_duration = 0.1
+		elif "pickme" in g_name:
+			target_time_scale = 0.25
+			pause_duration = 0.05
+			slow_duration = 0.2
+		elif "picktherope" in g_name:
+			target_time_scale = 0.3
+			pause_duration = 0.05
+			slow_duration = 0.25
+		elif "spot" in g_name:
+			target_time_scale = 0.1
+			pause_duration = 0.15
+			slow_duration = 0.1
+			
+		Engine.time_scale = target_time_scale
+		var time_tween = create_tween()
+		if pause_duration > 0:
+			time_tween.tween_interval(pause_duration)
+		time_tween.tween_property(Engine, "time_scale", speed_multiplier, slow_duration).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+		_active_win_tweens.append(time_tween)
+		
+		# 3. Screenshake
+		_shake_current_stage(g_name)
+		
+		# 4. Spawning particles
+		_spawn_victory_particles(g_name)
+	else:
+		# If it is Untangle, it does its own win banner and animations. Just display empty string to suppress.
+		feedback_label.text = ""
+		feedback_label.show()
+
 	games_played += 1
 	var is_endless = (AppManager.current_mode == AppManager.Mode.ENDLESS)
 	if not is_endless and games_played == total_games_per_run:
+		# Make sure time scale is restored on win
 		Engine.time_scale = 1.0
 		emit_signal("run_won")
 		AppManager.on_run_won()
@@ -422,3 +519,244 @@ func _crossfade_to(target: AudioStreamPlayer):
 		tween.tween_property(previous, "volume_db", SILENT_DB, fade_duration)
 		# Stop previous setelah fade selesai
 		tween.chain().tween_callback(previous.stop)
+
+
+func _animate_feedback_label(g_name: String, msg: String):
+	feedback_label.text = msg
+	feedback_label.pivot_offset = Vector2(576, 324)
+	feedback_label.rotation = 0.0
+	feedback_label.scale = Vector2.ONE
+	feedback_label.modulate = Color.WHITE
+	
+	# Default colors
+	var font_color = Color(1.0, 0.85, 0.2) # Gold
+	var outline_color = Color(0.1, 0.05, 0.0) # Dark brown
+	var outline_size = 16
+	var font_size = 72
+	
+	var anim_type = "elastic"
+	
+	if "tugofwar" in g_name:
+		font_color = Color(0.2, 0.7, 1.0) # Electric blue
+		outline_color = Color(0.0, 0.1, 0.3)
+		anim_type = "stretchy"
+		feedback_label.text = "PULLED!"
+	elif "toilet" in g_name:
+		font_color = Color(1.0, 0.9, 0.3) # Bright yellow
+		outline_color = Color(0.2, 0.1, 0.0)
+		anim_type = "wave"
+	elif "dogcross" in g_name:
+		font_color = Color(1.0, 0.4, 0.6) # Pink
+		outline_color = Color(0.3, 0.0, 0.1)
+		anim_type = "spin"
+		feedback_label.text = "SAFE!"
+	elif "jumprope" in g_name:
+		font_color = Color(0.3, 0.9, 0.4) # Neon green
+		outline_color = Color(0.0, 0.2, 0.0)
+		anim_type = "drop"
+	elif "labyrinth" in g_name:
+		font_color = Color(0.8, 0.4, 1.0) # Purple
+		outline_color = Color(0.2, 0.0, 0.3)
+		anim_type = "elastic"
+		feedback_label.text = "ESCAPED!"
+	elif "attach" in g_name:
+		font_color = Color(1.0, 0.3, 0.3) # Neon red
+		outline_color = Color(0.2, 0.0, 0.0)
+		anim_type = "flash"
+	elif "pickme" in g_name:
+		font_color = Color(1.0, 0.6, 0.1) # Orange
+		outline_color = Color(0.2, 0.1, 0.0)
+		anim_type = "bounce"
+		feedback_label.text = "CORRECT!"
+	elif "picktherope" in g_name:
+		font_color = Color(0.2, 0.9, 0.8) # Teal
+		outline_color = Color(0.0, 0.2, 0.2)
+		anim_type = "wobble"
+		feedback_label.text = "FOUND IT!"
+	elif "spot" in g_name:
+		font_color = Color(1.0, 0.5, 0.0) # Bright orange
+		outline_color = Color(0.2, 0.05, 0.0)
+		anim_type = "flip"
+		feedback_label.text = "SPOTTED!"
+		
+	# Apply theme overrides
+	feedback_label.add_theme_color_override("font_color", font_color)
+	feedback_label.add_theme_color_override("font_outline_color", outline_color)
+	feedback_label.add_theme_constant_override("outline_size", outline_size)
+	feedback_label.add_theme_font_size_override("font_size", font_size)
+	
+	feedback_label.show()
+	
+	var label_tween = create_tween()
+	_active_win_tweens.append(label_tween)
+	
+	match anim_type:
+		"stretchy":
+			feedback_label.scale = Vector2(0.1, 1.8)
+			label_tween.set_parallel(true)
+			label_tween.tween_property(feedback_label, "scale", Vector2.ONE, 0.5).set_trans(Tween.TRANS_ELASTIC).set_ease(Tween.EASE_OUT)
+			
+		"wave":
+			feedback_label.scale = Vector2.ZERO
+			label_tween.tween_property(feedback_label, "scale", Vector2(1.2, 1.2), 0.2).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+			label_tween.tween_property(feedback_label, "scale", Vector2.ONE, 0.15).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_IN)
+			
+			var wave_tween = create_tween().set_loops()
+			wave_tween.tween_property(feedback_label, "scale", Vector2(1.05, 0.95), 0.25).set_trans(Tween.TRANS_SINE)
+			wave_tween.tween_property(feedback_label, "scale", Vector2(0.95, 1.05), 0.25).set_trans(Tween.TRANS_SINE)
+			_active_win_tweens.append(wave_tween)
+			
+		"spin":
+			feedback_label.scale = Vector2.ZERO
+			feedback_label.rotation = -PI
+			label_tween.set_parallel(true)
+			label_tween.tween_property(feedback_label, "scale", Vector2.ONE, 0.45).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
+			label_tween.tween_property(feedback_label, "rotation", 0.0, 0.45).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
+			
+		"drop":
+			var original_pos = feedback_label.position
+			feedback_label.position.y = -150.0
+			label_tween.tween_property(feedback_label, "position:y", original_pos.y, 0.5).set_trans(Tween.TRANS_BOUNCE).set_ease(Tween.EASE_OUT)
+			
+		"flash":
+			feedback_label.scale = Vector2.ZERO
+			label_tween.tween_property(feedback_label, "scale", Vector2.ONE, 0.15).set_trans(Tween.TRANS_QUAD)
+			
+			var flash_tween = create_tween().set_loops(6)
+			flash_tween.tween_property(feedback_label, "modulate", Color(2.0, 2.0, 2.0), 0.08)
+			flash_tween.tween_property(feedback_label, "modulate", Color.WHITE, 0.08)
+			_active_win_tweens.append(flash_tween)
+			
+		"bounce":
+			feedback_label.scale = Vector2.ZERO
+			label_tween.tween_property(feedback_label, "scale", Vector2(1.4, 1.4), 0.22).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
+			label_tween.tween_property(feedback_label, "scale", Vector2.ONE, 0.12).set_trans(Tween.TRANS_QUAD)
+			
+		"wobble":
+			feedback_label.scale = Vector2.ZERO
+			label_tween.tween_property(feedback_label, "scale", Vector2.ONE, 0.35).set_trans(Tween.TRANS_ELASTIC).set_ease(Tween.EASE_OUT)
+			
+			var rot_tween = create_tween().set_loops()
+			rot_tween.tween_property(feedback_label, "rotation", 0.05, 0.12).set_trans(Tween.TRANS_SINE)
+			rot_tween.tween_property(feedback_label, "rotation", -0.05, 0.12).set_trans(Tween.TRANS_SINE)
+			_active_win_tweens.append(rot_tween)
+			
+		"flip":
+			feedback_label.scale = Vector2(1.0, 0.0)
+			label_tween.tween_property(feedback_label, "scale", Vector2.ONE, 0.35).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
+			
+		"elastic", _:
+			feedback_label.scale = Vector2.ZERO
+			label_tween.tween_property(feedback_label, "scale", Vector2.ONE, 0.45).set_trans(Tween.TRANS_ELASTIC).set_ease(Tween.EASE_OUT)
+
+
+func _shake_current_stage(g_name: String):
+	if not is_instance_valid(current_instance):
+		return
+		
+	var shake_tween = create_tween()
+	_active_win_tweens.append(shake_tween)
+	
+	var shake_type = "radial"
+	var intensity = 4.0
+	var count = 6
+	
+	if "tugofwar" in g_name:
+		shake_type = "horizontal"
+		intensity = 6.0
+		count = 8
+	elif "toilet" in g_name:
+		shake_type = "vertical"
+		intensity = 5.0
+		count = 6
+	elif "dogcross" in g_name:
+		shake_type = "diagonal"
+		intensity = 2.5
+		count = 5
+	elif "jumprope" in g_name:
+		shake_type = "vertical"
+		intensity = 6.0
+		count = 6
+	elif "labyrinth" in g_name:
+		shake_type = "rotational"
+		intensity = 3.0
+		count = 6
+	elif "attach" in g_name:
+		shake_type = "radial"
+		intensity = 5.0
+		count = 4
+	elif "pickme" in g_name:
+		shake_type = "horizontal"
+		intensity = 4.0
+		count = 6
+	elif "picktherope" in g_name:
+		shake_type = "diagonal"
+		intensity = 3.0
+		count = 6
+	elif "spot" in g_name:
+		shake_type = "radial"
+		intensity = 4.0
+		count = 5
+
+	var original_pos = current_instance.position
+	
+	for i in range(count):
+		var offset = Vector2.ZERO
+		match shake_type:
+			"horizontal":
+				offset = Vector2(randf_range(-intensity, intensity), 0)
+			"vertical":
+				offset = Vector2(0, randf_range(-intensity, intensity))
+			"diagonal":
+				var d = randf_range(-intensity, intensity)
+				offset = Vector2(d, d * 0.5)
+			"rotational":
+				offset = Vector2(randf_range(-intensity, intensity), randf_range(-intensity, intensity)).rotated(randf_range(-0.5, 0.5))
+			"radial", _:
+				offset = Vector2(randf_range(-intensity, intensity), randf_range(-intensity, intensity))
+		
+		shake_tween.tween_property(current_instance, "position", original_pos + offset, 0.05)
+	
+	shake_tween.tween_property(current_instance, "position", original_pos, 0.05)
+
+
+func _spawn_victory_particles(g_name: String):
+	var p: CPUParticles2D = default_confetti_particles
+	
+	if "tugofwar" in g_name:
+		p = tug_of_war_particles
+	elif "toilet" in g_name:
+		p = toilet_particles
+	elif "dogcross" in g_name:
+		p = dog_cross_particles
+	elif "jumprope" in g_name:
+		p = jump_rope_particles
+	elif "labyrinth" in g_name:
+		p = labyrinth_particles
+		if is_instance_valid(p) and is_instance_valid(current_instance) and current_instance.get_node_or_null("Player"):
+			p.global_position = current_instance.get_node("Player").global_position
+	elif "attach" in g_name:
+		p = attach_particles
+		if is_instance_valid(p):
+			if is_instance_valid(current_instance) and current_instance.get_node_or_null("TargetZone"):
+				p.global_position = current_instance.get_node("TargetZone").global_position
+			elif is_instance_valid(current_instance) and current_instance.get_node_or_null("Hook"):
+				p.global_position = current_instance.get_node("Hook").global_position
+	elif "pickme" in g_name:
+		p = pick_me_particles
+	elif "picktherope" in g_name:
+		p = pick_the_rope_particles
+	elif "spot" in g_name:
+		p = spot_the_difference_particles
+		if is_instance_valid(p):
+			p.global_position = get_viewport().get_mouse_position()
+
+	if is_instance_valid(p):
+		p.emitting = true
+		
+	# Trigger left and right cannons if it is the default splash
+	if p == default_confetti_particles and is_instance_valid(p):
+		if is_instance_valid(left_cannon_particles):
+			left_cannon_particles.emitting = true
+		if is_instance_valid(right_cannon_particles):
+			right_cannon_particles.emitting = true
