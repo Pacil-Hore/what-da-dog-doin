@@ -9,6 +9,7 @@ var entities_arrived: Array = []
 var triggered: bool = false
 
 func _ready():
+	add_to_group("safe_area")
 	body_entered.connect(_on_body_entered)
 	body_exited.connect(_on_body_exited)
 	print("FinishArea ready! Path: ", get_path())
