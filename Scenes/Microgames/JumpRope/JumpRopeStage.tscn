@@ -5,7 +5,7 @@
 [ext_resource type="Script" uid="uid://ch2u8n2h7mq2g" path="res://Scripts/JumpRope/jump_rope_dog.gd" id="3_dog"]
 [ext_resource type="Script" uid="uid://d0jlx1u0ocq8h" path="res://Scripts/JumpRope/jump_rope_rope.gd" id="4_rope"]
 [ext_resource type="Texture2D" uid="uid://bey6vyjtqt0xp" path="res://Assets/Sprites/JumpRope/man_side.png" id="5_man"]
-[ext_resource type="Texture2D" uid="uid://c2hlkx6x5xm03" path="res://Assets/Sprites/JumpRope/dog_walk.png" id="7_it6v4"]
+[ext_resource type="SpriteFrames" path="res://Resource/JumpRope/dog_jump_rope_frames.tres" id="7_dog_frames"]
 [ext_resource type="Texture2D" uid="uid://bir6vjcc7h16k" path="res://Assets/Sprites/Little Dreamyland - Free Pack/Sprites/Sprite_Shadow.png" id="7_shadow"]
 [ext_resource type="Texture2D" uid="uid://d06cwuaok516" path="res://Assets/generated/circle_fill.svg" id="8_circle"]
 
@@ -81,12 +81,11 @@ position = Vector2(7.3000035, 55.76)
 scale = Vector2(8.587501, 3.412)
 texture = ExtResource("7_shadow")
 
-[node name="BodySprite" type="Sprite2D" parent="Playfield/Dog" unique_id=671510402]
-position = Vector2(-62.577, -86.87)
+[node name="BodySprite" type="AnimatedSprite2D" parent="Playfield/Dog" unique_id=671510402]
+position = Vector2(16.623, -7.67)
 scale = Vector2(3.3, 3.3)
-texture = ExtResource("7_it6v4")
-centered = false
-hframes = 6
+sprite_frames = ExtResource("7_dog_frames")
+animation = &"dog_idle"
 
 [node name="Rope" type="Node2D" parent="Playfield" unique_id=561475856]
 position = Vector2(576, 316.335)

@@ -18,6 +18,9 @@ signal game_lost
 @export var timeout_label_text: String = "You kept the rhythm!"
 @export var instruction_text: String = "Press Space or left click before the rope hits the dog's paws."
 @export var timeout_wins: bool = true
+@export var miss_label_feedback_duration: float = 0.22
+@export var miss_label_feedback_scale: Vector2 = Vector2(1.16, 1.16)
+@export var miss_label_feedback_modulate: Color = Color(1.0, 0.36, 0.3, 1.0)
 
 @onready var rope: JumpRopeRope = $Playfield/Rope
 @onready var dog: JumpRopeDog = $Playfield/Dog
@@ -30,6 +33,9 @@ var start_delay_left: float = 0.0
 var miss_count: int = 0
 var is_finished: bool = false
 var is_round_active: bool = false
+var miss_label_tween: Tween
+var miss_label_rest_scale: Vector2 = Vector2.ONE
+var miss_label_rest_modulate: Color = Color.WHITE
 
 const ROPE_IMPACT_PHASE: float = 0.5
 
@@ -38,6 +44,7 @@ func _ready() -> void:
 	rope.cycle_duration = rope_cycle_duration
 	if is_instance_valid(countdown_timer):
 		countdown_timer.timeout.connect(_on_countdown_timer_timeout)
+	_cache_hud_defaults()
 	reset_game()
 
 
@@ -80,6 +87,7 @@ func reset_game() -> void:
 	time_left = round_duration
 	start_delay_left = maxf(start_delay_duration, 0.0)
 	miss_count = 0
+	_stop_miss_label_feedback()
 	if is_instance_valid(countdown_timer):
 		countdown_timer.stop()
 	rope.cycle_duration = rope_cycle_duration
@@ -166,6 +174,7 @@ func _register_miss() -> void:
 
 	miss_count += 1
 	_update_hud()
+	_play_miss_feedback()
 	if miss_count >= max_misses:
 		finish_game(false, lose_label_text)
 
@@ -182,3 +191,43 @@ func _on_countdown_timer_timeout() -> void:
 		return
 
 	finish_game(true, timeout_label_text if timeout_label_text != "" else win_label_text)
+
+
+func _cache_hud_defaults() -> void:
+	if not is_instance_valid(miss_label):
+		return
+
+	miss_label_rest_scale = miss_label.scale
+	miss_label_rest_modulate = miss_label.modulate
+
+
+func _play_miss_feedback() -> void:
+	if is_instance_valid(dog):
+		dog.play_miss_impact()
+
+	if not is_instance_valid(miss_label):
+		return
+
+	_stop_miss_label_feedback()
+	miss_label.pivot_offset = miss_label.size * 0.5
+	miss_label.scale = miss_label_rest_scale * miss_label_feedback_scale
+	miss_label.modulate = miss_label_feedback_modulate
+
+	miss_label_tween = create_tween()
+	miss_label_tween.tween_property(miss_label, "scale", miss_label_rest_scale, miss_label_feedback_duration).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
+	miss_label_tween.parallel().tween_property(miss_label, "modulate", miss_label_rest_modulate, miss_label_feedback_duration).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
+	miss_label_tween.finished.connect(_on_miss_label_tween_finished)
+
+
+func _stop_miss_label_feedback() -> void:
+	if miss_label_tween != null:
+		miss_label_tween.kill()
+		miss_label_tween = null
+
+	if is_instance_valid(miss_label):
+		miss_label.scale = miss_label_rest_scale
+		miss_label.modulate = miss_label_rest_modulate
+
+
+func _on_miss_label_tween_finished() -> void:
+	miss_label_tween = null

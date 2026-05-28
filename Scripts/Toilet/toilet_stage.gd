@@ -14,10 +14,14 @@ signal game_lost
 @export var timeout_label_text: String = "Time is up!"
 @export var disable_freeze_on_loss := true
 
-@onready var billboard_spot: ToiletSpot = $Hotspots/BillboardSpot
-@onready var grass_spot: ToiletSpot = $Hotspots/GrassSpot
-@onready var pole_spot: ToiletSpot = $Hotspots/PoleSpot
+@onready var vending_spot: ToiletSpot = $Hotspots/BillboardSpot
+@onready var tree_spot: ToiletSpot = $Hotspots/GrassSpot
+@onready var bush_spot: ToiletSpot = $Hotspots/PoleSpot
 @onready var car_spot: ToiletSpot = $Hotspots/CarSpot
+@onready var top_left_slot: Node2D = $Hotspots/TopLeftSlot
+@onready var bottom_left_slot: Node2D = $Hotspots/BottomLeftSlot
+@onready var top_right_slot: Node2D = $Hotspots/TopRightSlot
+@onready var bottom_right_slot: Node2D = $Hotspots/BottomRightSlot
 @onready var countdown_timer: Timer = get_node_or_null("CountdownTimer")
 
 var spots: Array[ToiletSpot] = []
@@ -29,12 +33,12 @@ var slot_positions: Array[Vector2] = []
 
 func _ready() -> void:
 	rng.randomize()
-	spots = [billboard_spot, grass_spot, pole_spot, car_spot]
+	spots = [vending_spot, tree_spot, bush_spot, car_spot]
 	slot_positions = [
-		billboard_spot.position,
-		grass_spot.position,
-		pole_spot.position,
-		car_spot.position,
+		top_left_slot.position,
+		bottom_left_slot.position,
+		top_right_slot.position,
+		bottom_right_slot.position,
 	]
 	for spot in spots:
 		if not spot.spot_selected.is_connected(_on_spot_selected):
@@ -88,12 +92,18 @@ func finish_game(did_win: bool, _message: String, selected_spot: ToiletSpot = nu
 
 
 func _configure_round_layout() -> void:
-	var grass_is_correct: bool = rng.randi_range(0, 1) == 0
-	billboard_spot.configure_round(false, false)
+	var nature_spots: Array[ToiletSpot] = [tree_spot, bush_spot]
+	for index in range(nature_spots.size() - 1, 0, -1):
+		var swap_index: int = rng.randi_range(0, index)
+		var temp: ToiletSpot = nature_spots[index]
+		nature_spots[index] = nature_spots[swap_index]
+		nature_spots[swap_index] = temp
+
+	correct_spot = nature_spots[0]
+	vending_spot.configure_round(false, false)
 	car_spot.configure_round(false, false)
-	grass_spot.configure_round(grass_is_correct, not grass_is_correct)
-	pole_spot.configure_round(not grass_is_correct, grass_is_correct)
-	correct_spot = grass_spot if grass_is_correct else pole_spot
+	tree_spot.configure_round(tree_spot == correct_spot, tree_spot != correct_spot)
+	bush_spot.configure_round(bush_spot == correct_spot, bush_spot != correct_spot)
 
 
 func _randomize_spot_positions() -> void:

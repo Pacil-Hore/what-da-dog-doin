@@ -3,19 +3,18 @@
 [ext_resource type="Script" uid="uid://dmw1b2f4sxj6p" path="res://Scripts/PickTheRope/pick_the_rope_stage.gd" id="1_stage"]
 [ext_resource type="Texture2D" uid="uid://ct6k6ah4ktf42" path="res://Assets/Sprites/Keyboard & Mouse/Double/mouse_left.png" id="2_1nw4c"]
 [ext_resource type="Script" uid="uid://cgq2vq36r41do" path="res://Scripts/PickTheRope/pick_the_rope_background.gd" id="2_background"]
-[ext_resource type="Script" uid="uid://hab5vi4a5ags" path="res://Scripts/PickTheRope/pick_the_rope_board.gd" id="3_board"]
+[ext_resource type="Script" uid="uid://ct6nviu5f8s1a" path="res://Scripts/PickTheRope/pick_the_rope_board.gd" id="3_board"]
 [ext_resource type="Script" uid="uid://d3ng5w6xxv2kq" path="res://Scripts/PickTheRope/pick_the_rope_hook.gd" id="4_hook"]
 [ext_resource type="Texture2D" uid="uid://be5jjj1nth8jo" path="res://Assets/Sprites/Pick The Rope/CP_V1.0.4.png" id="5_street_atlas"]
-[ext_resource type="Texture2D" uid="uid://dcdjd3rq84jpo" path="res://Assets/Sprites/Pick The Rope/dog_front.png" id="6_dog_front"]
 [ext_resource type="Texture2D" uid="uid://d06cwuaok516" path="res://Assets/generated/circle_fill.svg" id="7_circle"]
+[ext_resource type="SpriteFrames" uid="uid://cgae1ewdsyynd" path="res://Resource/PickTheRope/dog_front_red_frames.tres" id="8_dog_red_frames"]
+[ext_resource type="SpriteFrames" uid="uid://dh4nb7sulcpy0" path="res://Resource/PickTheRope/dog_front_blue_frames.tres" id="9_dog_blue_frames"]
+[ext_resource type="SpriteFrames" uid="uid://efwv4f1rsl68" path="res://Resource/PickTheRope/dog_front_green_frames.tres" id="10_dog_green_frames"]
+[ext_resource type="SpriteFrames" uid="uid://etayefu158nd" path="res://Resource/PickTheRope/dog_front_purple_frames.tres" id="11_dog_purple_frames"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_street_lamp"]
 atlas = ExtResource("5_street_atlas")
 region = Rect2(466.0677, 412.01178, 14.055847, 39.01715)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_dog_front"]
-atlas = ExtResource("6_dog_front")
-region = Rect2(0, 0, 48, 48)
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_hook"]
 radius = 30.0
@@ -56,6 +55,9 @@ texture = SubResource("AtlasTexture_street_lamp")
 
 [node name="Board" type="Node2D" parent="." unique_id=388273959]
 script = ExtResource("3_board")
+target_dog_excited_jump_height = 4.0
+target_dog_excited_wiggle_degrees = 2.5
+target_dog_excited_wiggle_speed = 3.0
 
 [node name="RopeShadows" type="Node2D" parent="Board" unique_id=2074368714]
 z_index = -5
@@ -101,13 +103,6 @@ z_index = 10
 [node name="DogSlotA" type="Node2D" parent="Board/DogSlots" unique_id=1884517337]
 position = Vector2(196, 344)
 
-[node name="Glow" type="Sprite2D" parent="Board/DogSlots/DogSlotA" unique_id=2012285360]
-visible = false
-modulate = Color(0.28, 0.74, 0.4, 0.18)
-position = Vector2(0, -40)
-scale = Vector2(1.35, 1.35)
-texture = ExtResource("7_circle")
-
 [node name="Visuals" type="Node2D" parent="Board/DogSlots/DogSlotA" unique_id=109514667]
 
 [node name="Shadow" type="Sprite2D" parent="Board/DogSlots/DogSlotA/Visuals" unique_id=427814972]
@@ -116,20 +111,13 @@ position = Vector2(0, 8)
 scale = Vector2(1.05, 0.35)
 texture = ExtResource("7_circle")
 
-[node name="Dog" type="Sprite2D" parent="Board/DogSlots/DogSlotA/Visuals" unique_id=1856062581]
+[node name="Dog" type="AnimatedSprite2D" parent="Board/DogSlots/DogSlotA/Visuals" unique_id=1856062581]
 position = Vector2(0, -55.59)
 scale = Vector2(2.682, 2.682)
-texture = SubResource("AtlasTexture_dog_front")
+sprite_frames = ExtResource("8_dog_red_frames")
 
 [node name="DogSlotB" type="Node2D" parent="Board/DogSlots" unique_id=1032476036]
 position = Vector2(314, 396)
-
-[node name="Glow" type="Sprite2D" parent="Board/DogSlots/DogSlotB" unique_id=1359531479]
-visible = false
-modulate = Color(0.28, 0.74, 0.4, 0.18)
-position = Vector2(0, -40)
-scale = Vector2(1.35, 1.35)
-texture = ExtResource("7_circle")
 
 [node name="Visuals" type="Node2D" parent="Board/DogSlots/DogSlotB" unique_id=2070900926]
 
@@ -139,20 +127,13 @@ position = Vector2(0, 8)
 scale = Vector2(1.05, 0.35)
 texture = ExtResource("7_circle")
 
-[node name="Dog" type="Sprite2D" parent="Board/DogSlots/DogSlotB/Visuals" unique_id=1370002310]
+[node name="Dog" type="AnimatedSprite2D" parent="Board/DogSlots/DogSlotB/Visuals" unique_id=1370002310]
 position = Vector2(0, -55.59)
 scale = Vector2(2.682, 2.682)
-texture = SubResource("AtlasTexture_dog_front")
+sprite_frames = ExtResource("9_dog_blue_frames")
 
 [node name="DogSlotC" type="Node2D" parent="Board/DogSlots" unique_id=88585486]
 position = Vector2(196, 452)
-
-[node name="Glow" type="Sprite2D" parent="Board/DogSlots/DogSlotC" unique_id=45093519]
-visible = false
-modulate = Color(0.28, 0.74, 0.4, 0.18)
-position = Vector2(0, -40)
-scale = Vector2(1.35, 1.35)
-texture = ExtResource("7_circle")
 
 [node name="Visuals" type="Node2D" parent="Board/DogSlots/DogSlotC" unique_id=845733596]
 
@@ -162,20 +143,13 @@ position = Vector2(0, 8)
 scale = Vector2(1.05, 0.35)
 texture = ExtResource("7_circle")
 
-[node name="Dog" type="Sprite2D" parent="Board/DogSlots/DogSlotC/Visuals" unique_id=812076499]
+[node name="Dog" type="AnimatedSprite2D" parent="Board/DogSlots/DogSlotC/Visuals" unique_id=812076499]
 position = Vector2(0, -55.59)
 scale = Vector2(2.682, 2.682)
-texture = SubResource("AtlasTexture_dog_front")
+sprite_frames = ExtResource("10_dog_green_frames")
 
 [node name="DogSlotD" type="Node2D" parent="Board/DogSlots" unique_id=487293332]
 position = Vector2(314, 504)
-
-[node name="Glow" type="Sprite2D" parent="Board/DogSlots/DogSlotD" unique_id=1234284936]
-visible = false
-modulate = Color(0.28, 0.74, 0.4, 0.18)
-position = Vector2(0, -40)
-scale = Vector2(1.35, 1.35)
-texture = ExtResource("7_circle")
 
 [node name="Visuals" type="Node2D" parent="Board/DogSlots/DogSlotD" unique_id=2044725232]
 
@@ -185,22 +159,16 @@ position = Vector2(0, 8)
 scale = Vector2(1.05, 0.35)
 texture = ExtResource("7_circle")
 
-[node name="Dog" type="Sprite2D" parent="Board/DogSlots/DogSlotD/Visuals" unique_id=505212545]
+[node name="Dog" type="AnimatedSprite2D" parent="Board/DogSlots/DogSlotD/Visuals" unique_id=505212545]
 position = Vector2(0, -55.59)
 scale = Vector2(2.682, 2.682)
-texture = SubResource("AtlasTexture_dog_front")
+sprite_frames = ExtResource("11_dog_purple_frames")
 
 [node name="HookA" type="Area2D" parent="Board" unique_id=1413130704]
 z_index = 20
 position = Vector2(916, 182)
 script = ExtResource("4_hook")
 hover_scale = Vector2(1.08, 1.08)
-
-[node name="Glow" type="Sprite2D" parent="Board/HookA" unique_id=1440657679]
-visible = false
-modulate = Color(1, 1, 1, 0)
-scale = Vector2(0.875, 0.875)
-texture = ExtResource("7_circle")
 
 [node name="RingShadow" type="Sprite2D" parent="Board/HookA" unique_id=1889090895]
 modulate = Color(0.11, 0.1, 0.09, 0.26)
@@ -253,12 +221,6 @@ script = ExtResource("4_hook")
 hook_index = 1
 hover_scale = Vector2(1.08, 1.08)
 
-[node name="Glow" type="Sprite2D" parent="Board/HookB" unique_id=88048141]
-visible = false
-modulate = Color(1, 1, 1, 0)
-scale = Vector2(0.875, 0.875)
-texture = ExtResource("7_circle")
-
 [node name="RingShadow" type="Sprite2D" parent="Board/HookB" unique_id=1496763622]
 modulate = Color(0.11, 0.1, 0.09, 0.26)
 position = Vector2(0, 4)
@@ -310,12 +272,6 @@ script = ExtResource("4_hook")
 hook_index = 2
 hover_scale = Vector2(1.08, 1.08)
 
-[node name="Glow" type="Sprite2D" parent="Board/HookC" unique_id=1216898095]
-visible = false
-modulate = Color(1, 1, 1, 0)
-scale = Vector2(0.875, 0.875)
-texture = ExtResource("7_circle")
-
 [node name="RingShadow" type="Sprite2D" parent="Board/HookC" unique_id=1399600952]
 modulate = Color(0.11, 0.1, 0.09, 0.26)
 position = Vector2(0, 4)
@@ -366,12 +322,6 @@ position = Vector2(916, 380)
 script = ExtResource("4_hook")
 hook_index = 3
 hover_scale = Vector2(1.08, 1.08)
-
-[node name="Glow" type="Sprite2D" parent="Board/HookD" unique_id=1430245271]
-visible = false
-modulate = Color(1, 1, 1, 0)
-scale = Vector2(0.875, 0.875)
-texture = ExtResource("7_circle")
 
 [node name="RingShadow" type="Sprite2D" parent="Board/HookD" unique_id=1149038786]
 modulate = Color(0.11, 0.1, 0.09, 0.26)

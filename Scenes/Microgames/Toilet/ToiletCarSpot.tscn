@@ -1,0 +1,52 @@
+[gd_scene format=4 uid="uid://fqgtgvcg5f0i"]
+
+[ext_resource type="Script" uid="uid://dh3yicttsk5ir" path="res://Scripts/Toilet/toilet_spot.gd" id="1_spot"]
+[ext_resource type="TileSet" uid="uid://61mgkkn03beo" path="res://Scenes/Microgames/Toilet/toilet_ground_tileset.tres" id="2_ground"]
+[ext_resource type="Texture2D" uid="uid://5am1kshahj0y" path="res://Assets/Sprites/Toilet/CP_V1.0.4.png" id="3_atlas"]
+[ext_resource type="Texture2D" uid="uid://d06cwuaok516" path="res://Assets/generated/circle_fill.svg" id="4_circle"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_car"]
+size = Vector2(156, 96)
+
+[node name="ToiletCarSpot" type="Area2D" unique_id=1301040812]
+script = ExtResource("1_spot")
+spot_type = 3
+layout_bounds = Rect2(-78, -48, 156, 96)
+
+[node name="GroundTileMapLayer" type="TileMapLayer" parent="." unique_id=265164950]
+position = Vector2(-117, -52)
+scale = Vector2(2, 2)
+tile_map_data = PackedByteArray("AAAAAAIAAAAJACgAAAABAAIAAAAFACoAAAACAAIAAAAFACoAAAADAAIAAAAFACoAAAAEAAIAAAAFACoAAAAFAAIAAAAFACoAAAAAAAAAAAAJACgAAAABAAAAAAAFACoAAAABAAEAAAADACYAAAACAAEAAAADACYAAAADAAEAAAADACYAAAAEAAAAAAAFACoAAAAFAAAAAAAFACoAAAAAAAEAAAAJACgAAAAFAAEAAAADACYAAAACAAAAAAAFACoAAAADAAAAAAAFACoAAAAGAAAAAAAFACgAAAAGAAEAAAAFACgAAAAGAAIAAAAFACgAAAA=")
+tile_set = ExtResource("2_ground")
+
+[node name="VisualSprite" type="Sprite2D" parent="." unique_id=1877536922]
+scale = Vector2(3.304, 3.288)
+texture = ExtResource("3_atlas")
+region_enabled = true
+region_rect = Rect2(128, 448, 64, 42)
+
+[node name="Feedback" type="Node2D" parent="." unique_id=2123261478]
+visible = false
+z_index = 20
+
+[node name="Fill" type="Polygon2D" parent="Feedback" unique_id=2080128369]
+position = Vector2(-26, -10)
+color = Color(1, 1, 1, 0.08)
+polygon = PackedVector2Array(-88, -58, 88, -58, 88, 58, -88, 58)
+
+[node name="Outline" type="Line2D" parent="Feedback" unique_id=1117187584]
+position = Vector2(-26, -10)
+points = PackedVector2Array(-88, -58, 88, -58, 88, 58, -88, 58, -88, -58)
+width = 5.0
+default_color = Color(1, 1, 1, 0.28)
+
+[node name="CorrectMarker" type="Sprite2D" parent="Feedback" unique_id=1168259974]
+visible = false
+modulate = Color(1, 1, 1, 0.28)
+position = Vector2(0, -66)
+scale = Vector2(0.34, 0.34)
+texture = ExtResource("4_circle")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=48279622]
+position = Vector2(-26, -7)
+shape = SubResource("RectangleShape2D_car")

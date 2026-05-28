@@ -28,7 +28,6 @@ enum FeedbackState {
 		if is_node_ready():
 			_sync_visuals()
 
-@onready var glow: Sprite2D = get_node_or_null("Glow") as Sprite2D
 @onready var ring_shadow: Sprite2D = get_node_or_null("RingShadow") as Sprite2D
 @onready var ring_outer: Sprite2D = get_node_or_null("RingOuter") as Sprite2D
 @onready var ring_inner: Sprite2D = get_node_or_null("RingInner") as Sprite2D
@@ -68,7 +67,6 @@ func set_feedback_state(value: int) -> void:
 
 
 func _sync_visuals() -> void:
-	var glow_color: Color = Color.TRANSPARENT
 	var clasp_color: Color = rope_color
 	var ring_color: Color = hook_metal_color
 	var rope_tail_color: Color = rope_color
@@ -76,11 +74,9 @@ func _sync_visuals() -> void:
 
 	match feedback_state:
 		FeedbackState.CORRECT:
-			glow_color = Color(0.28, 0.77, 0.39, 0.28)
 			clasp_color = Color(0.28, 0.77, 0.39)
 			rope_tail_color = clasp_color
 		FeedbackState.WRONG:
-			glow_color = Color(0.88, 0.26, 0.23, 0.28)
 			clasp_color = Color(0.88, 0.26, 0.23)
 			rope_tail_color = clasp_color
 		FeedbackState.DIMMED:
@@ -92,10 +88,8 @@ func _sync_visuals() -> void:
 			shadow_color.a = 0.08
 		_:
 			if pick_enabled and is_hovered:
-				glow_color = Color(1.0, 1.0, 1.0, 0.14)
 				clasp_color = rope_color.lightened(0.16)
 
-	_set_sprite_color(glow, glow_color, glow_color.a > 0.0)
 	_set_sprite_color(ring_shadow, shadow_color, true)
 	_set_sprite_color(ring_outer, ring_color, true)
 	_set_sprite_color(ring_inner, Color(0.26, 0.29, 0.34), true)
