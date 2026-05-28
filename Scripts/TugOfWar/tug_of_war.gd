@@ -41,7 +41,6 @@ var initial_human_pos := Vector2(260, 420)
 var initial_dog_pos := Vector2(890, 420)
 var initial_leash_points: PackedVector2Array = []
 
-var camera: Camera2D
 var visual_tension := 0.3
 
 var sky: ColorRect
@@ -49,7 +48,14 @@ var original_sky_color: Color
 var sky_flash_timer := 0.0
 var pull_heave := 0.0
 
-# Programmatic Audio Synthesis
+# Scene node references
+@onready var camera: Camera2D = $Camera2D
+@onready var pull_player: AudioStreamPlayer = $PullPlayer
+@onready var yank_player: AudioStreamPlayer = $YankPlayer
+@onready var win_player: AudioStreamPlayer = $WinPlayer
+@onready var lose_player: AudioStreamPlayer = $LosePlayer
+
+# Programmatic Audio Stream Resources
 var pull_sfx: AudioStreamWAV
 var yank_sfx: AudioStreamWAV
 
@@ -78,11 +84,9 @@ func _ready() -> void:
 	# Set pivot center for progress bar pulsing
 	win_meter.pivot_offset = Vector2(250, 18)
 	
-	# Set up dynamic camera for screenshake
-	camera = Camera2D.new()
-	add_child(camera)
-	camera.position = Vector2(576, 324) # Screen center
-	camera.make_current()
+	# Make the scene camera current
+	if camera:
+		camera.make_current()
 	
 	visual_tension = 0.3
 	
@@ -92,6 +96,12 @@ func _ready() -> void:
 		
 	# Generate chiptune SFX
 	_init_sfx()
+	
+	# Assign streams to player nodes
+	if pull_player:
+		pull_player.stream = pull_sfx
+	if yank_player:
+		yank_player.stream = yank_sfx
 	
 	_update_positions()
 
@@ -134,17 +144,15 @@ func _init_sfx() -> void:
 		yank_data.append((sample_val >> 8) & 0xFF)
 	yank_sfx.data = yank_data
 
-func _play_sfx(stream: AudioStreamWAV, volume_db: float = 0.0) -> void:
-	if not stream:
-		return
-	var player = AudioStreamPlayer.new()
-	add_child(player)
-	player.stream = stream
-	player.volume_db = volume_db
-	player.play()
-	player.finished.connect(player.queue_free)
+func _play_sfx(player: AudioStreamPlayer, volume_db: float = 0.0) -> void:
+	if player:
+		player.volume_db = volume_db
+		player.play()
 
-func _play_synth_note(freq: float, duration: float, volume_db: float = 0.0) -> void:
+func _play_synth_note(player: AudioStreamPlayer, freq: float, duration: float, volume_db: float = 0.0) -> void:
+	if not player:
+		return
+		
 	var sound = AudioStreamWAV.new()
 	sound.format = AudioStreamWAV.FORMAT_16_BITS
 	sound.mix_rate = 11025
@@ -161,12 +169,9 @@ func _play_synth_note(freq: float, duration: float, volume_db: float = 0.0) -> v
 		data.append((sample_val >> 8) & 0xFF)
 	sound.data = data
 	
-	var player = AudioStreamPlayer.new()
-	add_child(player)
 	player.stream = sound
 	player.volume_db = volume_db
 	player.play()
-	player.finished.connect(player.queue_free)
 
 func _unhandled_input(event: InputEvent) -> void:
 	if is_finished:
@@ -197,7 +202,7 @@ func _unhandled_input(event: InputEvent) -> void:
 		get_viewport().set_input_as_handled()
 		
 		# Play pull sound effect
-		_play_sfx(pull_sfx, -8.0)
+		_play_sfx(pull_player, -8.0)
 		
 		# Pulse progress bar scale
 		if win_meter:
@@ -318,7 +323,7 @@ func _update_dog_ai(delta: float) -> void:
 			sky_flash_timer = 0.15 # Trigger red sky flash
 			
 			# Play dog yank sound
-			_play_sfx(yank_sfx, -4.0)
+			_play_sfx(yank_player, -4.0)
 			# Cringe progress bar scale
 			if win_meter:
 				win_meter.scale = Vector2(0.96, 0.9)
@@ -391,9 +396,9 @@ func _trigger_win() -> void:
 	dog.set_tension(1.0)
 	
 	# Play win retro chime
-	_play_synth_note(440.0, 0.1, -4.0)
+	_play_synth_note(win_player, 440.0, 0.1, -4.0)
 	await get_tree().create_timer(0.08, false).timeout
-	_play_synth_note(554.37, 0.15, -4.0)
+	_play_synth_note(win_player, 554.37, 0.15, -4.0)
 	
 	await get_tree().create_timer(0.42, false).timeout
 	emit_signal("game_won")
@@ -408,9 +413,9 @@ func _trigger_loss() -> void:
 	dog.set_tension(0.0)
 	
 	# Play lose retro chime
-	_play_synth_note(180.0, 0.12, -4.0)
+	_play_synth_note(lose_player, 180.0, 0.12, -4.0)
 	await get_tree().create_timer(0.1, false).timeout
-	_play_synth_note(120.0, 0.25, -4.0)
+	_play_synth_note(lose_player, 120.0, 0.25, -4.0)
 	
 	await get_tree().create_timer(0.4, false).timeout
 	emit_signal("game_lost")

@@ -10,29 +10,12 @@ var yank_timer: float = 0.0
 var yank_bump: float = 0.0
 var smooth_rotation: float = 0.0
 
-var dust_particles: CPUParticles2D
+@onready var dust_particles: CPUParticles2D = $DustParticles
 var current_sliding_factor: float = 0.0
 
 func _ready() -> void:
 	if Engine.is_editor_hint():
 		return
-	
-	# Set up dust particles at feet programmatically
-	dust_particles = CPUParticles2D.new()
-	add_child(dust_particles)
-	dust_particles.position = Vector2(0, 0)
-	dust_particles.amount = 15
-	dust_particles.lifetime = 0.5
-	dust_particles.explosiveness = 0.2
-	dust_particles.spread = 35.0
-	dust_particles.gravity = Vector2(0, 120)
-	dust_particles.initial_velocity_min = 30.0
-	dust_particles.initial_velocity_max = 80.0
-	dust_particles.direction = Vector2(1.0, -0.2) # Shoot right (backwards for dog)
-	dust_particles.color = Color(0.55, 0.44, 0.33) # Earthy dust color
-	dust_particles.scale_amount_min = 3.0
-	dust_particles.scale_amount_max = 6.0
-	dust_particles.emitting = false
 
 func _process(delta: float) -> void:
 	if Engine.is_editor_hint():

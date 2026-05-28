@@ -73,6 +73,20 @@ position = Vector2(0, -120)
 scale = Vector2(2.5, 2.5)
 texture = ExtResource("4_k5bn4")
 
+[node name="DustParticles" type="CPUParticles2D" parent="Human" unique_id=10283471]
+emitting = false
+amount = 15
+lifetime = 0.5
+explosiveness = 0.2
+direction = Vector2(-1, -0.2)
+spread = 35.0
+gravity = Vector2(0, 120)
+initial_velocity_min = 30.0
+initial_velocity_max = 80.0
+scale_amount_min = 3.0
+scale_amount_max = 6.0
+color = Color(0.55, 0.44, 0.33, 1)
+
 [node name="Dog" type="Node2D" parent="." unique_id=299819889]
 position = Vector2(890, 540)
 script = ExtResource("3_dog")
@@ -82,6 +96,20 @@ texture_filter = 1
 position = Vector2(0, -72)
 scale = Vector2(-3, 3)
 texture = ExtResource("6_2rgca")
+
+[node name="DustParticles" type="CPUParticles2D" parent="Dog" unique_id=10283472]
+emitting = false
+amount = 15
+lifetime = 0.5
+explosiveness = 0.2
+direction = Vector2(1, -0.2)
+spread = 35.0
+gravity = Vector2(0, 120)
+initial_velocity_min = 30.0
+initial_velocity_max = 80.0
+scale_amount_min = 3.0
+scale_amount_max = 6.0
+color = Color(0.55, 0.44, 0.33, 1)
 
 [node name="LeashLine" type="Line2D" parent="." unique_id=487599290]
 points = PackedVector2Array(301, 437, 390, 458, 490, 468, 576, 469, 665, 467, 762, 462, 850, 453)
@@ -172,3 +200,14 @@ text = "TUG!"
 label_settings = SubResource("LabelSettings_tug")
 horizontal_alignment = 1
 vertical_alignment = 1
+
+[node name="Camera2D" type="Camera2D" parent="." unique_id=10283473]
+position = Vector2(576, 324)
+
+[node name="PullPlayer" type="AudioStreamPlayer" parent="." unique_id=10283474]
+
+[node name="YankPlayer" type="AudioStreamPlayer" parent="." unique_id=10283475]
+
+[node name="WinPlayer" type="AudioStreamPlayer" parent="." unique_id=10283476]
+
+[node name="LosePlayer" type="AudioStreamPlayer" parent="." unique_id=10283477]
