@@ -8,21 +8,6 @@
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_pick_area"]
 size = Vector2(210, 183)
 
-[sub_resource type="Shader" id="Shader_dog_black_key"]
-code = "shader_type canvas_item;
-
-void fragment() {
-	vec4 color = texture(TEXTURE, UV) * COLOR;
-	if (color.r < 0.05 && color.g < 0.05 && color.b < 0.05) {
-		color.a = 0.0;
-	}
-	COLOR = color;
-}
-"
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_dog_black_key"]
-shader = SubResource("Shader_dog_black_key")
-
 [node name="TrashCan" type="Area2D" unique_id=542267804]
 script = ExtResource("1_trash")
 
@@ -35,7 +20,6 @@ position = Vector2(0, 30)
 
 [node name="ClueSprite" type="Sprite2D" parent="Contents" unique_id=895126440]
 visible = false
-material = SubResource("ShaderMaterial_dog_black_key")
 scale = Vector2(2.25, 2.25)
 texture = ExtResource("3_dog")
 region_enabled = true
