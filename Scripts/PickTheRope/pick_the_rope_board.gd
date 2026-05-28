@@ -76,6 +76,11 @@ const SPREAD_VARIANTS := [
 		rope_color = value
 		if is_node_ready():
 			_sync_rope_visuals()
+@export var rope_outline_color: Color = Color(1.0, 1.0, 1.0, 1.0):
+	set(value):
+		rope_outline_color = value
+		if is_node_ready():
+			_sync_rope_visuals()
 @export var correct_color: Color = Color(0.28, 0.77, 0.39):
 	set(value):
 		correct_color = value
@@ -84,11 +89,6 @@ const SPREAD_VARIANTS := [
 @export var wrong_color: Color = Color(0.88, 0.26, 0.23):
 	set(value):
 		wrong_color = value
-		if is_node_ready():
-			_sync_rope_visuals()
-@export var rope_shadow_color: Color = Color(0.09, 0.08, 0.07, 0.24):
-	set(value):
-		rope_shadow_color = value
 		if is_node_ready():
 			_sync_rope_visuals()
 @export var dog_neck_offset: Vector2 = Vector2(0.0, -30.0)
@@ -124,7 +124,7 @@ const SPREAD_VARIANTS := [
 
 @onready var hook_nodes: Array[PickTheRopeHook] = [$HookA as PickTheRopeHook, $HookB as PickTheRopeHook, $HookC as PickTheRopeHook, $HookD as PickTheRopeHook]
 @onready var rope_nodes: Array[Line2D] = [$Ropes/RopeA as Line2D, $Ropes/RopeB as Line2D, $Ropes/RopeC as Line2D, $Ropes/RopeD as Line2D]
-@onready var rope_shadow_nodes: Array[Line2D] = [$RopeShadows/RopeShadowA as Line2D, $RopeShadows/RopeShadowB as Line2D, $RopeShadows/RopeShadowC as Line2D, $RopeShadows/RopeShadowD as Line2D]
+@onready var rope_outline_nodes: Array[Line2D] = [$RopeOutlines/RopeOutlineA as Line2D, $RopeOutlines/RopeOutlineB as Line2D, $RopeOutlines/RopeOutlineC as Line2D, $RopeOutlines/RopeOutlineD as Line2D]
 @onready var dog_slot_nodes: Array[Node2D] = [$DogSlots/DogSlotA as Node2D, $DogSlots/DogSlotB as Node2D, $DogSlots/DogSlotC as Node2D, $DogSlots/DogSlotD as Node2D]
 @onready var dog_visual_nodes: Array[Node2D] = [$DogSlots/DogSlotA/Visuals as Node2D, $DogSlots/DogSlotB/Visuals as Node2D, $DogSlots/DogSlotC/Visuals as Node2D, $DogSlots/DogSlotD/Visuals as Node2D]
 @onready var dog_sprite_nodes: Array[AnimatedSprite2D] = [$DogSlots/DogSlotA/Visuals/Dog as AnimatedSprite2D, $DogSlots/DogSlotB/Visuals/Dog as AnimatedSprite2D, $DogSlots/DogSlotC/Visuals/Dog as AnimatedSprite2D, $DogSlots/DogSlotD/Visuals/Dog as AnimatedSprite2D]
@@ -298,8 +298,8 @@ func _build_rope_path(hook_index: int, dog_slot_index: int, knot_point: Vector2)
 	var end: Vector2 = _get_dog_neck_anchor(dog_slot_index)
 	var spread_point: Vector2 = spread_points[dog_slot_index] + Vector2(float(hook_index - dog_slot_index) * 4.0, float(hook_index - dog_slot_index) * 4.0)
 	var hook_position: Vector2 = _get_hook_position(hook_index)
-	var start: Vector2 = hook_position + Vector2(-22.0, 0.0)
-	var hook_exit: Vector2 = start + Vector2(-34.0, clampf((end.y - start.y) * 0.04, -7.0, 7.0))
+	var start: Vector2 = hook_position + Vector2(-14.0, 0.0)
+	var hook_exit: Vector2 = start + Vector2(-28.0, clampf((end.y - start.y) * 0.04, -7.0, 7.0))
 	var pole_clear: Vector2 = Vector2(
 		hook_position.x - (94.0 + float(current_pattern_index) * 8.0),
 		start.y + float(hook_index - 1) * 4.0
@@ -405,10 +405,10 @@ func _sync_rope_visuals() -> void:
 		rope_line.points = path
 		rope_line.default_color = _get_rope_color_for_state(index, rope_state)
 
-		var shadow_line: Line2D = rope_shadow_nodes[index]
-		shadow_line.visible = has_path
-		shadow_line.points = path
-		shadow_line.default_color = _get_rope_shadow_for_state(rope_state)
+		var outline_line: Line2D = rope_outline_nodes[index]
+		outline_line.visible = has_path
+		outline_line.points = path
+		outline_line.default_color = _get_rope_outline_color_for_state(rope_state)
 
 
 func _sync_dog_visuals() -> void:
@@ -557,22 +557,14 @@ func _get_rope_color_for_state(index: int, rope_state: int) -> Color:
 			return _get_neutral_rope_color(index)
 
 
-func _get_rope_shadow_for_state(rope_state: int) -> Color:
+func _get_rope_outline_color_for_state(rope_state: int) -> Color:
 	match rope_state:
-		FeedbackState.CORRECT:
-			var success_shadow: Color = correct_color.darkened(0.56)
-			success_shadow.a = 0.3
-			return success_shadow
-		FeedbackState.WRONG:
-			var failure_shadow: Color = wrong_color.darkened(0.58)
-			failure_shadow.a = 0.3
-			return failure_shadow
 		FeedbackState.DIMMED:
-			var dim_shadow: Color = rope_shadow_color
-			dim_shadow.a = 0.08
-			return dim_shadow
+			var dimmed_outline: Color = rope_outline_color
+			dimmed_outline.a = 0.24
+			return dimmed_outline
 		_:
-			return rope_shadow_color
+			return rope_outline_color
 
 
 func _play_player_success_feedback() -> void:

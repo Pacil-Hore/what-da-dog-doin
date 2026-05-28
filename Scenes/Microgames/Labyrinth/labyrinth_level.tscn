@@ -80,6 +80,7 @@ damping = 2.0
 [node name="RopeLine" type="Line2D" parent="." unique_id=803758483]
 z_index = 2
 script = ExtResource("5_rdsau")
+rope_color = Color(0.13333334, 0.14117648, 0.19607843, 1)
 
 [node name="TileMapLayer" type="TileMapLayer" parent="." unique_id=2113049306]
 
