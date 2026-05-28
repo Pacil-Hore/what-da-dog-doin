@@ -4,6 +4,7 @@ extends Button
 
 @export var hover_prefix: String = ">"
 @export var hover_prefix_separator: String = " "
+@onready var menu_move = %MenuMove
 
 var _base_text: String = ""
 var _hovered := false
@@ -31,6 +32,7 @@ func _validate_property(property: Dictionary) -> void:
 
 
 func _on_mouse_entered() -> void:
+	menu_move.play()
 	_hovered = true
 	_update_text()
 
