@@ -181,7 +181,7 @@ func _register_miss() -> void:
 
 func _update_hud() -> void:
 	if is_instance_valid(miss_label):
-		miss_label.text = "Misses: %d/%d" % [miss_count, max_misses]
+		miss_label.text = "Miss: %d/%d" % [miss_count, max_misses]
 	if is_instance_valid(instruction_label):
 		instruction_label.text = instruction_text
 
