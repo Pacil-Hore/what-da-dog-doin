@@ -10,7 +10,8 @@ signal game_lost
 @export var time_limit := 5.0
 @export var rotations_per_state := 5
 @export var win_label_text := "Untangled!"
-@export var timeout_label_text := "Time is up!"
+@export var lose_label_text := "Still tangled!"
+@export var timeout_label_text := "Still tangled!"
 @export var state_art_position := Vector2(576.0, 360.0)
 @export var hide_legacy_scene_art := true
 

@@ -7,6 +7,8 @@ signal game_lost
 @export var control_hint: String = "Space"
 @export var control_icon: Texture2D
 @export var time_limit: float = 5.0
+@export var win_label_text: String = "PULLED!"
+@export var lose_label_text: String = "Dragged off!"
 
 var human: TugOfWarHuman
 var dog: TugOfWarDog
