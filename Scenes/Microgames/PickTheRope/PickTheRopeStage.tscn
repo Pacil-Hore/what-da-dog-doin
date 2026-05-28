@@ -644,7 +644,7 @@ color = Color(0.78, 0.86, 0.93, 1)
 polygon = PackedVector2Array(0, 0, 1152, 0, 1152, 358, 0, 358)
 
 [node name="Backdrop" type="Polygon2D" parent="Background" unique_id=325760336]
-color = Color(0.86, 0.88, 0.87, 1)
+color = Color(0.3372549, 0.42352942, 0.5254902, 1)
 polygon = PackedVector2Array(0, 130, 1152, 130, 1152, 358, 0, 358)
 
 [node name="Sidewalk" type="Polygon2D" parent="Background" unique_id=824577327]

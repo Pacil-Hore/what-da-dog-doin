@@ -615,6 +615,11 @@ sources/1 = SubResource("TileSetAtlasSource_nhvio")
 script = ExtResource("1_stage")
 control_icon = ExtResource("2_vqg4i")
 
+[node name="BgRect" type="ColorRect" parent="." unique_id=1840616397]
+offset_right = 1152.0
+offset_bottom = 645.0
+color = Color(0.2, 0.23529412, 0.34117648, 1)
+
 [node name="TileMapLayer" type="TileMapLayer" parent="." unique_id=1818002600]
 scale = Vector2(16, 16)
 tile_map_data = PackedByteArray("AAAAAAIAAQARACYAAAABAAIAAQARACYAAAACAAIAAQARACYAAAADAAIAAQARACYAAAAEAAIAAQARACYAAAAAAAEAAQAOABMAAAABAAEAAQADACYAAAACAAEAAQADACYAAAADAAEAAQADACYAAAAAAAAAAQAOABIAAAAEAAEAAQABABMAAAAEAAAAAQABABIAAAABAAAAAQAkADEAAAACAAAAAQAkADEAAAADAAAAAQAgADEAAAA=")
