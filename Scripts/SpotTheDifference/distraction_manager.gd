@@ -10,6 +10,8 @@ signal distraction_triggered(type: String)
 
 @onready var timer: Timer = Timer.new()
 
+var _active_popup: PanelContainer = null
+
 enum DistractionType {
 	POPUP,
 	OVERLAY,
@@ -56,7 +58,13 @@ func _trigger_random_distraction() -> void:
 	distraction_triggered.emit(str(type))
 
 func _show_fake_popup() -> void:
+	if _active_popup and is_instance_valid(_active_popup):
+		_active_popup.queue_free()
+		_active_popup = null
+		
 	var popup = PanelContainer.new()
+	_active_popup = popup
+	
 	var style = StyleBoxFlat.new()
 	style.bg_color = Color(1, 1, 1) # White window
 	style.set_border_width_all(2)
@@ -64,7 +72,12 @@ func _show_fake_popup() -> void:
 	popup.add_theme_stylebox_override("panel", style)
 	
 	popup.custom_minimum_size = Vector2(300, 120)
-	popup.position = Vector2(randf_range(100, 500), randf_range(100, 300))
+	
+	# Determine left/right side to avoid overlapping center ResultLabel and seam
+	var spawn_on_left = randf() < 0.5
+	var px = randf_range(88, 220) if spawn_on_left else randf_range(590, 720)
+	var py = randf_range(80, 250)
+	popup.position = Vector2(px, py)
 	popup.pivot_offset = popup.custom_minimum_size / 2
 	
 	var vbox = VBoxContainer.new()
@@ -129,10 +142,18 @@ func _show_fake_popup() -> void:
 	add_child(popup)
 	
 	var tween = create_tween().set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
+	var popup_ref: WeakRef
+	popup_ref = weakref(popup)
 	tween.tween_property(popup, "scale", Vector2.ONE, 0.3).from(Vector2.ZERO)
 	tween.tween_interval(2.2)
 	tween.tween_property(popup, "modulate:a", 0.0, 0.2)
-	tween.tween_callback(popup.queue_free)
+	tween.tween_callback(func():
+		var popup_node := popup_ref.get_ref() as PanelContainer
+		if is_instance_valid(popup_node):
+			if _active_popup == popup_node:
+				_active_popup = null
+			popup_node.queue_free()
+	)
 
 func _show_passing_dog() -> void:
 	var dog = TextureRect.new()
@@ -146,11 +167,17 @@ func _show_passing_dog() -> void:
 	add_child(dog)
 	
 	var tween = create_tween()
+	var dog_ref: WeakRef
+	dog_ref = weakref(dog)
 	# Rotate slightly while moving
 	tween.set_parallel(true)
 	tween.tween_property(dog, "position:x", 1300, 1.2).set_trans(Tween.TRANS_LINEAR)
 	tween.tween_property(dog, "rotation_degrees", 360.0, 1.2)
-	tween.chain().tween_callback(dog.queue_free)
+	tween.chain().tween_callback(func():
+		var dog_node := dog_ref.get_ref() as TextureRect
+		if is_instance_valid(dog_node):
+			dog_node.queue_free()
+	)
 
 func _shake_screen() -> void:
 	# We can't easily shake the camera from here without reference,
@@ -162,3 +189,11 @@ func _shake_screen() -> void:
 		for i in range(5):
 			tween.tween_property(cam, "offset", original_pos + Vector2(randf_range(-10, 10), randf_range(-10, 10)), 0.05)
 		tween.tween_property(cam, "offset", original_pos, 0.05)
+
+func clear_all_distractions() -> void:
+	if _active_popup and is_instance_valid(_active_popup):
+		_active_popup.queue_free()
+		_active_popup = null
+	for child in get_children():
+		if child != timer:
+			child.queue_free()
