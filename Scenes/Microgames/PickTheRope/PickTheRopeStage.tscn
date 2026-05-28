@@ -668,6 +668,7 @@ scale = Vector2(5.9940457, 12.71795)
 texture = SubResource("AtlasTexture_street_lamp")
 
 [node name="Board" type="Node2D" parent="." unique_id=388273959]
+position = Vector2(0, -14)
 script = ExtResource("3_board")
 rope_color = Color(0.13333334, 0.14117648, 0.19607843, 1)
 rope_outline_color = Color(0.95686275, 0.95686275, 0.95686275, 1)
@@ -713,7 +714,7 @@ default_color = Color(0.9, 0.37, 0.39, 1)
 z_index = 10
 
 [node name="DogSlotA" type="Node2D" parent="Board/DogSlots" unique_id=1884517337]
-position = Vector2(196, 344)
+position = Vector2(206, 330)
 
 [node name="Visuals" type="Node2D" parent="Board/DogSlots/DogSlotA" unique_id=109514667]
 
@@ -729,7 +730,7 @@ scale = Vector2(2.682, 2.682)
 sprite_frames = ExtResource("8_dog_red_frames")
 
 [node name="DogSlotB" type="Node2D" parent="Board/DogSlots" unique_id=1032476036]
-position = Vector2(314, 396)
+position = Vector2(346, 366)
 
 [node name="Visuals" type="Node2D" parent="Board/DogSlots/DogSlotB" unique_id=2070900926]
 
@@ -745,7 +746,7 @@ scale = Vector2(2.682, 2.682)
 sprite_frames = ExtResource("9_dog_blue_frames")
 
 [node name="DogSlotC" type="Node2D" parent="Board/DogSlots" unique_id=88585486]
-position = Vector2(196, 452)
+position = Vector2(257, 438)
 
 [node name="Visuals" type="Node2D" parent="Board/DogSlots/DogSlotC" unique_id=845733596]
 
@@ -761,7 +762,7 @@ scale = Vector2(2.682, 2.682)
 sprite_frames = ExtResource("10_dog_green_frames")
 
 [node name="DogSlotD" type="Node2D" parent="Board/DogSlots" unique_id=487293332]
-position = Vector2(314, 504)
+position = Vector2(407, 484)
 
 [node name="Visuals" type="Node2D" parent="Board/DogSlots/DogSlotD" unique_id=2044725232]
 
