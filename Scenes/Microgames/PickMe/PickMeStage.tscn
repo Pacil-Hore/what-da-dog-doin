@@ -21,6 +21,7 @@ color = Color(0.16, 0.18, 0.2, 1)
 
 [node name="LeftTrashCan" parent="TrashCans" unique_id=886485557 instance=ExtResource("2_trash_can")]
 position = Vector2(330, 430)
+reveal_lift = 100.0
 reveal_duration = 0.35
 reveal_rotation_degrees = -10.0
 cue_shake_duration = 0.34
@@ -28,6 +29,7 @@ cue_shake_duration = 0.34
 [node name="RightTrashCan" parent="TrashCans" unique_id=1685062148 instance=ExtResource("2_trash_can")]
 position = Vector2(822, 430)
 bin_variant = 3
+reveal_lift = 100.0
 reveal_duration = 0.35
 reveal_rotation_degrees = 10.0
 cue_shake_duration = 0.34
@@ -35,6 +37,7 @@ cue_shake_duration = 0.34
 [node name="MiddleTrashCan" parent="TrashCans" unique_id=542267804 instance=ExtResource("2_trash_can")]
 position = Vector2(576, 430)
 bin_variant = 2
+reveal_lift = 100.0
 reveal_duration = 0.35
 reveal_rotation_degrees = 10.0
 cue_shake_duration = 0.34

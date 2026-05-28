@@ -1,11 +1,27 @@
 [gd_scene format=3 uid="uid://c3x8fiyss1j45"]
 
 [ext_resource type="Script" uid="uid://cwmt213llalf2" path="res://Scripts/PickMe/trash_can.gd" id="1_trash"]
-[ext_resource type="Script" uid="uid://bei6m7nrkc53w" path="res://Scripts/PickMe/trash_can_contents.gd" id="2_contents"]
-[ext_resource type="Script" uid="uid://dfllfl5ihuw3d" path="res://Scripts/PickMe/trash_can_shell.gd" id="3_shell"]
+[ext_resource type="Texture2D" uid="uid://c2n3rrxvcavg1" path="res://Assets/Sprites/PickMe/FREE Pixel Art Trash Pack - Animated/Dumpster 1 - No Lid.png" id="2_bin"]
+[ext_resource type="Texture2D" uid="uid://dcdjd3rq84jpo" path="res://Assets/Sprites/Pick The Rope/dog_front.png" id="3_dog"]
+[ext_resource type="Texture2D" uid="uid://wu8rbnhgna4g" path="res://Assets/Sprites/PickMe/FREE Pixel Art Trash Pack - Animated/Trash Bins - No Animations/Trash Bag 1.png" id="4_junk"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_pick_area"]
 size = Vector2(210, 183)
+
+[sub_resource type="Shader" id="Shader_dog_black_key"]
+code = "shader_type canvas_item;
+
+void fragment() {
+	vec4 color = texture(TEXTURE, UV) * COLOR;
+	if (color.r < 0.05 && color.g < 0.05 && color.b < 0.05) {
+		color.a = 0.0;
+	}
+	COLOR = color;
+}
+"
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_dog_black_key"]
+shader = SubResource("Shader_dog_black_key")
 
 [node name="TrashCan" type="Area2D" unique_id=542267804]
 script = ExtResource("1_trash")
@@ -15,8 +31,30 @@ shape = SubResource("RectangleShape2D_pick_area")
 
 [node name="Contents" type="Node2D" parent="." unique_id=551133672]
 visible = false
-position = Vector2(0, 64)
-script = ExtResource("2_contents")
+position = Vector2(0, 30)
 
-[node name="Shell" type="Node2D" parent="." unique_id=2116648553]
-script = ExtResource("3_shell")
+[node name="ClueSprite" type="Sprite2D" parent="Contents" unique_id=895126440]
+visible = false
+material = SubResource("ShaderMaterial_dog_black_key")
+scale = Vector2(2.25, 2.25)
+texture = ExtResource("3_dog")
+region_enabled = true
+region_rect = Rect2(0, 0, 48, 47.83401)
+
+[node name="JunkSprite" type="Sprite2D" parent="Contents" unique_id=1416905086]
+position = Vector2(0, 4)
+scale = Vector2(2.5, 2.5)
+texture = ExtResource("4_junk")
+
+[node name="RevealParticles" type="GPUParticles2D" parent="Contents" unique_id=686050939]
+emitting = false
+amount = 14
+lifetime = 0.55
+one_shot = true
+explosiveness = 0.95
+visibility_rect = Rect2(-80, -80, 160, 160)
+
+[node name="Shell" type="Sprite2D" parent="." unique_id=364127872]
+z_index = 1
+scale = Vector2(5, 5)
+texture = ExtResource("2_bin")
