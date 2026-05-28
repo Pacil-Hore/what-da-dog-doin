@@ -39,11 +39,33 @@ func hop_to(target: Vector2):
 
 func _on_hop_finished():
 	is_moving = false
-	# Tunggu 1 frame biar Area2D sempat detect
-	await get_tree().process_frame
-	# Cek apakah mendarat di tempat aman
+	# Tunggu 2 physics frame biar collision shape ikut update posisi
+	await get_tree().physics_frame
+	await get_tree().physics_frame
+	# Fallback: manual overlap query jika signal belum sempat fire
+	if current_platform == null and not is_on_safe_area:
+		_check_overlap_manually()
+	# Final check setelah manual query
 	if current_platform == null and not is_on_safe_area:
 		fall_in_water()
+
+func _check_overlap_manually():
+	var space_state = get_world_2d().direct_space_state
+	var params = PhysicsPointQueryParameters2D.new()
+	params.position = global_position
+	params.collide_with_areas = true
+	params.collide_with_bodies = false
+	var results = space_state.intersect_point(params, 8)
+	for result in results:
+		var collider = result["collider"]
+		if collider is Platform:
+			if collider.can_accept(self):
+				collider.occupants.append(self)
+				current_platform = collider
+				return
+		elif collider.is_in_group("safe_area"):
+			is_on_safe_area = true
+			return
 
 func fall_in_water():
 	if not is_alive:
