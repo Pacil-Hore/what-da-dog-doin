@@ -1,4 +1,4 @@
-[gd_scene format=4 uid="uid://crbrwaqq404iv"]
+[gd_scene format=4 uid="uid://g7m00h73nvq3"]
 
 [ext_resource type="Texture2D" uid="uid://lxtf4weecqj1" path="res://Assets/Sprites/Labyrinth/maze-tiles-v2/labyrinth-tiles-v2/white-background/sheet.png" id="1_yrfhq"]
 
@@ -977,7 +977,7 @@ physics_layer_0/collision_layer = 1
 sources/0 = SubResource("TileSetAtlasSource_2s0ol")
 sources/2 = SubResource("TileSetAtlasSource_76wcu")
 
-[node name="LabyrinthLevel" type="Node2D" unique_id=1343195067]
+[node name="LabyrinthLevel2" type="Node2D" unique_id=1343195067]
 
 [node name="TileMapLayer" type="TileMapLayer" parent="." unique_id=1377894006]
 position = Vector2(0, 85)
