@@ -56,6 +56,17 @@ z_index = -100
 script = ExtResource("3_1bpud")
 background_texture = ExtResource("4_2i6kx")
 
+[node name="LeashLine" type="Line2D" parent="." unique_id=487599290]
+position = Vector2(35.795, -68.855)
+rotation = 0.052359883
+points = PackedVector2Array(301, 437, 390, 458, 490, 468, 576, 469, 665, 467, 762, 462, 850, 453)
+width = 5.0
+default_color = Color(0.13333334, 0.14117648, 0.19607843, 1)
+joint_mode = 2
+begin_cap_mode = 2
+end_cap_mode = 2
+antialiased = true
+
 [node name="Human" type="Node2D" parent="." unique_id=1734058691]
 position = Vector2(260, 540)
 scale = Vector2(1.5, 1.5)
@@ -88,7 +99,7 @@ script = ExtResource("3_dog")
 
 [node name="Sprite" type="Sprite2D" parent="Dog" unique_id=647939317]
 texture_filter = 1
-position = Vector2(-6, -120.66667)
+position = Vector2(0, -72)
 scale = Vector2(-3, 3)
 texture = ExtResource("6_2rgca")
 
@@ -105,16 +116,6 @@ initial_velocity_max = 80.0
 scale_amount_min = 3.0
 scale_amount_max = 6.0
 color = Color(0.55, 0.44, 0.33, 1)
-
-[node name="LeashLine" type="Line2D" parent="." unique_id=487599290]
-position = Vector2(0, -54.01)
-points = PackedVector2Array(301, 437, 390, 458, 490, 468, 576, 469, 665, 467, 762, 462, 850, 453)
-width = 5.0
-default_color = Color(0.45, 0.28, 0.12, 1)
-joint_mode = 2
-begin_cap_mode = 2
-end_cap_mode = 2
-antialiased = true
 
 [node name="HUD" type="CanvasLayer" parent="." unique_id=2066800930]
 offset = Vector2(0, 16)
