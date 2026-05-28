@@ -31,6 +31,9 @@ var current_game_is_final: bool = false
 @onready var music_slow = $MusicSlow
 @onready var music_fast = $MusicFast
 @onready var music_final = $MusicFinal
+@onready var dog_bark = $DogBark
+@onready var dog_whimper = $DogWhimper
+@onready var win_sound = $WinSound
 
 @export var fade_duration: float = 0.8  # durasi crossfade (bisa di-tweak di Inspector)
 const SILENT_DB: float = -40.0          # volume "silent" untuk fade
@@ -123,6 +126,7 @@ func _refill_scenario_game_pool():
 func _load_interstitial():
 	# Reset time scale to current speed multiplier to clear any level-specific slow-motion
 	Engine.time_scale = speed_multiplier
+	dog_bark.play()
 
 	if current_instance != null:
 		current_instance.queue_free()
@@ -240,6 +244,8 @@ func _on_game_won():
 	# Immediate visual freeze and feedback
 	timer_bar.stop()
 	
+	win_sound.play()
+	
 	var msg = "WIN!"
 	if is_instance_valid(current_instance):
 		if "win_label_text" in current_instance:
@@ -274,6 +280,8 @@ func _on_game_lost():
 			disable_freeze = current_instance.disable_freeze_on_loss
 		if not disable_freeze:
 			current_instance.process_mode = Node.PROCESS_MODE_DISABLED
+	
+	dog_whimper.play()
 	
 	var msg = "LOSE..."
 	if current_game_is_final:

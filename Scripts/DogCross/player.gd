@@ -9,6 +9,7 @@ extends CharacterBody2D
 @export var hand_offset_forward: Vector2 = Vector2(0, -15)
 
 @onready var anim: AnimatedSprite2D = $AnimatedSprite2D
+@onready var jump_sound = $AudioStreamPlayer
 
 # State
 var is_moving: bool = false
@@ -48,6 +49,7 @@ func _process(_delta):
 	print("rope_offset: ", rope_offset, " | is_moving: ", is_moving)
 	
 func hop_to(target: Vector2):
+	jump_sound.play()
 	is_moving = true
 	
 	var tween = create_tween()
