@@ -12,6 +12,9 @@ var is_found: bool = false:
 
 func _ready() -> void:
 	mouse_filter = MOUSE_FILTER_STOP
+	z_index = 100
+	z_as_relative = false
+	show_behind_parent = false
 	pivot_offset = size / 2
 	queue_redraw()
 
@@ -24,12 +27,17 @@ func _gui_input(event: InputEvent) -> void:
 
 func _on_found() -> void:
 	if is_found: return
+	var parent_node := get_parent()
+	if parent_node:
+		parent_node.move_child(self, parent_node.get_child_count() - 1)
+	z_index = 100
+	z_as_relative = false
 	is_found = true
 	found.emit(self)
 
 func _play_found_animation() -> void:
 	var tween = create_tween().set_parallel(true)
-	scale = Vector2.ONE * 1.5
+	scale = Vector2.ONE * 1.18
 	modulate = Color(2, 2, 2) # Flash white
 	
 	tween.tween_property(self, "scale", Vector2.ONE, 0.4).set_trans(Tween.TRANS_ELASTIC).set_ease(Tween.EASE_OUT)
@@ -38,8 +46,7 @@ func _play_found_animation() -> void:
 
 func _draw() -> void:
 	if is_found:
-		# Brighter, thicker indicator
 		var center = size / 2
-		var radius = max(size.x, size.y) / 1.5
-		draw_circle(center, radius, Color(0.2, 1.0, 0.2, 0.3))
-		draw_arc(center, radius, 0, TAU, 32, Color(0.2, 1.0, 0.2, 0.9), 4.0, true)
+		var radius = min(size.x, size.y) * 0.5
+		draw_circle(center, radius, Color(0.2, 1.0, 0.2, 0.26))
+		draw_arc(center, radius, 0, TAU, 32, Color(0.2, 1.0, 0.2, 1.0), 4.0, true)
