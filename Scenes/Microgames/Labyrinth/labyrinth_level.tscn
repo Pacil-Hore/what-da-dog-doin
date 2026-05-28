@@ -773,6 +773,7 @@ size = Vector2(22.062378, 675)
 
 [node name="LabyrinthLevel" type="Node2D" unique_id=1216538779]
 script = ExtResource("3_857ma")
+objective_text = "Escape Together!"
 control_icon = ExtResource("2_hvary")
 
 [node name="TileMapLayer2" type="TileMapLayer" parent="." unique_id=1586882729]

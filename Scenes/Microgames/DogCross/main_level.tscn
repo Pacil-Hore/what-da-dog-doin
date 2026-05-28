@@ -162,7 +162,7 @@ texture = ExtResource("3_3snel")
 [sub_resource type="TileSet" id="TileSet_angha"]
 sources/0 = SubResource("TileSetAtlasSource_vihph")
 
-[node name="Node2D" type="Node2D" unique_id=579529688]
+[node name="DogCrossStage" type="Node2D" unique_id=579529688]
 script = ExtResource("11_stage")
 control_icon = ExtResource("2_3hqwf")
 

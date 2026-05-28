@@ -9,6 +9,7 @@ signal game_lost
 @export var time_limit: float = 5.0
 @export var win_label_text: String = "PULLED!"
 @export var lose_label_text: String = "Dragged off!"
+@export var disable_freeze_on_loss: bool = true
 
 var human: TugOfWarHuman
 var dog: TugOfWarDog
@@ -28,6 +29,13 @@ var display_gauge := 0.5
 var time_left := 5.0
 var is_finished := false
 var game_started := true
+
+var last_ticks := 0.0
+var end_transition_progress := 0.0
+var end_transition_start_gauge := 0.5
+var has_saved_transition_start := false
+
+
 
 var next_yank_timer := 0.8
 var yank_duration_timer := 0.0
@@ -80,9 +88,18 @@ func _ready() -> void:
 	game_started = true
 	next_yank_timer = randf_range(0.8, 1.4)
 	
+	last_ticks = Time.get_ticks_usec()
+	end_transition_progress = 0.0
+	end_transition_start_gauge = 0.5
+	has_saved_transition_start = false
+	
 	warning_label.visible = false
 	win_meter.value = gauge_value * 100.0
 	
+	var bg_style = win_meter.get_theme_stylebox("background") as StyleBoxFlat
+	if bg_style:
+		bg_style.border_color = Color(1.0, 1.0, 1.0)
+		
 	# Set pivot center for progress bar pulsing
 	win_meter.pivot_offset = Vector2(250, 18)
 	
@@ -208,20 +225,32 @@ func _unhandled_input(event: InputEvent) -> void:
 		
 		# Adrenaline clutch boost near loss!
 		var strength = player_pull_strength
-		if gauge_value < 0.25:
+		if gauge_value > 0.75:
 			strength *= 1.15
 			
-		gauge_value = minf(gauge_value + strength, 1.0)
+		gauge_value = maxf(gauge_value - strength, 0.0)
 		human.play_pull_wiggle()
 		shake_intensity = 0.12
 		visual_tension = minf(visual_tension + 0.25, 1.0)
 		pull_heave = 6.0 # Trigger vertical planting heave
 		
-		if gauge_value >= 1.0:
+		if gauge_value <= 0.0:
 			_trigger_win()
 
 func _process(delta: float) -> void:
-	shake_intensity = lerp(shake_intensity, 0.0, delta * 12.0)
+	# Compute rock-solid unscaled real-world delta from microseconds clock
+	var current_ticks = Time.get_ticks_usec()
+	var real_delta = (current_ticks - last_ticks) / 1000000.0
+	last_ticks = current_ticks
+	
+	# Clamp real_delta to prevent extreme jumps on focus loss or loading
+	real_delta = clampf(real_delta, 0.0, 0.1)
+
+	var use_delta = delta
+	if is_finished:
+		use_delta = real_delta
+		
+	shake_intensity = lerp(shake_intensity, 0.0, use_delta * 12.0)
 	if camera:
 		camera.offset = Vector2(
 			randf_range(-1, 1) * shake_intensity * 8.0,
@@ -230,25 +259,36 @@ func _process(delta: float) -> void:
 		
 	# Decay win_meter scale back to normal
 	if win_meter:
-		win_meter.scale = win_meter.scale.lerp(Vector2.ONE, delta * 12.0)
+		win_meter.scale = win_meter.scale.lerp(Vector2.ONE, use_delta * 12.0)
 		
 	# Decay vertical heave jolt
-	pull_heave = lerp(pull_heave, 0.0, delta * 15.0)
+	pull_heave = lerp(pull_heave, 0.0, use_delta * 15.0)
 	
 	# Process red sky flash
 	if sky_flash_timer > 0.0 and sky:
-		sky_flash_timer -= delta
+		sky_flash_timer -= use_delta
 		var flash_factor = clampf(sky_flash_timer / 0.15, 0.0, 1.0)
 		sky.color = original_sky_color.lerp(Color(0.9, 0.25, 0.25), flash_factor * 0.35)
 	elif sky:
 		sky.color = original_sky_color
 		
 	if is_finished:
-		display_gauge = lerp(display_gauge, gauge_value, delta * 12.0)
+		if not has_saved_transition_start:
+			has_saved_transition_start = true
+			end_transition_start_gauge = display_gauge
+			end_transition_progress = 0.0
+			
+		# Smoothly advance transition progress linearly using real delta
+		end_transition_progress = move_toward(end_transition_progress, 1.0, use_delta * 3.5) # ~0.28s to complete
+		
+		# Smoothly interpolate gauge value dynamically from the start value to the target
+		display_gauge = lerp(end_transition_start_gauge, gauge_value, end_transition_progress)
+		
 		var target_tension = 0.8
-		visual_tension = lerp(visual_tension, target_tension, delta * 4.0)
+		visual_tension = lerp(visual_tension, target_tension, use_delta * 4.0)
 		_update_positions()
 		win_meter.value = display_gauge * 100.0
+		_update_ui_elements()
 		return
 		
 	if not game_started:
@@ -262,11 +302,11 @@ func _process(delta: float) -> void:
 			
 	_update_dog_ai(delta)
 	
-	if gauge_value <= 0.0:
+	if gauge_value >= 1.0:
 		_trigger_loss()
 		return
 	
-	display_gauge = lerp(display_gauge, gauge_value, delta * 12.0)
+	display_gauge = lerp(display_gauge, gauge_value, delta * 25.0)
 	
 	# Decay visual tension back to baseline
 	var target_tension = 0.25
@@ -277,21 +317,14 @@ func _process(delta: float) -> void:
 		
 	_update_positions()
 	win_meter.value = display_gauge * 100.0
-	
-	var meter_style = win_meter.get_theme_stylebox("fill") as StyleBoxFlat
-	if meter_style:
-		if display_gauge > 0.6:
-			meter_style.bg_color = Color(0.2, 0.85, 0.45)
-		elif display_gauge > 0.3:
-			meter_style.bg_color = Color(0.85, 0.75, 0.2)
-		else:
-			meter_style.bg_color = Color(0.9, 0.25, 0.25)
+	_update_ui_elements()
+
 	
 	if warning_label.visible:
 		warning_pulse += delta * 12.0
 		warning_label.modulate.a = 0.6 + sin(warning_pulse) * 0.4
 		warning_label.scale = Vector2.ONE * (1.0 + sin(warning_pulse * 0.7) * 0.08)
-
+ 
 func _update_dog_ai(delta: float) -> void:
 	var active_drain = dog_base_drain_rate * delta
 	# Dog struggles harder near win!
@@ -312,7 +345,7 @@ func _update_dog_ai(delta: float) -> void:
 		if next_yank_timer <= 0.0:
 			is_yanking = true
 			yank_duration_timer = 0.4
-			gauge_value = maxf(gauge_value - dog_yank_strength, 0.0)
+			gauge_value = minf(gauge_value + dog_yank_strength, 1.0)
 			dog.set_yank(true)
 			warning_label.visible = true
 			warning_pulse = 0.0
@@ -328,18 +361,25 @@ func _update_dog_ai(delta: float) -> void:
 			
 			next_yank_timer = randf_range(0.9, 1.5)
 			
-	gauge_value = maxf(gauge_value - active_drain, 0.0)
-
+	gauge_value = minf(gauge_value + active_drain, 1.0)
+ 
 func _update_positions() -> void:
-	human.set_tension(1.0 - display_gauge)
-	dog.set_tension(display_gauge)
+	human.set_tension(display_gauge)
+	dog.set_tension(1.0 - display_gauge)
 	
 	# Set sliding speeds for dust particles
 	var slide_speed = abs(display_gauge - gauge_value)
 	human.set_sliding(slide_speed)
 	dog.set_sliding(slide_speed)
 	
-	var center_shift = (0.5 - display_gauge) * 220.0
+	var center_shift = (display_gauge - 0.5) * 220.0
+	if is_finished:
+		if gauge_value == 1.0:
+			# Extra drag shift towards dog (right) on loss
+			center_shift += end_transition_progress * 320.0
+		elif gauge_value == 0.0:
+			# Extra pull shift towards human (left) on win
+			center_shift -= end_transition_progress * 80.0
 	
 	human.position.x = initial_human_pos.x + center_shift
 	human.position.y = initial_human_pos.y + pull_heave # Apply heave offset
@@ -353,25 +393,29 @@ func _update_positions() -> void:
 	var hand_pos = human.position + hand_offset.rotated(human.rotation)
 	var collar_pos = dog.position + dog_collar_offset.rotated(dog.rotation)
 	
+	var leash_start_pos = hand_pos
+	if is_finished and gauge_value == 1.0:
+		leash_start_pos = hand_pos.lerp(collar_pos, end_transition_progress)
+	
 	# Scale leash thickness based on visual tension (rope stretches and thins)
 	var target_width = lerp(6.0, 3.5, clampf((visual_tension - 0.25) / 0.75, 0.0, 1.0))
 	leash.width = target_width
 	
 	# Draw leash using quadratic bezier curve
 	leash.clear_points()
-	var mid = (hand_pos + collar_pos) / 2.0
+	var mid = (leash_start_pos + collar_pos) / 2.0
 	var sag_amount = (1.0 - visual_tension) * leash_droop
 	var control_point = mid + Vector2(0, sag_amount)
 	
 	var num_points := 20
 	for i in range(num_points):
 		var t = float(i) / float(num_points - 1)
-		var pt = _quadratic_bezier(hand_pos, control_point, collar_pos, t)
+		var pt = _quadratic_bezier(leash_start_pos, control_point, collar_pos, t)
 		
 		# Apply vibration under high tension (e.g. during yanks/pulls)
 		if visual_tension > 0.6:
 			var wave_factor = sin(t * PI) # maximum in middle, 0 at ends
-			var rope_dir = (collar_pos - hand_pos).normalized()
+			var rope_dir = (collar_pos - leash_start_pos).normalized()
 			var perp = Vector2(-rope_dir.y, rope_dir.x)
 			var vib_freq = Time.get_ticks_msec() * 0.08
 			var vib_offset = perp * sin(vib_freq + t * 10.0) * (visual_tension - 0.6) * 5.0 * wave_factor
@@ -388,32 +432,65 @@ func _trigger_win() -> void:
 	if is_finished:
 		return
 	is_finished = true
-	gauge_value = 1.0
+	gauge_value = 0.0
 	
 	human.set_tension(0.0)
 	dog.set_tension(1.0)
 	
 	# Play win retro chime
 	_play_synth_note(win_player, 440.0, 0.1, -4.0)
-	await get_tree().create_timer(0.08, false).timeout
-	_play_synth_note(win_player, 554.37, 0.15, -4.0)
+	var win_timer = get_tree().create_timer(0.08, false)
+	win_timer.timeout.connect(func(): _play_synth_note(win_player, 554.37, 0.15, -4.0))
 	
-	await get_tree().create_timer(0.42, false).timeout
 	emit_signal("game_won")
 
 func _trigger_loss() -> void:
 	if is_finished:
 		return
 	is_finished = true
-	gauge_value = 0.0
+	gauge_value = 1.0
 	
 	human.set_tension(1.0)
 	dog.set_tension(0.0)
 	
 	# Play lose retro chime
 	_play_synth_note(lose_player, 180.0, 0.12, -4.0)
-	await get_tree().create_timer(0.1, false).timeout
-	_play_synth_note(lose_player, 120.0, 0.25, -4.0)
+	var lose_timer = get_tree().create_timer(0.1, false)
+	lose_timer.timeout.connect(func(): _play_synth_note(lose_player, 120.0, 0.25, -4.0))
 	
-	await get_tree().create_timer(0.4, false).timeout
 	emit_signal("game_lost")
+
+func _update_ui_elements() -> void:
+	# Update needle indicator positions
+	var indicator = win_meter.get_node_or_null("Indicator") as ColorRect
+	var indicator_glow = win_meter.get_node_or_null("IndicatorGlow") as ColorRect
+	if indicator:
+		indicator.position.x = (display_gauge * 500.0) - 3.0
+	if indicator_glow:
+		indicator_glow.position.x = (display_gauge * 500.0) - 6.0
+		
+	# Dynamic color coding favor zone flash
+	var left_zone = win_meter.get_node_or_null("LeftZone") as ColorRect
+	var right_zone = win_meter.get_node_or_null("RightZone") as ColorRect
+	
+	if left_zone:
+		if display_gauge < 0.25:
+			var flash = abs(sin(Time.get_ticks_msec() * 0.015))
+			left_zone.color = Color(0.12, 0.45, 0.8, 0.7).lerp(Color(0.05, 0.75, 1.0, 0.95), flash)
+		else:
+			left_zone.color = Color(0.12, 0.45, 0.8, 0.7)
+			
+	if right_zone:
+		if display_gauge > 0.75:
+			var flash = abs(sin(Time.get_ticks_msec() * 0.015))
+			right_zone.color = Color(0.85, 0.25, 0.25, 0.7).lerp(Color(1.0, 0.15, 0.15, 0.95), flash)
+		else:
+			right_zone.color = Color(0.85, 0.25, 0.25, 0.7)
+			
+	var bg_style = win_meter.get_theme_stylebox("background") as StyleBoxFlat
+	if bg_style:
+		if display_gauge > 0.75:
+			var flash = abs(sin(Time.get_ticks_msec() * 0.015))
+			bg_style.border_color = Color(1.0, 1.0, 1.0).lerp(Color(1.0, 0.15, 0.15), flash)
+		else:
+			bg_style.border_color = Color(1.0, 1.0, 1.0)
