@@ -7,7 +7,7 @@
 [ext_resource type="SpriteFrames" uid="uid://bvi2r441tiygt" path="res://Resource/Toilet/dog_idle_frames.tres" id="6_dog"]
 [ext_resource type="Texture2D" uid="uid://bir6vjcc7h16k" path="res://Assets/Sprites/Little Dreamyland - Free Pack/Sprites/Sprite_Shadow.png" id="7_shadow"]
 [ext_resource type="PackedScene" path="res://Scenes/Microgames/Toilet/ToiletVendingSpot.tscn" id="11_vending"]
-[ext_resource type="PackedScene" path="res://Scenes/Microgames/Toilet/ToiletTreeSpot.tscn" id="12_tree"]
+[ext_resource type="PackedScene" uid="uid://bpvi4ffr0c4fc" path="res://Scenes/Microgames/Toilet/ToiletTreeSpot.tscn" id="12_tree"]
 [ext_resource type="PackedScene" uid="uid://d4jr25hfcxr7u" path="res://Scenes/Microgames/Toilet/ToiletBushSpot.tscn" id="13_bush"]
 [ext_resource type="PackedScene" uid="uid://fqgtgvcg5f0i" path="res://Scenes/Microgames/Toilet/ToiletCarSpot.tscn" id="14_car"]
 
@@ -661,7 +661,7 @@ texture = ExtResource("7_shadow")
 position = Vector2(-4, 7)
 points = PackedVector2Array(148, 502, 258, 558)
 width = 4.0
-default_color = Color(0.28, 0.25, 0.21, 1)
+default_color = Color(0.13333334, 0.14117648, 0.19607843, 1)
 
 [node name="OwnerSprite" type="Sprite2D" parent="Hotspots" unique_id=115517359]
 position = Vector2(67, 388)
