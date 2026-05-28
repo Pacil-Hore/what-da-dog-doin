@@ -4,6 +4,8 @@
 [ext_resource type="Texture2D" uid="uid://bwf1w67twkhks" path="res://Assets/Sprites/Keyboard & Mouse/Default/keyboard_space.png" id="2_1me0w"]
 [ext_resource type="Script" uid="uid://cupoxhf8hx0gq" path="res://Scripts/TugOfWar/tug_of_war_human.gd" id="2_human"]
 [ext_resource type="Script" uid="uid://dm5cebgxsmxt8" path="res://Scripts/TugOfWar/tug_of_war_dog.gd" id="3_dog"]
+[ext_resource type="Texture2D" uid="uid://cwoytlydthdqg" path="res://Assets/Sprites/TugOfWar/man_TOW.png" id="4_k5bn4"]
+[ext_resource type="Texture2D" uid="uid://btag8q05a1w8x" path="res://Assets/Sprites/TugOfWar/dog_TOW.png" id="6_2rgca"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_prompt"]
 font_size = 28
@@ -45,30 +47,50 @@ outline_size = 12
 [node name="TugOfWarStage" type="Node2D" unique_id=991766760]
 script = ExtResource("1_script")
 control_icon = ExtResource("2_1me0w")
+leash_droop = 26.0
 
 [node name="Sky" type="ColorRect" parent="." unique_id=824925894]
-offset_right = 1152.0
+offset_left = -50.0
+offset_top = -50.0
+offset_right = 1202.0
 offset_bottom = 360.0
-color = Color(0.501961, 0.866667, 0.921569, 1)
+color = Color(0.53, 0.81, 0.98, 1)
 
 [node name="Grass" type="ColorRect" parent="." unique_id=1807517649]
+offset_left = -50.0
 offset_top = 360.0
-offset_right = 1152.0
-offset_bottom = 648.0
-color = Color(0.482353, 0.752941, 0.486275, 1)
+offset_right = 1202.0
+offset_bottom = 698.0
+color = Color(0.3, 0.7, 0.3, 1)
 
 [node name="Human" type="Node2D" parent="." unique_id=1734058691]
-position = Vector2(260, 420)
+position = Vector2(260, 540)
 script = ExtResource("2_human")
 
+[node name="Sprite" type="Sprite2D" parent="Human" unique_id=1349569787]
+texture_filter = 1
+position = Vector2(0, -120)
+scale = Vector2(2.5, 2.5)
+texture = ExtResource("4_k5bn4")
+
 [node name="Dog" type="Node2D" parent="." unique_id=299819889]
-position = Vector2(890, 420)
-scale = Vector2(-1.5, 1.5)
+position = Vector2(890, 540)
 script = ExtResource("3_dog")
 
+[node name="Sprite" type="Sprite2D" parent="Dog" unique_id=647939317]
+texture_filter = 1
+position = Vector2(0, -72)
+scale = Vector2(-3, 3)
+texture = ExtResource("6_2rgca")
+
 [node name="LeashLine" type="Line2D" parent="." unique_id=487599290]
-width = 4.0
-default_color = Color(0.243137, 0.152941, 0.137255, 1)
+points = PackedVector2Array(301, 437, 390, 458, 490, 468, 576, 469, 665, 467, 762, 462, 850, 453)
+width = 5.0
+default_color = Color(0.45, 0.28, 0.12, 1)
+joint_mode = 2
+begin_cap_mode = 2
+end_cap_mode = 2
+antialiased = true
 
 [node name="HUD" type="CanvasLayer" parent="." unique_id=2066800930]
 
@@ -95,7 +117,7 @@ label_settings = SubResource("LabelSettings_prompt")
 horizontal_alignment = 1
 
 [node name="WinMeter" type="ProgressBar" parent="HUD/CenterContainer/VBoxContainer" unique_id=1816116976]
-custom_minimum_size = Vector2(500, 32)
+custom_minimum_size = Vector2(500, 36)
 layout_mode = 2
 theme_override_styles/background = SubResource("StyleBoxFlat_bg")
 theme_override_styles/fill = SubResource("StyleBoxFlat_fg")
@@ -145,6 +167,7 @@ offset_right = 100.0
 offset_bottom = -21.0
 grow_horizontal = 2
 grow_vertical = 2
+pivot_offset = Vector2(100, 50)
 text = "TUG!"
 label_settings = SubResource("LabelSettings_tug")
 horizontal_alignment = 1
