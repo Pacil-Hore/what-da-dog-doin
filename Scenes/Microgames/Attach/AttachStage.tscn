@@ -172,12 +172,13 @@ position = Vector2(576, 600)
 
 [node name="Dog" parent="." unique_id=484838520 instance=ExtResource("2_dne04")]
 position = Vector2(581, 394)
+scale = Vector2(1.5, 1.5)
 field_min_y = 450.0
 sprite_default_facing = -1.571
 show_debug_visuals = false
 
 [node name="Rope" type="Line2D" parent="." unique_id=826490736]
-width = 5.0
+width = 8.0
 default_color = Color(0.13333334, 0.14117648, 0.19607843, 1)
 
 [node name="Hook" parent="." unique_id=730168452 instance=ExtResource("3_uk1qp")]
