@@ -3,7 +3,8 @@
 [ext_resource type="Script" uid="uid://4djs03jfufgd" path="res://Scripts/main_menu.gd" id="1_v3fht"]
 [ext_resource type="Texture2D" uid="uid://uiw75sm5xcpl" path="res://Assets/wtdd title text new.png" id="2_10t8h"]
 [ext_resource type="FontFile" uid="uid://bjdunpg0quy55" path="res://Assets/Jersey25-Regular.ttf" id="3_cj4vb"]
-[ext_resource type="Script" uid="uid://b5xo26mbif88f" path="res://Scripts/UI/hover_prefix_button.gd" id="4_e8h4m"]
+[ext_resource type="Script" path="res://Scripts/UI/hover_prefix_button.gd" id="4_e8h4m"]
+[ext_resource type="AudioStream" uid="uid://cbs72soj7fcwo" path="res://Assets/BGM/main_theme_01.wav" id="5_uv623"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_44l8m"]
 
@@ -107,3 +108,6 @@ text = "Quit"
 flat = true
 alignment = 0
 script = ExtResource("4_e8h4m")
+
+[node name="MenuMusic" type="AudioStreamPlayer" parent="." unique_id=819860577]
+stream = ExtResource("5_uv623")
