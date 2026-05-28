@@ -229,12 +229,12 @@ func _on_interstitial_done():
 	add_child(game_instance)
 	current_instance = game_instance
 	
-	if AppManager.current_mode == AppManager.Mode.ENDLESS:
-		if "show_win_screen" in game_instance:
-			game_instance.show_win_screen = false
-		var manager = game_instance.get_node_or_null("GameManager")
-		if manager and "show_win_screen" in manager:
-			manager.show_win_screen = false
+	# Always disable local win screens for all modes, since central GameManager manages flow
+	if "show_win_screen" in game_instance:
+		game_instance.show_win_screen = false
+	var manager = game_instance.get_node_or_null("GameManager")
+	if manager and "show_win_screen" in manager:
+		manager.show_win_screen = false
 	
 	# Pause gameplay until objective is shown
 	game_instance.process_mode = Node.PROCESS_MODE_DISABLED
@@ -253,7 +253,8 @@ func _on_interstitial_done():
 	if "objective_text" in game_instance:
 		obj_text = game_instance.objective_text
 		
-	overlay.setup(obj_text)
+	var g_name = _get_current_game_key()
+	overlay.setup(obj_text, g_name)
 	
 	# Wait for overlay to be destroyed (it queue_frees itself)
 	await overlay.tree_exited
@@ -585,6 +586,7 @@ func _animate_feedback_label(g_name: String, msg: String):
 		outline_color = Color(0.2, 0.0, 0.3)
 		anim_type = "elastic"
 		feedback_label.text = "ESCAPED!"
+		feedback_label.position.y = -200.0
 	elif "attach" in g_name:
 		font_color = Color(1.0, 0.3, 0.3) # Neon red
 		outline_color = Color(0.2, 0.0, 0.0)
@@ -594,7 +596,7 @@ func _animate_feedback_label(g_name: String, msg: String):
 		outline_color = Color(0.2, 0.1, 0.0)
 		anim_type = "bounce"
 		feedback_label.text = "CORRECT!"
-		feedback_label.position.y = -130.0
+		feedback_label.position.y = -220.0
 	elif "picktherope" in g_name:
 		font_color = Color(0.2, 0.9, 0.8) # Teal
 		outline_color = Color(0.0, 0.2, 0.2)
@@ -699,6 +701,7 @@ func _animate_loss_feedback_label(g_name: String, msg: String):
 	elif "pickme" in g_name:
 		font_color = Color(1.0, 0.42, 0.08)
 		outline_color = Color(0.18, 0.05, 0.0)
+		feedback_label.position.y = -220.0
 	elif "picktherope" in g_name:
 		font_color = Color(0.2, 0.95, 0.9)
 		outline_color = Color(0.0, 0.16, 0.18)
@@ -714,6 +717,7 @@ func _animate_loss_feedback_label(g_name: String, msg: String):
 	elif "labyrinth" in g_name:
 		font_color = Color(0.85, 0.42, 1.0)
 		outline_color = Color(0.16, 0.0, 0.24)
+		feedback_label.position.y = -200.0
 	elif "untangle" in g_name:
 		font_color = Color(1.0, 0.75, 0.2)
 		outline_color = Color(0.2, 0.08, 0.0)

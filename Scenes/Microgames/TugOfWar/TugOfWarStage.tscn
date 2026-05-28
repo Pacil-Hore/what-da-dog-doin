@@ -7,39 +7,39 @@
 [ext_resource type="Script" uid="uid://dm5cebgxsmxt8" path="res://Scripts/TugOfWar/tug_of_war_dog.gd" id="3_dog"]
 [ext_resource type="Texture2D" uid="uid://dv1ia3owouql3" path="res://Assets/Sprites/JumpRope/jump rope bg.png" id="4_2i6kx"]
 [ext_resource type="Texture2D" uid="uid://cwoytlydthdqg" path="res://Assets/Sprites/TugOfWar/man_TOW.png" id="4_k5bn4"]
+[ext_resource type="FontFile" uid="uid://bjdunpg0quy55" path="res://Assets/Jersey25-Regular.ttf" id="5_font"]
 [ext_resource type="Texture2D" uid="uid://btag8q05a1w8x" path="res://Assets/Sprites/TugOfWar/dog_TOW.png" id="6_2rgca"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_prompt"]
-font_size = 28
+font = ExtResource("5_font")
+font_size = 32
 outline_size = 8
 outline_color = Color(0.176471, 0.176471, 0.176471, 1)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bg"]
-bg_color = Color(0.243137, 0.176471, 0.176471, 0.501961)
-border_width_left = 3
-border_width_top = 3
-border_width_right = 3
-border_width_bottom = 3
+bg_color = Color(0.08, 0.08, 0.1, 0.88)
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 4
 border_color = Color(1, 1, 1, 1)
-corner_radius_top_left = 8
-corner_radius_top_right = 8
-corner_radius_bottom_right = 8
-corner_radius_bottom_left = 8
 expand_margin_left = 3.0
 expand_margin_top = 3.0
 expand_margin_right = 3.0
 expand_margin_bottom = 3.0
+shadow_offset = Vector2(5, 5)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_fg"]
-bg_color = Color(0.180392, 0.8, 0.443137, 1)
-corner_radius_top_left = 6
-corner_radius_top_right = 6
-corner_radius_bottom_right = 6
-corner_radius_bottom_left = 6
+bg_color = Color(0, 0, 0, 0)
+border_width_right = 6
+border_color = Color(1, 1, 1, 1)
 
 [sub_resource type="LabelSettings" id="LabelSettings_lbl"]
-font_size = 18
-font_color = Color(1, 1, 1, 0.705882)
+font = ExtResource("5_font")
+font_size = 22
+font_color = Color(1, 1, 1, 0.85)
+outline_size = 6
+outline_color = Color(0.1, 0.1, 0.12, 1)
 
 [sub_resource type="LabelSettings" id="LabelSettings_tug"]
 font_size = 72
@@ -150,6 +150,106 @@ theme_override_styles/background = SubResource("StyleBoxFlat_bg")
 theme_override_styles/fill = SubResource("StyleBoxFlat_fg")
 value = 50.0
 show_percentage = false
+
+[node name="LeftZone" type="ColorRect" parent="HUD/CenterContainer/VBoxContainer/WinMeter" unique_id=1150190576]
+layout_mode = 0
+offset_right = 250.0
+offset_bottom = 36.0
+color = Color(0.12, 0.45, 0.8, 0.7)
+
+[node name="RightZone" type="ColorRect" parent="HUD/CenterContainer/VBoxContainer/WinMeter" unique_id=1865980822]
+layout_mode = 0
+offset_left = 250.0
+offset_right = 500.0
+offset_bottom = 36.0
+color = Color(0.85, 0.25, 0.25, 0.7)
+
+[node name="Divider10" type="ColorRect" parent="HUD/CenterContainer/VBoxContainer/WinMeter" unique_id=739323770]
+layout_mode = 0
+offset_left = 50.0
+offset_right = 52.0
+offset_bottom = 36.0
+color = Color(0, 0, 0, 0.3)
+
+[node name="Divider20" type="ColorRect" parent="HUD/CenterContainer/VBoxContainer/WinMeter" unique_id=637305588]
+layout_mode = 0
+offset_left = 100.0
+offset_right = 102.0
+offset_bottom = 36.0
+color = Color(0, 0, 0, 0.3)
+
+[node name="Divider30" type="ColorRect" parent="HUD/CenterContainer/VBoxContainer/WinMeter" unique_id=652351714]
+layout_mode = 0
+offset_left = 150.0
+offset_right = 152.0
+offset_bottom = 36.0
+color = Color(0, 0, 0, 0.3)
+
+[node name="Divider40" type="ColorRect" parent="HUD/CenterContainer/VBoxContainer/WinMeter" unique_id=1581691486]
+layout_mode = 0
+offset_left = 200.0
+offset_right = 202.0
+offset_bottom = 36.0
+color = Color(0, 0, 0, 0.3)
+
+[node name="Divider60" type="ColorRect" parent="HUD/CenterContainer/VBoxContainer/WinMeter" unique_id=601747107]
+layout_mode = 0
+offset_left = 300.0
+offset_right = 302.0
+offset_bottom = 36.0
+color = Color(0, 0, 0, 0.3)
+
+[node name="Divider70" type="ColorRect" parent="HUD/CenterContainer/VBoxContainer/WinMeter" unique_id=1632006578]
+layout_mode = 0
+offset_left = 350.0
+offset_right = 352.0
+offset_bottom = 36.0
+color = Color(0, 0, 0, 0.3)
+
+[node name="Divider80" type="ColorRect" parent="HUD/CenterContainer/VBoxContainer/WinMeter" unique_id=1214998861]
+layout_mode = 0
+offset_left = 400.0
+offset_right = 402.0
+offset_bottom = 36.0
+color = Color(0, 0, 0, 0.3)
+
+[node name="Divider90" type="ColorRect" parent="HUD/CenterContainer/VBoxContainer/WinMeter" unique_id=412439576]
+layout_mode = 0
+offset_left = 450.0
+offset_right = 452.0
+offset_bottom = 36.0
+color = Color(0, 0, 0, 0.3)
+
+[node name="CenterLineGlow" type="ColorRect" parent="HUD/CenterContainer/VBoxContainer/WinMeter" unique_id=23367646]
+layout_mode = 0
+offset_left = 246.0
+offset_top = -6.0
+offset_right = 254.0
+offset_bottom = 42.0
+color = Color(1, 0.85, 0.1, 0.35)
+
+[node name="CenterLine" type="ColorRect" parent="HUD/CenterContainer/VBoxContainer/WinMeter" unique_id=17734784]
+layout_mode = 0
+offset_left = 248.0
+offset_top = -4.0
+offset_right = 252.0
+offset_bottom = 40.0
+color = Color(1, 0.85, 0.1, 1)
+
+[node name="IndicatorGlow" type="ColorRect" parent="HUD/CenterContainer/VBoxContainer/WinMeter" unique_id=1004067398]
+layout_mode = 0
+offset_left = -6.0
+offset_top = -4.0
+offset_right = 6.0
+offset_bottom = 40.0
+color = Color(1, 1, 1, 0.35)
+
+[node name="Indicator" type="ColorRect" parent="HUD/CenterContainer/VBoxContainer/WinMeter" unique_id=503924375]
+layout_mode = 0
+offset_left = -3.0
+offset_top = -2.0
+offset_right = 3.0
+offset_bottom = 38.0
 
 [node name="Labels" type="Control" parent="HUD/CenterContainer/VBoxContainer" unique_id=720591638]
 custom_minimum_size = Vector2(500, 24)

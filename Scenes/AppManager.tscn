@@ -22,5 +22,6 @@ main_menu_scene = ExtResource("2_mg4ys")
 cutscene_a_scene = ExtResource("4_i1bw7")
 cutscene_c_scene = ExtResource("6_d7d5k")
 game_manager_scene = ExtResource("7_x057w")
-scenario_games = Array[PackedScene]([ExtResource("6_mf8a8"), ExtResource("9_q8wbe"), ExtResource("8_tbdtn"), ExtResource("10_h5en5"), ExtResource("10_ed0lk"), ExtResource("26_spot"), ExtResource("12_jbmwj"), ExtResource("12_g8enm"), ExtResource("11_5qyke")])
+scenario_games = Array[PackedScene]([ExtResource("12_g8enm")])
 final_game = ExtResource("15_ayqj1")
+

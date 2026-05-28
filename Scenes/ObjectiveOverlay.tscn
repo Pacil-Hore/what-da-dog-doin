@@ -14,23 +14,65 @@ grow_horizontal = 2
 grow_vertical = 2
 
 [node name="Dimmer" type="ColorRect" parent="Control" unique_id=231513488]
-layout_mode = 0
+layout_mode = 1
+anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-color = Color(0, 0, 0, 0.6)
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0)
 
-[node name="VBoxContainer" type="VBoxContainer" parent="Control" unique_id=1201976351]
-layout_mode = 0
+[node name="Banner" type="ColorRect" parent="Control" unique_id=231513489]
+layout_mode = 1
+anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
+offset_left = -576.0
+offset_top = -80.0
+offset_right = 576.0
+offset_bottom = 80.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(576, 80)
+color = Color(0.1, 0.1, 0.15, 0.82)
+
+[node name="BorderTop" type="ColorRect" parent="Control/Banner" unique_id=231513490]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 6.0
+grow_horizontal = 2
+color = Color(1, 0.85, 0.1, 1)
+
+[node name="BorderBottom" type="ColorRect" parent="Control/Banner" unique_id=231513491]
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+offset_top = -6.0
+grow_horizontal = 2
+color = Color(1, 0.85, 0.1, 1)
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Control" unique_id=1201976351]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -576.0
+offset_top = -80.0
+offset_right = 576.0
+offset_bottom = 80.0
 grow_horizontal = 2
 grow_vertical = 2
 alignment = 1
 
 [node name="ObjectiveLabel" type="Label" parent="Control/VBoxContainer" unique_id=42938170]
 layout_mode = 2
-theme_override_font_sizes/font_size = 32
+theme_override_font_sizes/font_size = 72
 text = "Objective Text"
 horizontal_alignment = 1
+vertical_alignment = 1
