@@ -11,6 +11,45 @@
 [ext_resource type="AudioStream" uid="uid://br3p6qcjp0n0q" path="res://Assets/SFX/dog_whimper.ogg" id="9_8mb02"]
 [ext_resource type="AudioStream" uid="uid://cjtiw40jg53r0" path="res://Assets/SFX/sfx_sounds_pause2_in.wav" id="10_2ykxs"]
 
+[sub_resource type="Gradient" id="Gradient_victory"]
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0)
+
+[sub_resource type="Gradient" id="Gradient_tugofwar"]
+offsets = PackedFloat32Array(0, 0.5, 1)
+colors = PackedColorArray(0.2, 0.7, 1, 1, 0.1, 0.4, 0.9, 0.8, 0, 0.1, 0.5, 0)
+
+[sub_resource type="Gradient" id="Gradient_toilet"]
+offsets = PackedFloat32Array(0, 0.4, 1)
+colors = PackedColorArray(1, 0.85, 0.2, 1, 0.3, 0.7, 1, 0.8, 0.1, 0.4, 0.8, 0)
+
+[sub_resource type="Gradient" id="Gradient_dogcross"]
+offsets = PackedFloat32Array(0, 0.5, 1)
+colors = PackedColorArray(1, 0.4, 0.6, 1, 1, 0.2, 0.2, 0.9, 0.8, 0.1, 0.3, 0)
+
+[sub_resource type="Gradient" id="Gradient_jumprope"]
+offsets = PackedFloat32Array(0, 0.5, 1)
+colors = PackedColorArray(0.2, 0.9, 0.4, 1, 1, 0.9, 0.2, 1, 0, 0.4, 0.1, 0)
+
+[sub_resource type="Gradient" id="Gradient_labyrinth"]
+offsets = PackedFloat32Array(0, 0.6, 1)
+colors = PackedColorArray(0.2, 0.9, 0.8, 1, 0.7, 0.3, 1, 0.8, 0.1, 0, 0.3, 0)
+
+[sub_resource type="Gradient" id="Gradient_attach"]
+offsets = PackedFloat32Array(0, 0.2, 1)
+colors = PackedColorArray(1, 0.2, 0.2, 1, 1, 1, 1, 1, 1, 0.5, 0, 0)
+
+[sub_resource type="Gradient" id="Gradient_pickme"]
+offsets = PackedFloat32Array(0, 0.4, 1)
+colors = PackedColorArray(1, 0.6, 0.1, 1, 1, 0.9, 0.3, 0.8, 0.5, 0.2, 0, 0)
+
+[sub_resource type="Gradient" id="Gradient_picktherope"]
+offsets = PackedFloat32Array(0, 0.5, 1)
+colors = PackedColorArray(0.2, 0.9, 0.8, 1, 1, 0.4, 0.6, 0.9, 1, 0.85, 0.2, 0)
+
+[sub_resource type="Gradient" id="Gradient_spot"]
+offsets = PackedFloat32Array(0, 0.3, 1)
+colors = PackedColorArray(1, 0.5, 0, 1, 1, 0.8, 0.2, 0.8, 0.3, 0.1, 0, 0)
+
 [node name="GameManager" type="Node" unique_id=536985573]
 script = ExtResource("1_m2tc1")
 feedback_duration = 1.2
@@ -33,6 +72,223 @@ theme_override_constants/outline_size = 0
 theme_override_font_sizes/font_size = 32
 horizontal_alignment = 1
 vertical_alignment = 1
+
+[node name="VictoryEffects" type="Node2D" parent="HUDLayer"]
+
+[node name="TugOfWarParticles" type="CPUParticles2D" parent="HUDLayer/VictoryEffects"]
+position = Vector2(300, 420)
+emitting = false
+amount = 40
+lifetime = 1.2
+one_shot = true
+explosiveness = 0.85
+direction = Vector2(1, -0.5)
+spread = 45.0
+gravity = Vector2(0, 150)
+initial_velocity_min = 250.0
+initial_velocity_max = 450.0
+scale_amount_min = 5.0
+scale_amount_max = 9.0
+color_ramp = SubResource("Gradient_tugofwar")
+hue_variation_min = -0.15
+hue_variation_max = 0.15
+
+[node name="ToiletParticles" type="CPUParticles2D" parent="HUDLayer/VictoryEffects"]
+position = Vector2(576, 520)
+emitting = false
+amount = 50
+lifetime = 1.0
+one_shot = true
+explosiveness = 0.85
+direction = Vector2(0, -1)
+spread = 60.0
+gravity = Vector2(0, 400)
+initial_velocity_min = 300.0
+initial_velocity_max = 500.0
+scale_amount_min = 4.0
+scale_amount_max = 8.0
+color_ramp = SubResource("Gradient_toilet")
+hue_variation_min = -0.2
+hue_variation_max = 0.2
+
+[node name="DogCrossParticles" type="CPUParticles2D" parent="HUDLayer/VictoryEffects"]
+position = Vector2(576, 450)
+emitting = false
+amount = 35
+lifetime = 1.6
+one_shot = true
+explosiveness = 0.85
+direction = Vector2(0, -1)
+spread = 90.0
+gravity = Vector2(0, -100)
+initial_velocity_min = 50.0
+initial_velocity_max = 120.0
+scale_amount_min = 4.0
+scale_amount_max = 8.0
+color_ramp = SubResource("Gradient_dogcross")
+hue_variation_min = -0.1
+hue_variation_max = 0.1
+
+[node name="JumpRopeParticles" type="CPUParticles2D" parent="HUDLayer/VictoryEffects"]
+position = Vector2(576, 480)
+emitting = false
+amount = 50
+lifetime = 1.4
+one_shot = true
+explosiveness = 0.85
+direction = Vector2(0, -1)
+spread = 120.0
+gravity = Vector2(0, 350)
+initial_velocity_min = 250.0
+initial_velocity_max = 400.0
+scale_amount_min = 4.0
+scale_amount_max = 8.0
+color_ramp = SubResource("Gradient_jumprope")
+hue_variation_min = -0.3
+hue_variation_max = 0.3
+
+[node name="LabyrinthParticles" type="CPUParticles2D" parent="HUDLayer/VictoryEffects"]
+position = Vector2(980, 240)
+emitting = false
+amount = 40
+lifetime = 1.1
+one_shot = true
+explosiveness = 0.85
+spread = 180.0
+gravity = Vector2(0, 0)
+initial_velocity_min = 120.0
+initial_velocity_max = 220.0
+scale_amount_min = 4.0
+scale_amount_max = 8.0
+color_ramp = SubResource("Gradient_labyrinth")
+hue_variation_min = -0.2
+hue_variation_max = 0.2
+
+[node name="AttachParticles" type="CPUParticles2D" parent="HUDLayer/VictoryEffects"]
+position = Vector2(576, 324)
+emitting = false
+amount = 45
+lifetime = 0.8
+one_shot = true
+explosiveness = 0.85
+spread = 180.0
+gravity = Vector2(0, 0)
+initial_velocity_min = 180.0
+initial_velocity_max = 350.0
+scale_amount_min = 4.0
+scale_amount_max = 8.0
+color_ramp = SubResource("Gradient_attach")
+hue_variation_min = -0.1
+hue_variation_max = 0.1
+
+[node name="PickMeParticles" type="CPUParticles2D" parent="HUDLayer/VictoryEffects"]
+position = Vector2(576, 420)
+emitting = false
+amount = 40
+lifetime = 1.3
+one_shot = true
+explosiveness = 0.85
+direction = Vector2(0, -1)
+spread = 50.0
+gravity = Vector2(0, 250)
+initial_velocity_min = 200.0
+initial_velocity_max = 380.0
+scale_amount_min = 4.0
+scale_amount_max = 8.0
+color_ramp = SubResource("Gradient_pickme")
+hue_variation_min = -0.2
+hue_variation_max = 0.2
+
+[node name="PickTheRopeParticles" type="CPUParticles2D" parent="HUDLayer/VictoryEffects"]
+position = Vector2(576, 50)
+emitting = false
+amount = 60
+lifetime = 1.8
+one_shot = true
+explosiveness = 0.85
+emission_shape = 3
+emission_rect_extents = Vector2(500, 10)
+direction = Vector2(0, 1)
+spread = 15.0
+gravity = Vector2(0, 100)
+initial_velocity_min = 50.0
+initial_velocity_max = 150.0
+scale_amount_min = 4.0
+scale_amount_max = 8.0
+color_ramp = SubResource("Gradient_picktherope")
+hue_variation_min = -1.0
+hue_variation_max = 1.0
+
+[node name="SpotTheDifferenceParticles" type="CPUParticles2D" parent="HUDLayer/VictoryEffects"]
+emitting = false
+amount = 35
+lifetime = 0.9
+one_shot = true
+explosiveness = 0.85
+direction = Vector2(0, -1)
+spread = 180.0
+gravity = Vector2(0, 200)
+initial_velocity_min = 100.0
+initial_velocity_max = 250.0
+scale_amount_min = 4.0
+scale_amount_max = 8.0
+color_ramp = SubResource("Gradient_spot")
+hue_variation_min = -0.15
+hue_variation_max = 0.15
+
+[node name="DefaultConfettiParticles" type="CPUParticles2D" parent="HUDLayer/VictoryEffects"]
+position = Vector2(576, 324)
+emitting = false
+amount = 45
+lifetime = 1.5
+one_shot = true
+explosiveness = 0.85
+direction = Vector2(0, -1)
+spread = 180.0
+gravity = Vector2(0, 300)
+initial_velocity_min = 150.0
+initial_velocity_max = 300.0
+scale_amount_min = 4.0
+scale_amount_max = 8.0
+color_ramp = SubResource("Gradient_victory")
+hue_variation_min = -1.0
+hue_variation_max = 1.0
+
+[node name="LeftCannonParticles" type="CPUParticles2D" parent="HUDLayer/VictoryEffects"]
+position = Vector2(100, 500)
+emitting = false
+amount = 35
+lifetime = 1.5
+one_shot = true
+explosiveness = 0.9
+direction = Vector2(1, -1)
+spread = 30.0
+gravity = Vector2(0, 500)
+initial_velocity_min = 450.0
+initial_velocity_max = 750.0
+scale_amount_min = 4.0
+scale_amount_max = 9.0
+color_ramp = SubResource("Gradient_victory")
+hue_variation_min = -1.0
+hue_variation_max = 1.0
+
+[node name="RightCannonParticles" type="CPUParticles2D" parent="HUDLayer/VictoryEffects"]
+position = Vector2(1052, 500)
+emitting = false
+amount = 35
+lifetime = 1.5
+one_shot = true
+explosiveness = 0.9
+direction = Vector2(-1, -1)
+spread = 30.0
+gravity = Vector2(0, 500)
+initial_velocity_min = 450.0
+initial_velocity_max = 750.0
+scale_amount_min = 4.0
+scale_amount_max = 9.0
+color_ramp = SubResource("Gradient_victory")
+hue_variation_min = -1.0
+hue_variation_max = 1.0
 
 [node name="ObjectiveOverlayTemplate" parent="." unique_id=877309698 instance=ExtResource("4_b7dir")]
 visible = false
