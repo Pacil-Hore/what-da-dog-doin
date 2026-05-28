@@ -1,13 +1,14 @@
 [gd_scene format=3 uid="uid://dbd08m2tcy3gu"]
 
 [ext_resource type="Script" uid="uid://d2m0oj1q0t8k7" path="res://Scripts/JumpRope/jump_rope_stage.gd" id="1_stage"]
+[ext_resource type="Script" uid="uid://b78f6b4wtynt0" path="res://Scripts/JumpRope/jump_rope_background.gd" id="2_background"]
 [ext_resource type="Texture2D" uid="uid://bwf1w67twkhks" path="res://Assets/Sprites/Keyboard & Mouse/Default/keyboard_space.png" id="2_u5jfx"]
 [ext_resource type="Script" uid="uid://ch2u8n2h7mq2g" path="res://Scripts/JumpRope/jump_rope_dog.gd" id="3_dog"]
 [ext_resource type="Script" uid="uid://d0jlx1u0ocq8h" path="res://Scripts/JumpRope/jump_rope_rope.gd" id="4_rope"]
 [ext_resource type="Texture2D" uid="uid://bey6vyjtqt0xp" path="res://Assets/Sprites/JumpRope/man_side.png" id="5_man"]
-[ext_resource type="SpriteFrames" path="res://Resource/JumpRope/dog_jump_rope_frames.tres" id="7_dog_frames"]
+[ext_resource type="Texture2D" uid="uid://dv1ia3owouql3" path="res://Assets/Sprites/JumpRope/jump rope bg.png" id="6_background_texture"]
+[ext_resource type="SpriteFrames" uid="uid://dx73yr8t1h2qh" path="res://Resource/JumpRope/dog_jump_rope_frames.tres" id="7_dog_frames"]
 [ext_resource type="Texture2D" uid="uid://bir6vjcc7h16k" path="res://Assets/Sprites/Little Dreamyland - Free Pack/Sprites/Sprite_Shadow.png" id="7_shadow"]
-[ext_resource type="Texture2D" uid="uid://d06cwuaok516" path="res://Assets/generated/circle_fill.svg" id="8_circle"]
 
 [node name="JumpRopeStage" type="Node2D" unique_id=703288775]
 script = ExtResource("1_stage")
@@ -15,38 +16,8 @@ control_icon = ExtResource("2_u5jfx")
 
 [node name="Background" type="Node2D" parent="." unique_id=572483486]
 z_index = -100
-
-[node name="Sky" type="Polygon2D" parent="Background" unique_id=156482804]
-color = Color(0.91, 0.92, 0.84, 1)
-polygon = PackedVector2Array(0, 0, 1152, 0, 1152, 645, 0, 645)
-
-[node name="Grass" type="Polygon2D" parent="Background" unique_id=1726516902]
-color = Color(0.72, 0.81, 0.57, 1)
-polygon = PackedVector2Array(0, 400, 1152, 400, 1152, 645, 0, 645)
-
-[node name="Sun" type="Sprite2D" parent="Background" unique_id=1718345548]
-modulate = Color(0.98, 0.86, 0.48, 0.95)
-position = Vector2(152, 118)
-scale = Vector2(1.75, 1.75)
-texture = ExtResource("8_circle")
-
-[node name="SunGlow" type="Sprite2D" parent="Background" unique_id=1384376311]
-modulate = Color(0.98, 0.86, 0.48, 0.18)
-position = Vector2(152, 118)
-scale = Vector2(2.5, 2.5)
-texture = ExtResource("8_circle")
-
-[node name="CloudA" type="Sprite2D" parent="Background" unique_id=1281918346]
-modulate = Color(1, 1, 1, 0.42)
-position = Vector2(274, 84)
-scale = Vector2(2.2, 0.65)
-texture = ExtResource("8_circle")
-
-[node name="CloudB" type="Sprite2D" parent="Background" unique_id=928131174]
-modulate = Color(1, 1, 1, 0.36)
-position = Vector2(684, 104)
-scale = Vector2(2.5, 0.65)
-texture = ExtResource("8_circle")
+script = ExtResource("2_background")
+background_texture = ExtResource("6_background_texture")
 
 [node name="Playfield" type="Node2D" parent="." unique_id=1254204708]
 
@@ -138,9 +109,9 @@ default_color = Color(0.63, 0.38, 0.21, 1)
 anchors_preset = 10
 anchor_right = 1.0
 offset_left = 24.0
-offset_top = 54.0
+offset_top = 68.525
 offset_right = -24.0
-offset_bottom = 92.0
+offset_bottom = 106.52501
 grow_horizontal = 2
 theme_override_colors/font_color = Color(0.62, 0.21, 0.18, 1)
 theme_override_font_sizes/font_size = 24
