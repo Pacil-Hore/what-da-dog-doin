@@ -8,9 +8,9 @@ signal game_lost
 @export var control_icon: Texture2D
 
 @export var time_limit := 3.0
-@export var win_label_text := "You picked the clue!"
-@export var lose_label_text := "Wrong trash can!"
-@export var timeout_label_text := "Time is up!"
+@export var win_label_text := "CORRECT!"
+@export var lose_label_text := "EMPTY BIN!"
+@export var timeout_label_text := "TOO SLOW!"
 @export var auto_randomize_clue := true
 @export var disable_freeze_on_loss := true
 @export var reveal_delay := 0.2

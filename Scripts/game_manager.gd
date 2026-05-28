@@ -296,7 +296,7 @@ func _on_game_won():
 	var msg = "WIN!"
 	var g_name = ""
 	if is_instance_valid(current_instance):
-		g_name = current_instance.name.to_lower()
+		g_name = _get_current_game_key()
 		if "win_label_text" in current_instance:
 			msg = current_instance.win_label_text
 
@@ -405,15 +405,29 @@ func _on_game_lost():
 	dog_whimper.play()
 	
 	var msg = "LOSE..."
-	if current_game_is_final:
-		msg = "Try Again" if lives > 1 else "You Lose"
-	elif is_instance_valid(current_instance):
+	var g_name = ""
+	if is_instance_valid(current_instance):
+		g_name = _get_current_game_key()
+	if is_instance_valid(current_instance):
 		if "lose_label_text" in current_instance:
 			msg = current_instance.lose_label_text
+	if current_game_is_final and lives <= 1:
+		msg = "You Lose"
 	
-	feedback_label.text = msg
-	feedback_label.modulate = Color.WHITE
-	feedback_label.show()
+	for t in _active_win_tweens:
+		if is_instance_valid(t) and t.is_valid():
+			t.kill()
+	_active_win_tweens.clear()
+
+	_animate_loss_feedback_label(g_name, msg)
+	_shake_current_stage(g_name, 1.35)
+
+	Engine.time_scale = min(speed_multiplier, 0.35)
+	var loss_time_tween := create_tween()
+	loss_time_tween.tween_interval(0.06)
+	loss_time_tween.tween_property(Engine, "time_scale", speed_multiplier, 0.18).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+	_active_win_tweens.append(loss_time_tween)
+
 	lives -= 1
 	if lives <= 0:
 		Engine.time_scale = 1.0
@@ -443,6 +457,17 @@ func _on_game_lost():
 			_pick_next_game()
 	
 	_load_interstitial()
+
+
+func _get_current_game_key() -> String:
+	if not is_instance_valid(current_instance):
+		return ""
+
+	var key := current_instance.name.to_lower()
+	var scene_path := current_instance.scene_file_path.to_lower()
+	if scene_path != "":
+		key += "|" + scene_path
+	return key
 
 func _on_timer_timeout():
 	if current_instance != null:
@@ -523,6 +548,7 @@ func _crossfade_to(target: AudioStreamPlayer):
 
 func _animate_feedback_label(g_name: String, msg: String):
 	feedback_label.text = msg
+	feedback_label.position = Vector2.ZERO
 	feedback_label.pivot_offset = Vector2(576, 324)
 	feedback_label.rotation = 0.0
 	feedback_label.scale = Vector2.ONE
@@ -568,6 +594,7 @@ func _animate_feedback_label(g_name: String, msg: String):
 		outline_color = Color(0.2, 0.1, 0.0)
 		anim_type = "bounce"
 		feedback_label.text = "CORRECT!"
+		feedback_label.position.y = -130.0
 	elif "picktherope" in g_name:
 		font_color = Color(0.2, 0.9, 0.8) # Teal
 		outline_color = Color(0.0, 0.2, 0.2)
@@ -650,7 +677,69 @@ func _animate_feedback_label(g_name: String, msg: String):
 			label_tween.tween_property(feedback_label, "scale", Vector2.ONE, 0.45).set_trans(Tween.TRANS_ELASTIC).set_ease(Tween.EASE_OUT)
 
 
-func _shake_current_stage(g_name: String):
+func _animate_loss_feedback_label(g_name: String, msg: String):
+	feedback_label.text = msg
+	feedback_label.position = Vector2.ZERO
+	feedback_label.pivot_offset = Vector2(576, 324)
+	feedback_label.rotation = 0.0
+	feedback_label.scale = Vector2.ONE
+	feedback_label.modulate = Color.WHITE
+
+	var font_color := Color(1.0, 0.18, 0.12)
+	var outline_color := Color(0.12, 0.0, 0.0)
+	var outline_size := 18
+	var font_size := 76
+
+	if "dogcross" in g_name:
+		font_color = Color(0.25, 0.65, 1.0)
+		outline_color = Color(0.0, 0.08, 0.22)
+	elif "jumprope" in g_name:
+		font_color = Color(1.0, 0.35, 0.2)
+		outline_color = Color(0.18, 0.02, 0.0)
+	elif "pickme" in g_name:
+		font_color = Color(1.0, 0.42, 0.08)
+		outline_color = Color(0.18, 0.05, 0.0)
+	elif "picktherope" in g_name:
+		font_color = Color(0.2, 0.95, 0.9)
+		outline_color = Color(0.0, 0.16, 0.18)
+	elif "toilet" in g_name:
+		font_color = Color(0.72, 0.95, 0.28)
+		outline_color = Color(0.08, 0.18, 0.0)
+	elif "tugofwar" in g_name:
+		font_color = Color(1.0, 0.28, 0.28)
+		outline_color = Color(0.18, 0.0, 0.0)
+	elif "attach" in g_name:
+		font_color = Color(1.0, 0.25, 0.25)
+		outline_color = Color(0.18, 0.0, 0.0)
+	elif "labyrinth" in g_name:
+		font_color = Color(0.85, 0.42, 1.0)
+		outline_color = Color(0.16, 0.0, 0.24)
+	elif "untangle" in g_name:
+		font_color = Color(1.0, 0.75, 0.2)
+		outline_color = Color(0.2, 0.08, 0.0)
+	elif "spot" in g_name:
+		font_color = Color(1.0, 0.45, 0.05)
+		outline_color = Color(0.2, 0.04, 0.0)
+
+	feedback_label.add_theme_color_override("font_color", font_color)
+	feedback_label.add_theme_color_override("font_outline_color", outline_color)
+	feedback_label.add_theme_constant_override("outline_size", outline_size)
+	feedback_label.add_theme_font_size_override("font_size", font_size)
+	feedback_label.show()
+
+	var label_tween := create_tween()
+	_active_win_tweens.append(label_tween)
+	feedback_label.scale = Vector2(1.55, 0.65)
+	feedback_label.modulate = Color(1.6, 1.6, 1.6, 1.0)
+	label_tween.set_parallel(true)
+	label_tween.tween_property(feedback_label, "scale", Vector2.ONE, 0.18).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
+	label_tween.tween_property(feedback_label, "modulate", Color.WHITE, 0.18).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
+	label_tween.tween_property(feedback_label, "rotation", -0.035, 0.07).set_trans(Tween.TRANS_SINE)
+	label_tween.chain().tween_property(feedback_label, "rotation", 0.025, 0.07).set_trans(Tween.TRANS_SINE)
+	label_tween.tween_property(feedback_label, "rotation", 0.0, 0.08).set_trans(Tween.TRANS_SINE)
+
+
+func _shake_current_stage(g_name: String, multiplier: float = 1.0):
 	if not is_instance_valid(current_instance):
 		return
 		
@@ -697,6 +786,9 @@ func _shake_current_stage(g_name: String):
 		shake_type = "radial"
 		intensity = 4.0
 		count = 5
+
+	intensity *= multiplier
+	count = max(count, int(round(count * multiplier)))
 
 	var original_pos = current_instance.position
 	

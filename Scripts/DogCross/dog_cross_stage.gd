@@ -5,8 +5,8 @@ signal game_lost
 
 @export var objective_text: String = "Cross the river!"
 @export var control_icon: Texture2D
-@export var win_label_text: String = "You Win"
-@export var lose_label_text: String = "You Lose"
+@export var win_label_text: String = "SAFE SHORE!"
+@export var lose_label_text: String = "SWEPT AWAY!"
 @export var timeout_wins: bool = false
 @export var dog_cross_manager_path: NodePath = ^"GameManager"
 

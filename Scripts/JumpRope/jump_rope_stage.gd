@@ -14,7 +14,7 @@ signal game_lost
 @export var jump_duration: float = 0.42
 @export var max_misses: int = 3
 @export var win_label_text: String = "Safe landing!"
-@export var lose_label_text: String = "The rope tripped the dog!"
+@export var lose_label_text: String = "Tripped up!"
 @export var timeout_label_text: String = "You kept the rhythm!"
 @export var instruction_text: String = "Press Space or left click before the rope hits the dog's paws."
 @export var timeout_wins: bool = true

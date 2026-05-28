@@ -12,9 +12,9 @@ signal game_lost
 @export var time_limit: float = 4.0
 @export var rope_count: int = 4
 @export var instruction_text: String = "Trace the red-collared dog's leash and click the right hook before time runs out."
-@export var win_label_text: String = "You found the right leash!"
-@export var lose_label_text: String = "Wrong hook!"
-@export var timeout_label_text: String = "Time is up!"
+@export var win_label_text: String = "Found it!"
+@export var lose_label_text: String = "Wrong leash!"
+@export var timeout_label_text: String = "Leash lost!"
 @export var disable_freeze_on_loss := true
 
 @onready var board: PickTheRopeBoard = $Board

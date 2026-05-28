@@ -8,8 +8,8 @@ signal game_lost
 @export var control_icon: Texture2D
 
 @export var time_limit := 5.0
-@export var win_label_text := "You Win"
-@export var lose_label_text := "You Lose"
+@export var win_label_text := "Escaped!"
+@export var lose_label_text := "Cornered!"
 @export var hide_system_cursor := true
 
 @onready var maze: Node2D = $MazeObject

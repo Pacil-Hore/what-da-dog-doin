@@ -10,8 +10,8 @@ signal game_lost
 @export var time_limit: float = 3.0
 @export var instruction_text: String = "Left click the best toilet spot before time runs out."
 @export var win_label_text: String = "Good dog!"
-@export var lose_label_text: String = "That spot won't work!"
-@export var timeout_label_text: String = "Time is up!"
+@export var lose_label_text: String = "Bad spot!"
+@export var timeout_label_text: String = "Too late!"
 @export var disable_freeze_on_loss := true
 
 @onready var vending_spot: ToiletSpot = $Hotspots/BillboardSpot
