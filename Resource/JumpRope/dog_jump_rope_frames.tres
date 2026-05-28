@@ -1,4 +1,4 @@
-[gd_resource type="SpriteFrames" load_steps=13 format=3]
+[gd_resource type="SpriteFrames" format=3 uid="uid://dx73yr8t1h2qh"]
 
 [ext_resource type="Texture2D" uid="uid://dbihi21ufhxbc" path="res://Assets/Sprites/JumpRope/dog_idle.png" id="1_idle"]
 [ext_resource type="Texture2D" uid="uid://c2hlkx6x5xm03" path="res://Assets/Sprites/JumpRope/dog_walk.png" id="2_run"]

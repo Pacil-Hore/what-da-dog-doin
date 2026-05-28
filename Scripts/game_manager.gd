@@ -127,7 +127,6 @@ func _load_interstitial():
 	# Reset time scale to current speed multiplier to clear any level-specific slow-motion
 	Engine.time_scale = speed_multiplier
 	dog_bark.play()
-	print("oui")
 
 	if current_instance != null:
 		current_instance.queue_free()
