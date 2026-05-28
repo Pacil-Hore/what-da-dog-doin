@@ -155,6 +155,7 @@ sources/0 = SubResource("TileSetAtlasSource_kttui")
 
 [node name="AttachStage" type="Node2D" unique_id=34572571 node_paths=PackedStringArray("anchor", "rope", "hook", "dog")]
 script = ExtResource("1_v6rhc")
+time_limit = 5.0
 control_icon = ExtResource("2_kttui")
 anchor = NodePath("Marker2D")
 rope = NodePath("Rope")

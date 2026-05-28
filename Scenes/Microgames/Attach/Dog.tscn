@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://by27f3y6bpea2"]
 
 [ext_resource type="Script" uid="uid://bnp6fqw22sm2y" path="res://Scripts/Attach/dog.gd" id="1_8jmd4"]
-[ext_resource type="Texture2D" uid="uid://cv8u2dr6aysc6" path="res://Assets/Sprites/dog_top.png" id="1_agalk"]
+[ext_resource type="Texture2D" uid="uid://df0lmbf4ga2qp" path="res://Assets/Sprites/Character/dog_top.png" id="2_vj6g5"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_8jmd4"]
 radius = 22.0
@@ -15,7 +15,7 @@ script = ExtResource("1_8jmd4")
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=2141377411]
 scale = Vector2(3, 3)
-texture = ExtResource("1_agalk")
+texture = ExtResource("2_vj6g5")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1255389299]
 shape = SubResource("CapsuleShape2D_8jmd4")
