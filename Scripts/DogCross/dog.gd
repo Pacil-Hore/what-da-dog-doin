@@ -4,6 +4,8 @@ extends CharacterBody2D
 @export var step_distance: float = 162.0
 @export var hop_duration: float = 0.15
 
+@onready var jump_sound = $AudioStreamPlayer
+
 var is_moving: bool = false
 var current_platform = null
 var is_on_safe_area: bool = false
@@ -29,6 +31,7 @@ func try_hop_forward():
 	hop_to(target_pos)
 	
 func hop_to(target: Vector2):
+	jump_sound.play()
 	is_moving = true
 	var tween = create_tween()
 	tween.tween_property(self, "global_position", target, hop_duration)

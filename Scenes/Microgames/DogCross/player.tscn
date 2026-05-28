@@ -3,6 +3,7 @@
 [ext_resource type="Script" uid="uid://bew8hlftj38gu" path="res://Scripts/DogCross/player.gd" id="1_3vyb7"]
 [ext_resource type="Texture2D" uid="uid://bh1h3s7alkljd" path="res://Assets/Sprites/Character/man_top (anim).png" id="2_pskt0"]
 [ext_resource type="Texture2D" uid="uid://brnl33fdvb5i4" path="res://Assets/Sprites/man_top.png" id="2_ux6ck"]
+[ext_resource type="AudioStream" uid="uid://dvo6e618stxom" path="res://Assets/SFX/sfx_movement_jump7.wav" id="4_8r7f1"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_4bv6r"]
 radius = 17.9
@@ -84,3 +85,6 @@ visible = false
 position = Vector2(0, 2)
 scale = Vector2(2.2, 2.2)
 texture = ExtResource("2_ux6ck")
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="." unique_id=1817080718]
+stream = ExtResource("4_8r7f1")

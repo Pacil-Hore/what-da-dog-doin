@@ -7,9 +7,13 @@
 [ext_resource type="AudioStream" uid="uid://olimjoy4k5y1" path="res://Assets/BGM/Juhani Junkala [Chiptune Adventures] 1. Stage 1.ogg" id="5_xqbpr"]
 [ext_resource type="AudioStream" uid="uid://dpvj2fgendefm" path="res://Assets/BGM/Juhani Junkala [Chiptune Adventures] 2. Stage 2.ogg" id="6_je8vj"]
 [ext_resource type="AudioStream" uid="uid://cw6hkdmut6vc0" path="res://Assets/BGM/hold the line_1.ogg" id="7_je8vj"]
+[ext_resource type="AudioStream" uid="uid://cvjnyug6g56wn" path="res://Assets/SFX/dog_bark.ogg" id="8_f5c43"]
+[ext_resource type="AudioStream" uid="uid://br3p6qcjp0n0q" path="res://Assets/SFX/dog_whimper.ogg" id="9_8mb02"]
+[ext_resource type="AudioStream" uid="uid://cjtiw40jg53r0" path="res://Assets/SFX/sfx_sounds_pause2_in.wav" id="10_2ykxs"]
 
 [node name="GameManager" type="Node" unique_id=536985573]
 script = ExtResource("1_m2tc1")
+feedback_duration = 1.2
 interstitial_scene = ExtResource("2_bwyv8")
 
 [node name="HUDLayer" type="CanvasLayer" parent="." unique_id=125613773]
@@ -35,9 +39,22 @@ visible = false
 
 [node name="MusicSlow" type="AudioStreamPlayer" parent="." unique_id=1313517778]
 stream = ExtResource("5_xqbpr")
+volume_db = -2.0
 
 [node name="MusicFast" type="AudioStreamPlayer" parent="." unique_id=1874019099]
 stream = ExtResource("6_je8vj")
+volume_db = -2.0
 
 [node name="MusicFinal" type="AudioStreamPlayer" parent="." unique_id=206988700]
 stream = ExtResource("7_je8vj")
+volume_db = -1.0
+
+[node name="DogBark" type="AudioStreamPlayer" parent="." unique_id=1664406209]
+stream = ExtResource("8_f5c43")
+volume_db = 10.0
+
+[node name="DogWhimper" type="AudioStreamPlayer" parent="." unique_id=509888925]
+stream = ExtResource("9_8mb02")
+
+[node name="WinSound" type="AudioStreamPlayer" parent="." unique_id=1396713398]
+stream = ExtResource("10_2ykxs")
