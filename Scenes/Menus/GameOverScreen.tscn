@@ -2,11 +2,51 @@
 
 [ext_resource type="Script" path="res://Scripts/game_over_screen.gd" id="1_1"]
 [ext_resource type="FontFile" uid="uid://bjdunpg0quy55" path="res://Assets/Jersey25-Regular.ttf" id="2_2"]
+[ext_resource type="Texture2D" uid="uid://bkd20kq6arh8d" path="res://Assets/Sprites/dog_mad.png" id="3_lbyi0"]
+[ext_resource type="Texture2D" uid="uid://ua22h2hi2fol" path="res://Assets/Sprites/Toilet/man_side.png" id="4_lbyi0"]
+[ext_resource type="Script" uid="uid://b78f6b4wtynt0" path="res://Scripts/JumpRope/jump_rope_background.gd" id="5_3fhag"]
+[ext_resource type="Texture2D" uid="uid://dv1ia3owouql3" path="res://Assets/Sprites/JumpRope/jump rope bg.png" id="6_40f86"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1"]
-bg_color = Color(0.0627451, 0.0627451, 0.0823529, 0.901961)
+bg_color = Color(0.0627451, 0.0627451, 0.08235294, 0.5647059)
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_1"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_3fhag"]
+atlas = ExtResource("3_lbyi0")
+region = Rect2(0, 0, 48, 48)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_40f86"]
+atlas = ExtResource("3_lbyi0")
+region = Rect2(48, 0, 48, 48)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_o4g0v"]
+atlas = ExtResource("3_lbyi0")
+region = Rect2(96, 0, 48, 48)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_twqcu"]
+atlas = ExtResource("3_lbyi0")
+region = Rect2(144, 0, 48, 48)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_3fhag"]
+animations = [{
+"frames": [{
+"duration": 0.5,
+"texture": SubResource("AtlasTexture_3fhag")
+}, {
+"duration": 0.5,
+"texture": SubResource("AtlasTexture_40f86")
+}, {
+"duration": 0.5,
+"texture": SubResource("AtlasTexture_o4g0v")
+}, {
+"duration": 0.5,
+"texture": SubResource("AtlasTexture_twqcu")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 4.0
+}]
 
 [node name="GameOverScreen" type="Control" unique_id=1074446746]
 layout_mode = 3
@@ -25,6 +65,15 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_1")
+
+[node name="Leash" type="Line2D" parent="." unique_id=802064766]
+points = PackedVector2Array(297, 524, 604, 548, 943, 561)
+width = 4.0
+default_color = Color(0.13333334, 0.14117648, 0.19607843, 1)
+joint_mode = 2
+begin_cap_mode = 2
+end_cap_mode = 2
+antialiased = true
 
 [node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=146806798]
 layout_mode = 1
@@ -74,7 +123,7 @@ layout_mode = 2
 mouse_default_cursor_shape = 2
 theme_override_colors/font_color = Color(0.984314, 0.282353, 0.294118, 1)
 theme_override_colors/font_focus_color = Color(0.0627451, 0.439216, 0.780392, 1)
-theme_override_colors/font_pressed_color = Color(1, 0.741176, 0.321569, 1)
+theme_override_colors/font_pressed_color = Color(0.06666667, 0.29411766, 0.47058824, 1)
 theme_override_colors/font_hover_color = Color(0.0627451, 0.439216, 0.780392, 1)
 theme_override_colors/font_outline_color = Color(1, 1, 1, 1)
 theme_override_constants/outline_size = 10
@@ -93,7 +142,7 @@ layout_mode = 2
 mouse_default_cursor_shape = 2
 theme_override_colors/font_color = Color(0.984314, 0.282353, 0.294118, 1)
 theme_override_colors/font_focus_color = Color(0.0627451, 0.439216, 0.780392, 1)
-theme_override_colors/font_pressed_color = Color(1, 0.741176, 0.321569, 1)
+theme_override_colors/font_pressed_color = Color(0.06666667, 0.29411766, 0.47058824, 1)
 theme_override_colors/font_hover_color = Color(0.0627451, 0.439216, 0.780392, 1)
 theme_override_colors/font_outline_color = Color(1, 1, 1, 1)
 theme_override_constants/outline_size = 10
@@ -105,3 +154,24 @@ theme_override_styles/hover = SubResource("StyleBoxEmpty_1")
 theme_override_styles/focus = SubResource("StyleBoxEmpty_1")
 text = "Main Menu"
 flat = true
+
+[node name="DogSprite" type="AnimatedSprite2D" parent="." unique_id=342654094]
+position = Vector2(933, 525.00006)
+scale = Vector2(5, 5)
+sprite_frames = SubResource("SpriteFrames_3fhag")
+animation = &"idle"
+autoplay = "idle"
+
+[node name="OwnerSprite" type="Sprite2D" parent="." unique_id=499012387]
+position = Vector2(126, 262)
+scale = Vector2(4, 4)
+texture = ExtResource("4_lbyi0")
+centered = false
+hframes = 9
+frame = 4
+
+[node name="Background" type="Node2D" parent="." unique_id=938655417]
+z_index = -100
+position = Vector2(0, 2)
+script = ExtResource("5_3fhag")
+background_texture = ExtResource("6_40f86")
