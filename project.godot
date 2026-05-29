@@ -10,10 +10,10 @@ config_version=5
 
 [application]
 
-config/name="What Da Dog Doin"
+config/name="What Da Dog Doin'"
 run/main_scene="res://Scenes/Menus/MainMenu.tscn"
 config/features=PackedStringArray("4.6", "Mobile")
-config/icon="res://icon.svg"
+config/icon="uid://bosiud2s22vxw"
 
 [autoload]
 
@@ -23,7 +23,6 @@ MicrogameTestHelper="*res://Scripts/microgame_test_helper.gd"
 [display]
 
 window/stretch/mode="canvas_items"
-window/stretch/aspect="keep"
 
 [gui]
 
