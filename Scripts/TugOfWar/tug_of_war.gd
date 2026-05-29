@@ -207,8 +207,8 @@ func _process(delta: float) -> void:
 		# Smoothly interpolate gauge value dynamically from the start value to the target
 		display_gauge = lerp(end_transition_start_gauge, gauge_value, end_transition_progress)
 		
-		var target_tension = 0.8
-		visual_tension = lerp(visual_tension, target_tension, use_delta * 4.0)
+		var finished_target_tension = 0.8
+		visual_tension = lerp(visual_tension, finished_target_tension, use_delta * 4.0)
 		_update_positions()
 		win_meter.value = display_gauge * 100.0
 		_update_ui_elements()

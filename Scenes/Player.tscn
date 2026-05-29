@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://canpbu2erlkfy"]
 
 [ext_resource type="Script" uid="uid://bgfmhapsibb88" path="res://Scripts/player_mouse.gd" id="1_rpqav"]
-[ext_resource type="Texture2D" uid="uid://cv8u2dr6aysc6" path="res://Assets/Sprites/dog_top.png" id="2_kyqiw"]
+[ext_resource type="Texture2D" uid="uid://i3fbovtymwo0" path="res://Assets/Sprites/dog_top.png" id="2_kyqiw"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_kyqiw"]
 radius = 5.0

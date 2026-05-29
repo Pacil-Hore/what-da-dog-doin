@@ -109,7 +109,7 @@ func reset_level() -> void:
 	if hide_system_cursor:
 		Input.mouse_mode = Input.MOUSE_MODE_HIDDEN
 
-func _physics_process(delta: float) -> void:
+func _physics_process(_delta: float) -> void:
 	if not is_started:
 		is_started = true
 		player.enabled = true
@@ -172,7 +172,7 @@ func _warp_mouse_to_player() -> void:
 	get_viewport().warp_mouse(player.get_global_transform_with_canvas().origin)
 
 
-func _on_win_area_body_entered(body: Node2D) -> void:
+func _on_win_area_body_entered(_body: Node2D) -> void:
 	if not is_finished and is_instance_valid(player) and is_instance_valid(man_sprite):
 		var overlapping = win_area.get_overlapping_bodies()
 		if overlapping.has(player):
