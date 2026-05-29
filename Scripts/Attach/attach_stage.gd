@@ -114,7 +114,6 @@ func _on_won():
 		active_tween.kill()
 	_freeze_scene()
 	emit_signal("game_won")
-	print("[Attach] WIN!")
 	set_deferred("process_mode", Node.PROCESS_MODE_DISABLED)
 
 func _on_lost():
@@ -125,7 +124,6 @@ func _on_lost():
 		active_tween.kill()
 	_freeze_scene()
 	emit_signal("game_lost")
-	print("[Attach] LOSE!")
 	set_deferred("process_mode", Node.PROCESS_MODE_DISABLED)
 
 func _freeze_scene():
