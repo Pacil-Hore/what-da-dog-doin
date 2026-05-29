@@ -65,10 +65,6 @@ var pull_heave := 0.0
 @onready var win_player: AudioStreamPlayer = $WinPlayer
 @onready var lose_player: AudioStreamPlayer = $LosePlayer
 
-# Programmatic Audio Stream Resources
-var pull_sfx: AudioStreamWAV
-var yank_sfx: AudioStreamWAV
-
 func _ready() -> void:
 	human = $Human
 	dog = $Dog
@@ -108,85 +104,12 @@ func _ready() -> void:
 		camera.make_current()
 	
 	visual_tension = 0.3
-		
-	# Generate chiptune SFX
-	_init_sfx()
-	
-	# Assign streams to player nodes
-	if pull_player:
-		pull_player.stream = preload("res://Assets/SFX/sfx_chiptune_thud.ogg")
-	if yank_player:
-		yank_player.stream = yank_sfx
-	
 	_update_positions()
-
-func _init_sfx() -> void:
-	# 1. Pull SFX (low-pitched thud sweep)
-	pull_sfx = AudioStreamWAV.new()
-	pull_sfx.format = AudioStreamWAV.FORMAT_16_BITS
-	pull_sfx.mix_rate = 11025
-	pull_sfx.stereo = false
-	
-	var pull_data = PackedByteArray()
-	var pull_samples = int(0.05 * 11025) # 50 ms
-	for i in range(pull_samples):
-		var t = float(i) / 11025.0
-		var progress = float(i) / pull_samples
-		var freq = lerp(130.0, 50.0, progress)
-		var amplitude = 1.0 - progress
-		var sample_val = int(sin(2.0 * PI * freq * t) * 12000.0 * amplitude)
-		pull_data.append(sample_val & 0xFF)
-		pull_data.append((sample_val >> 8) & 0xFF)
-	pull_sfx.data = pull_data
-	
-	# 2. Yank SFX (sharp snapping sweep)
-	yank_sfx = AudioStreamWAV.new()
-	yank_sfx.format = AudioStreamWAV.FORMAT_16_BITS
-	yank_sfx.mix_rate = 11025
-	yank_sfx.stereo = false
-	
-	var yank_data = PackedByteArray()
-	var yank_samples = int(0.12 * 11025) # 120 ms
-	for i in range(yank_samples):
-		var t = float(i) / 11025.0
-		var progress = float(i) / yank_samples
-		var freq = lerp(260.0, 80.0, progress)
-		var amplitude = 1.0 - progress
-		var sine = sin(2.0 * PI * freq * t)
-		var shape = sine + 0.3 * (1.0 if sine > 0.0 else -1.0) # slightly distorted
-		var sample_val = int(shape * 14000.0 * amplitude)
-		yank_data.append(sample_val & 0xFF)
-		yank_data.append((sample_val >> 8) & 0xFF)
-	yank_sfx.data = yank_data
 
 func _play_sfx(player: AudioStreamPlayer, volume_db: float = 0.0) -> void:
 	if player:
 		player.volume_db = volume_db
 		player.play()
-
-func _play_synth_note(player: AudioStreamPlayer, freq: float, duration: float, volume_db: float = 0.0) -> void:
-	if not player:
-		return
-		
-	var sound = AudioStreamWAV.new()
-	sound.format = AudioStreamWAV.FORMAT_16_BITS
-	sound.mix_rate = 11025
-	sound.stereo = false
-	
-	var data = PackedByteArray()
-	var samples = int(duration * 11025)
-	for i in range(samples):
-		var t = float(i) / 11025.0
-		var progress = float(i) / samples
-		var amplitude = 1.0 - progress
-		var sample_val = int(sin(2.0 * PI * freq * t) * 10000.0 * amplitude)
-		data.append(sample_val & 0xFF)
-		data.append((sample_val >> 8) & 0xFF)
-	sound.data = data
-	
-	player.stream = sound
-	player.volume_db = volume_db
-	player.play()
 
 func _unhandled_input(event: InputEvent) -> void:
 	if is_finished:
@@ -217,7 +140,7 @@ func _unhandled_input(event: InputEvent) -> void:
 		get_viewport().set_input_as_handled()
 		
 		# Play pull sound effect
-		_play_sfx(pull_player, -8.0)
+		_play_sfx(pull_player, 0.0)
 		
 		# Pulse progress bar scale
 		if win_meter:
@@ -438,9 +361,7 @@ func _trigger_win() -> void:
 	dog.set_tension(1.0)
 	
 	# Play win retro chime
-	_play_synth_note(win_player, 440.0, 0.1, -4.0)
-	var win_timer = get_tree().create_timer(0.08, false)
-	win_timer.timeout.connect(func(): _play_synth_note(win_player, 554.37, 0.15, -4.0))
+	_play_sfx(win_player, -4.0)
 	
 	emit_signal("game_won")
 
@@ -454,9 +375,7 @@ func _trigger_loss() -> void:
 	dog.set_tension(0.0)
 	
 	# Play lose retro chime
-	_play_synth_note(lose_player, 180.0, 0.12, -4.0)
-	var lose_timer = get_tree().create_timer(0.1, false)
-	lose_timer.timeout.connect(func(): _play_synth_note(lose_player, 120.0, 0.25, -4.0))
+	_play_sfx(lose_player, 2.0)
 	
 	emit_signal("game_lost")
 

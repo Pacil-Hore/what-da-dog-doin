@@ -9,6 +9,10 @@
 [ext_resource type="Texture2D" uid="uid://cwoytlydthdqg" path="res://Assets/Sprites/TugOfWar/man_TOW.png" id="4_k5bn4"]
 [ext_resource type="FontFile" uid="uid://bjdunpg0quy55" path="res://Assets/Jersey25-Regular.ttf" id="5_font"]
 [ext_resource type="Texture2D" uid="uid://btag8q05a1w8x" path="res://Assets/Sprites/TugOfWar/dog_TOW.png" id="6_2rgca"]
+[ext_resource type="AudioStream" uid="uid://3daj4oyaperj" path="res://Assets/SFX/sfx_chiptune_thud.ogg" id="7_thud"]
+[ext_resource type="AudioStream" uid="uid://ddf1aanfbg8y" path="res://Assets/SFX/sfx_chiptune_yank.ogg" id="8_yank"]
+[ext_resource type="AudioStream" uid="uid://cmxgntm5es1pj" path="res://Assets/SFX/sfx_tow_win.ogg" id="9_win"]
+[ext_resource type="AudioStream" uid="uid://uuik5ckt8syv" path="res://Assets/SFX/sfx_tow_lose.ogg" id="10_lose"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_prompt"]
 font = ExtResource("5_font")
@@ -304,9 +308,13 @@ vertical_alignment = 1
 position = Vector2(576, 324)
 
 [node name="PullPlayer" type="AudioStreamPlayer" parent="." unique_id=10283474]
+stream = ExtResource("7_thud")
 
 [node name="YankPlayer" type="AudioStreamPlayer" parent="." unique_id=10283475]
+stream = ExtResource("8_yank")
 
 [node name="WinPlayer" type="AudioStreamPlayer" parent="." unique_id=10283476]
+stream = ExtResource("9_win")
 
 [node name="LosePlayer" type="AudioStreamPlayer" parent="." unique_id=10283477]
+stream = ExtResource("10_lose")
