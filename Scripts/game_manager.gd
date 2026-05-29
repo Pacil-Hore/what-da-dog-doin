@@ -190,6 +190,9 @@ func _load_interstitial():
 			Engine.time_scale = speed_multiplier
 
 		current_game_is_final = ((games_played + 1) % 20 == 0)
+		
+		if not current_game_is_final:
+			_play_slow_music()
 	else:
 		is_speed_up = (games_played == speed_up_threshold)
 		if is_speed_up:
