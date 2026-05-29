@@ -679,6 +679,7 @@ scale = Vector2(2, 2)
 texture = ExtResource("5_man")
 centered = false
 hframes = 9
+frame = 1
 
 [node name="DogSprite" type="AnimatedSprite2D" parent="Hotspots" unique_id=1939335242]
 position = Vector2(250, 550)
