@@ -25,6 +25,11 @@ MicrogameTestHelper="*res://Scripts/microgame_test_helper.gd"
 
 enabled=PackedStringArray("res://addons/godot_mcp/plugin.cfg")
 
+[display]
+
+window/stretch/mode="canvas_items"
+window/stretch/aspect="keep"
+
 [gui]
 
 theme/custom="res://Resource/global_theme.tres"
