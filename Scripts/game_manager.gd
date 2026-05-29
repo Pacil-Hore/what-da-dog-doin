@@ -436,12 +436,10 @@ func _on_game_lost():
 	lives -= 1
 	if lives <= 0:
 		Engine.time_scale = 1.0
-		if AppManager.current_mode == AppManager.Mode.ENDLESS:
-			await get_tree().create_timer(feedback_duration).timeout
-			_show_game_over_screen()
-		else:
+		if AppManager.current_mode == AppManager.Mode.STORY:
 			emit_signal("run_lost")
-			AppManager.on_run_lost()
+		await get_tree().create_timer(feedback_duration).timeout
+		_show_game_over_screen()
 		return
 	
 	await get_tree().create_timer(feedback_duration).timeout
@@ -493,6 +491,8 @@ func _show_game_over_screen():
 	# Hide HUD elements
 	music_slow.stop()
 	music_fast.stop()
+	music_final.stop()
+	_current_music = null
 	timer_bar.hide()
 	feedback_label.hide()
 	
