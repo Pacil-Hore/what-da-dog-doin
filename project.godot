@@ -26,6 +26,11 @@ MicrogameTestHelper="*res://Scripts/microgame_test_helper.gd"
 
 enabled=PackedStringArray()
 
+[display]
+
+window/stretch/mode="canvas_items"
+window/stretch/aspect="keep"
+
 [gui]
 
 theme/custom="res://Resource/global_theme.tres"
