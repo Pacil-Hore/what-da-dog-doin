@@ -1,7 +1,7 @@
 [gd_scene format=4 uid="uid://bpvi4ffr0c4fc"]
 
 [ext_resource type="Script" uid="uid://dh3yicttsk5ir" path="res://Scripts/Toilet/toilet_spot.gd" id="1_spot"]
-[ext_resource type="TileSet" uid="uid://61mgkkn03beo" path="res://Scenes/Microgames/Toilet/toilet_ground_tileset.tres" id="2_ground"]
+[ext_resource type="TileSet" uid="uid://cnneposm5xej3" path="res://Scenes/Microgames/Toilet/toilet_ground_tileset.tres" id="2_ground"]
 [ext_resource type="Texture2D" uid="uid://cx5p1dfbo342f" path="res://Assets/Sprites/Toilet/tree_big 128x128.png" id="3_tree"]
 [ext_resource type="Texture2D" uid="uid://5am1kshahj0y" path="res://Assets/Sprites/Toilet/CP_V1.0.4.png" id="4_atlas"]
 [ext_resource type="Texture2D" uid="uid://d06cwuaok516" path="res://Assets/generated/circle_fill.svg" id="5_circle"]

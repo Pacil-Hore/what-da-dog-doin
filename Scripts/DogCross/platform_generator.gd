@@ -59,13 +59,13 @@ func _generate_lane(config: LaneConfig, lane_y: float) -> void:
 			_spawn_mixed(lane_container, config)
 
 func _spawn_rocks(container: Node2D, config: LaneConfig) -> void:
-	var spawned = _spawn_platforms_sequential(container, config, [
+	_spawn_platforms_sequential(container, config, [
 		{"type": Platform.PlatformType.SMALL_ROCK, "size": Vector2(90, 90)},
 		{"type": Platform.PlatformType.BIG_ROCK, "size": Vector2(180, 90)},
 	])
 
 func _spawn_mixed(container: Node2D, config: LaneConfig) -> void:
-	var spawned = _spawn_platforms_sequential(container, config, [
+	_spawn_platforms_sequential(container, config, [
 		{"type": Platform.PlatformType.SMALL_ROCK, "size": Vector2(120, 120)},
 		{"type": Platform.PlatformType.BIG_ROCK, "size": Vector2(220, 120)},
 	])
