@@ -114,7 +114,7 @@ func _ready() -> void:
 	
 	# Assign streams to player nodes
 	if pull_player:
-		pull_player.stream = pull_sfx
+		pull_player.stream = preload("res://Assets/SFX/sfx_chiptune_thud.ogg")
 	if yank_player:
 		yank_player.stream = yank_sfx
 	

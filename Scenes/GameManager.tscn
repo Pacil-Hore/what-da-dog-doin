@@ -11,9 +11,6 @@
 [ext_resource type="AudioStream" uid="uid://br3p6qcjp0n0q" path="res://Assets/SFX/dog_whimper.ogg" id="9_8mb02"]
 [ext_resource type="AudioStream" uid="uid://cjtiw40jg53r0" path="res://Assets/SFX/sfx_sounds_pause2_in.wav" id="10_2ykxs"]
 
-[sub_resource type="Gradient" id="Gradient_victory"]
-colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0)
-
 [sub_resource type="Gradient" id="Gradient_tugofwar"]
 offsets = PackedFloat32Array(0, 0.5, 1)
 colors = PackedColorArray(0.2, 0.7, 1, 1, 0.1, 0.4, 0.9, 0.8, 0, 0.1, 0.5, 0)
@@ -50,6 +47,9 @@ colors = PackedColorArray(0.2, 0.9, 0.8, 1, 1, 0.4, 0.6, 0.9, 1, 0.85, 0.2, 0)
 offsets = PackedFloat32Array(0, 0.3, 1)
 colors = PackedColorArray(1, 0.5, 0, 1, 1, 0.8, 0.2, 0.8, 0.3, 0.1, 0, 0)
 
+[sub_resource type="Gradient" id="Gradient_victory"]
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0)
+
 [node name="GameManager" type="Node" unique_id=536985573]
 script = ExtResource("1_m2tc1")
 feedback_duration = 1.2
@@ -73,9 +73,9 @@ theme_override_font_sizes/font_size = 32
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="VictoryEffects" type="Node2D" parent="HUDLayer"]
+[node name="VictoryEffects" type="Node2D" parent="HUDLayer" unique_id=315282694]
 
-[node name="TugOfWarParticles" type="CPUParticles2D" parent="HUDLayer/VictoryEffects"]
+[node name="TugOfWarParticles" type="CPUParticles2D" parent="HUDLayer/VictoryEffects" unique_id=1809351105]
 position = Vector2(300, 420)
 emitting = false
 amount = 40
@@ -83,7 +83,6 @@ lifetime = 1.2
 one_shot = true
 explosiveness = 0.85
 direction = Vector2(1, -0.5)
-spread = 45.0
 gravity = Vector2(0, 150)
 initial_velocity_min = 250.0
 initial_velocity_max = 450.0
@@ -93,11 +92,10 @@ color_ramp = SubResource("Gradient_tugofwar")
 hue_variation_min = -0.15
 hue_variation_max = 0.15
 
-[node name="ToiletParticles" type="CPUParticles2D" parent="HUDLayer/VictoryEffects"]
+[node name="ToiletParticles" type="CPUParticles2D" parent="HUDLayer/VictoryEffects" unique_id=779510735]
 position = Vector2(576, 520)
 emitting = false
 amount = 50
-lifetime = 1.0
 one_shot = true
 explosiveness = 0.85
 direction = Vector2(0, -1)
@@ -111,7 +109,7 @@ color_ramp = SubResource("Gradient_toilet")
 hue_variation_min = -0.2
 hue_variation_max = 0.2
 
-[node name="DogCrossParticles" type="CPUParticles2D" parent="HUDLayer/VictoryEffects"]
+[node name="DogCrossParticles" type="CPUParticles2D" parent="HUDLayer/VictoryEffects" unique_id=552422419]
 position = Vector2(576, 450)
 emitting = false
 amount = 35
@@ -129,7 +127,7 @@ color_ramp = SubResource("Gradient_dogcross")
 hue_variation_min = -0.1
 hue_variation_max = 0.1
 
-[node name="JumpRopeParticles" type="CPUParticles2D" parent="HUDLayer/VictoryEffects"]
+[node name="JumpRopeParticles" type="CPUParticles2D" parent="HUDLayer/VictoryEffects" unique_id=458337091]
 position = Vector2(576, 480)
 emitting = false
 amount = 50
@@ -147,7 +145,7 @@ color_ramp = SubResource("Gradient_jumprope")
 hue_variation_min = -0.3
 hue_variation_max = 0.3
 
-[node name="LabyrinthParticles" type="CPUParticles2D" parent="HUDLayer/VictoryEffects"]
+[node name="LabyrinthParticles" type="CPUParticles2D" parent="HUDLayer/VictoryEffects" unique_id=1068278770]
 position = Vector2(980, 240)
 emitting = false
 amount = 40
@@ -164,7 +162,7 @@ color_ramp = SubResource("Gradient_labyrinth")
 hue_variation_min = -0.2
 hue_variation_max = 0.2
 
-[node name="AttachParticles" type="CPUParticles2D" parent="HUDLayer/VictoryEffects"]
+[node name="AttachParticles" type="CPUParticles2D" parent="HUDLayer/VictoryEffects" unique_id=460206355]
 position = Vector2(576, 324)
 emitting = false
 amount = 45
@@ -181,7 +179,7 @@ color_ramp = SubResource("Gradient_attach")
 hue_variation_min = -0.1
 hue_variation_max = 0.1
 
-[node name="PickMeParticles" type="CPUParticles2D" parent="HUDLayer/VictoryEffects"]
+[node name="PickMeParticles" type="CPUParticles2D" parent="HUDLayer/VictoryEffects" unique_id=1682068799]
 position = Vector2(576, 420)
 emitting = false
 amount = 40
@@ -199,7 +197,7 @@ color_ramp = SubResource("Gradient_pickme")
 hue_variation_min = -0.2
 hue_variation_max = 0.2
 
-[node name="PickTheRopeParticles" type="CPUParticles2D" parent="HUDLayer/VictoryEffects"]
+[node name="PickTheRopeParticles" type="CPUParticles2D" parent="HUDLayer/VictoryEffects" unique_id=702449676]
 position = Vector2(576, 50)
 emitting = false
 amount = 60
@@ -219,7 +217,7 @@ color_ramp = SubResource("Gradient_picktherope")
 hue_variation_min = -1.0
 hue_variation_max = 1.0
 
-[node name="SpotTheDifferenceParticles" type="CPUParticles2D" parent="HUDLayer/VictoryEffects"]
+[node name="SpotTheDifferenceParticles" type="CPUParticles2D" parent="HUDLayer/VictoryEffects" unique_id=901467998]
 emitting = false
 amount = 35
 lifetime = 0.9
@@ -236,7 +234,7 @@ color_ramp = SubResource("Gradient_spot")
 hue_variation_min = -0.15
 hue_variation_max = 0.15
 
-[node name="DefaultConfettiParticles" type="CPUParticles2D" parent="HUDLayer/VictoryEffects"]
+[node name="DefaultConfettiParticles" type="CPUParticles2D" parent="HUDLayer/VictoryEffects" unique_id=824392807]
 position = Vector2(576, 324)
 emitting = false
 amount = 45
@@ -254,7 +252,7 @@ color_ramp = SubResource("Gradient_victory")
 hue_variation_min = -1.0
 hue_variation_max = 1.0
 
-[node name="LeftCannonParticles" type="CPUParticles2D" parent="HUDLayer/VictoryEffects"]
+[node name="LeftCannonParticles" type="CPUParticles2D" parent="HUDLayer/VictoryEffects" unique_id=979930695]
 position = Vector2(100, 500)
 emitting = false
 amount = 35
@@ -272,7 +270,7 @@ color_ramp = SubResource("Gradient_victory")
 hue_variation_min = -1.0
 hue_variation_max = 1.0
 
-[node name="RightCannonParticles" type="CPUParticles2D" parent="HUDLayer/VictoryEffects"]
+[node name="RightCannonParticles" type="CPUParticles2D" parent="HUDLayer/VictoryEffects" unique_id=1556572459]
 position = Vector2(1052, 500)
 emitting = false
 amount = 35

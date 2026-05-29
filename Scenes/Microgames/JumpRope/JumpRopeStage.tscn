@@ -9,6 +9,7 @@
 [ext_resource type="Texture2D" uid="uid://dv1ia3owouql3" path="res://Assets/Sprites/JumpRope/jump rope bg.png" id="6_background_texture"]
 [ext_resource type="SpriteFrames" uid="uid://dx73yr8t1h2qh" path="res://Resource/JumpRope/dog_jump_rope_frames.tres" id="7_dog_frames"]
 [ext_resource type="Texture2D" uid="uid://bir6vjcc7h16k" path="res://Assets/Sprites/Little Dreamyland - Free Pack/Sprites/Sprite_Shadow.png" id="7_shadow"]
+[ext_resource type="AudioStream" uid="uid://dvo6e618stxom" path="res://Assets/SFX/sfx_movement_jump7.wav" id="10_1d4ds"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_em52f"]
 font_size = 48
@@ -125,3 +126,6 @@ horizontal_alignment = 1
 
 [node name="CountdownTimer" type="Timer" parent="." unique_id=1892543933]
 one_shot = true
+
+[node name="JumpSound" type="AudioStreamPlayer" parent="." unique_id=598762230]
+stream = ExtResource("10_1d4ds")

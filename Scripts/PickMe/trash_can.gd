@@ -33,6 +33,8 @@ var cue_tween: Tween
 var feedback_tween: Tween
 var reveal_tween: Tween
 
+var is_hovered := false
+
 # Dog idle animation state
 var _dog_frame := 0
 var _idle_playing := false
@@ -338,3 +340,24 @@ func _set_variant_from_name() -> void:
 
 func _on_picked(_pickable: Variant) -> void:
 	trash_can_picked.emit(self)
+
+
+func _process(_delta: float) -> void:
+	if Engine.is_editor_hint():
+		return
+		
+	var mouse_pos := get_global_mouse_position()
+	var currently_hovered := contains_global_point(mouse_pos)
+	
+	if currently_hovered != is_hovered:
+		is_hovered = currently_hovered
+		var tween = create_tween().set_parallel(true)
+		if is_hovered:
+			# Scale up to 1.08x of default_scale
+			tween.tween_property(self, "scale", default_scale * 1.08, 0.12).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
+			if is_instance_valid(shell):
+				tween.tween_property(shell, "self_modulate", Color(1.12, 1.12, 1.12, 1.0), 0.12)
+		else:
+			tween.tween_property(self, "scale", default_scale, 0.12).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
+			if is_instance_valid(shell):
+				tween.tween_property(shell, "self_modulate", Color.WHITE, 0.12)
