@@ -12,7 +12,6 @@ config_version=5
 
 config/name="What Da Dog Doin"
 run/main_scene="res://Scenes/Menus/MainMenu.tscn"
-
 config/features=PackedStringArray("4.6", "Mobile")
 config/icon="res://icon.svg"
 
