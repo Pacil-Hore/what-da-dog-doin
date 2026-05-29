@@ -12,7 +12,6 @@ func _ready():
 	add_to_group("safe_area")
 	body_entered.connect(_on_body_entered)
 	body_exited.connect(_on_body_exited)
-	print("FinishArea ready! Path: ", get_path())
 
 func _on_body_entered(body):
 	if not body is CharacterBody2D:
@@ -29,12 +28,10 @@ func _on_body_entered(body):
 	# Track yang udah sampe
 	if body not in entities_arrived:
 		entities_arrived.append(body)
-		print(body.name, " sampe finish! Total: ", entities_arrived.size())
 	
 	# Cek menang
 	if not triggered and entities_arrived.size() >= 2:
 		triggered = true
-		print("LEVEL COMPLETED!")
 		level_completed.emit()
 		if show_win_screen:
 			_show_win_screen()

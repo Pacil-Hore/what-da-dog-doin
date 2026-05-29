@@ -44,9 +44,6 @@ func try_hop_forward():
 		anim.play("jump")
 	
 	hop_to(target_pos)
-
-func _process(_delta):
-	print("rope_offset: ", rope_offset, " | is_moving: ", is_moving)
 	
 func hop_to(target: Vector2):
 	jump_sound.play()
