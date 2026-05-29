@@ -1,25 +1,24 @@
 [gd_scene format=3 uid="uid://b40hs5lmo5tdb"]
 
 [ext_resource type="Script" uid="uid://beq0n5f5r161o" path="res://Scripts/cutscene.gd" id="1_qqe5g"]
+[ext_resource type="VideoStream" uid="uid://bxeboma6k0ngy" path="res://Assets/cutscene/cutscene_akhir.ogv" id="2_qfgn7"]
 
-[node name="CutsceneC" type="Control" unique_id=1900593981]
+[node name="CutsceneC" type="Control" unique_id=1979313147]
 layout_mode = 3
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
+anchors_preset = 0
 script = ExtResource("1_qqe5g")
 
 [node name="VideoStreamPlayer" type="VideoStreamPlayer" parent="." unique_id=1529609783]
-layout_mode = 0
-offset_right = 40.0
-offset_bottom = 40.0
+layout_mode = 1
+offset_right = 1920.0
+offset_bottom = 1080.0
+scale = Vector2(0.6, 0.6)
+stream = ExtResource("2_qfgn7")
+autoplay = true
 
-[node name="ContinueButton" type="Button" parent="." unique_id=238371117]
+[node name="ContinueButton" type="Button" parent="." unique_id=444190899]
 layout_mode = 0
-offset_left = 326.0
-offset_top = 380.0
-offset_right = 826.0
-offset_bottom = 413.0
+offset_top = 607.0
+offset_right = 1152.0
+offset_bottom = 648.0
 text = "Back to Menu"
