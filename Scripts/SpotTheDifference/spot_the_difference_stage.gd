@@ -9,8 +9,6 @@ signal game_lost
 @export var total_differences := 3
 @export var instruction_text := "TOUCH 3 DIFFERENCES!"
 @export var objective_text: String = "Spot it!"
-@export var win_label_text: String = "CLEAN!"
-@export var lose_label_text: String = "TOO SLOW!"
 @export var control_hint: String = "Mouse"
 @export var control_icon: Texture2D
 @export var win_label_text: String = "SPOTTED!"
