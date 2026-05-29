@@ -2,10 +2,12 @@ extends Control
 
 @onready var menu_music = $MenuMusic
 @onready var menu_select = %MenuSelect
+@onready var endless_best_label: Label = %EndlessBestLabel
 
 func _ready():
 	# Mulai musik menu
 	menu_music.play()
+	_update_endless_best_label()
 	
 	$MenuButtons/StoryButton.pressed.connect(_on_story_pressed)
 	$MenuButtons/EndlessButton.pressed.connect(_on_endless_pressed)
@@ -29,3 +31,6 @@ func _stop_music_and_start(start_callback: Callable):
 	tween.tween_property(menu_music, "volume_db", -40.0, 0.5)
 	tween.tween_callback(menu_music.stop)
 	tween.tween_callback(start_callback)
+
+func _update_endless_best_label() -> void:
+	endless_best_label.text = "Best: %d" % AppManager.get_endless_best_score()

@@ -487,6 +487,9 @@ func _show_feedback(text: String, color: Color):
 func _show_game_over_screen():
 	if _active_game_over_screen != null:
 		return
+
+	if AppManager.current_mode == AppManager.Mode.ENDLESS:
+		AppManager.register_endless_run_score(games_played)
 		
 	# Hide HUD elements
 	music_slow.stop()

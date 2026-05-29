@@ -35,9 +35,9 @@ anchors_preset = 2
 anchor_top = 1.0
 anchor_bottom = 1.0
 offset_left = 52.0
-offset_top = -268.0
+offset_top = -286.0
 offset_right = 520.0
-offset_bottom = 4.0
+offset_bottom = -14.0
 grow_vertical = 0
 
 [node name="StoryButton" type="Button" parent="MenuButtons" unique_id=1826660932]
@@ -90,9 +90,9 @@ script = ExtResource("4_e8h4m")
 [node name="QuitButton" type="Button" parent="MenuButtons" unique_id=1531042072]
 custom_minimum_size = Vector2(420, 74)
 layout_mode = 0
-offset_top = 164.0
+offset_top = 192.0
 offset_right = 420.0
-offset_bottom = 238.0
+offset_bottom = 266.0
 theme_override_colors/font_color = Color(0.9843137, 0.28235295, 0.29411766, 1)
 theme_override_colors/font_focus_color = Color(0.0627451, 0.4392157, 0.78039217, 1)
 theme_override_colors/font_pressed_color = Color(0.02745098, 0.15686275, 0.30588236, 1)
@@ -110,6 +110,20 @@ text = "Quit"
 flat = true
 alignment = 0
 script = ExtResource("4_e8h4m")
+
+[node name="EndlessBestLabel" type="Label" parent="MenuButtons" unique_id=585921411]
+unique_name_in_owner = true
+layout_mode = 0
+offset_top = 148.0
+offset_right = 420.0
+offset_bottom = 188.0
+theme_override_colors/font_color = Color(0.9843137, 0.28235295, 0.29411766, 1)
+theme_override_colors/font_outline_color = Color(1, 1, 1, 1)
+theme_override_constants/outline_size = 12
+theme_override_fonts/font = ExtResource("3_cj4vb")
+theme_override_font_sizes/font_size = 32
+text = "Best: 0"
+horizontal_alignment = 0
 
 [node name="MenuMusic" type="AudioStreamPlayer" parent="." unique_id=819860577]
 stream = ExtResource("5_uv623")

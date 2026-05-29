@@ -1,5 +1,9 @@
 extends Node
 
+const SAVE_PATH := "user://save_data.cfg"
+const SAVE_SECTION := "endless_mode"
+const SAVE_KEY_BEST_SCORE := "best_score"
+
 @export_group("Core Scenes")
 @export var main_menu_scene: PackedScene
 @export var cutscene_a_scene: PackedScene
@@ -14,6 +18,10 @@ enum Mode { NONE, ENDLESS, STORY }
 
 var current_mode: Mode = Mode.NONE
 var story_stage: int = 0  # 0=cutscene_a, 1=gameplay, 2=cutscene_c
+var endless_best_score: int = 0
+
+func _ready():
+	_load_persistent_data()
 
 func go_to_main_menu():
 	Engine.time_scale = 1.0
@@ -58,6 +66,15 @@ func on_run_won():
 func on_run_lost():
 	go_to_main_menu()
 
+func register_endless_run_score(score: int) -> void:
+	if score <= endless_best_score:
+		return
+	endless_best_score = score
+	_save_persistent_data()
+
+func get_endless_best_score() -> int:
+	return endless_best_score
+
 # Pending data for GameManager to pick up on _ready
 var pending_scenario_games: Array[PackedScene] = []
 var pending_final_game: PackedScene = null
@@ -67,3 +84,18 @@ func _change_scene_to_packed(scene: PackedScene) -> void:
 		get_tree().call_deferred("change_scene_to_packed", scene)
 	else:
 		get_tree().change_scene_to_packed(scene)
+
+func _load_persistent_data() -> void:
+	var config := ConfigFile.new()
+	var err := config.load(SAVE_PATH)
+	if err != OK:
+		endless_best_score = 0
+		return
+	endless_best_score = int(config.get_value(SAVE_SECTION, SAVE_KEY_BEST_SCORE, 0))
+
+func _save_persistent_data() -> void:
+	var config := ConfigFile.new()
+	config.set_value(SAVE_SECTION, SAVE_KEY_BEST_SCORE, endless_best_score)
+	var err := config.save(SAVE_PATH)
+	if err != OK:
+		push_warning("AppManager: Failed to save endless best score to %s" % SAVE_PATH)

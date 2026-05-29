@@ -17,13 +17,8 @@ config/icon="res://icon.svg"
 
 [autoload]
 
-MCPRuntime="*uid://thnk5lnwxx8b"
 AppManager="*res://Scenes/AppManager.tscn"
 MicrogameTestHelper="*res://Scripts/microgame_test_helper.gd"
-
-[editor_plugins]
-
-enabled=PackedStringArray("res://addons/godot_mcp/plugin.cfg")
 
 [display]
 
