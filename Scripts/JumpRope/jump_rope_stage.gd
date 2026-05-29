@@ -28,6 +28,8 @@ signal game_lost
 @onready var miss_label: Label = get_node_or_null("HUD/MissLabel") as Label
 @onready var instruction_label: Label = get_node_or_null("HUD/InstructionLabel") as Label
 
+@onready var jump_sound = $JumpSound
+
 var time_left: float = 0.0
 var start_delay_left: float = 0.0
 var miss_count: int = 0
@@ -123,6 +125,7 @@ func _attempt_jump() -> void:
 	if dog.is_jump_active():
 		return
 
+	jump_sound.play()
 	dog.start_jump(jump_duration)
 
 
