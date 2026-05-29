@@ -691,6 +691,7 @@ autoplay = "idle"
 [node name="HUD" type="CanvasLayer" parent="." unique_id=1130635532]
 
 [node name="PromptLabel" type="Label" parent="HUD" unique_id=802557868]
+visible = false
 text = "MASH SPACE!"
 label_settings = SubResource("LabelSettings_uqa1u")
 horizontal_alignment = 1
