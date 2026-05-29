@@ -24,4 +24,3 @@ cutscene_c_scene = ExtResource("6_d7d5k")
 game_manager_scene = ExtResource("7_x057w")
 scenario_games = Array[PackedScene]([ExtResource("6_mf8a8"), ExtResource("8_tbdtn"), ExtResource("9_q8wbe"), ExtResource("10_ed0lk"), ExtResource("10_h5en5"), ExtResource("11_5qyke"), ExtResource("12_g8enm"), ExtResource("12_jbmwj"), ExtResource("26_spot")])
 final_game = ExtResource("15_ayqj1")
-
