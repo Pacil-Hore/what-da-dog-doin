@@ -12,6 +12,8 @@ var stuck_flash_time := 0.0
 var dust_emitter: CPUParticles2D
 
 func _ready() -> void:
+	wall_min_slide_angle = 0.01
+	safe_margin = 0.02
 	player = get_parent().get_node_or_null("Player")
 	if player:
 		add_collision_exception_with(player)
@@ -78,7 +80,11 @@ func _physics_process(delta: float) -> void:
 			sprite.position = Vector2(randf_range(-jitter_amount, jitter_amount), randf_range(-jitter_amount, jitter_amount))
 		else:
 			sprite.position = Vector2.ZERO
-		
+	if is_on_wall():
+		var normal := get_wall_normal()
+		if velocity.dot(normal) < 0.0:
+			velocity = velocity.slide(normal)
+			
 	move_and_slide()
 	
 	# Emit dust particles when moving

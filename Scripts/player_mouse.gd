@@ -14,6 +14,8 @@ var dust_emitter: CPUParticles2D
 @onready var visual: Node2D = get_node_or_null(visual_path)
 
 func _ready() -> void:
+	wall_min_slide_angle = 0.01
+	safe_margin = 0.02
 	# Add dust emitter programmatically
 
 	dust_emitter = CPUParticles2D.new()
@@ -75,6 +77,11 @@ func _physics_process(_delta: float) -> void:
 	
 	# Limit velocity to prevent tunneling
 	velocity = (desired_velocity * speed_scale).limit_length(max_speed)
+	
+	if is_on_wall():
+		var normal := get_wall_normal()
+		if velocity.dot(normal) < 0.0:
+			velocity = velocity.slide(normal)
 	
 	move_and_slide()
 
