@@ -1,12 +1,13 @@
 [gd_scene format=4 uid="uid://ch6pyvnkr1fxp"]
 
 [ext_resource type="Script" uid="uid://cdkvu7gcom17l" path="res://Scripts/SpotTheDifference/spot_the_difference_stage.gd" id="1_script"]
+[ext_resource type="Texture2D" uid="uid://ct6k6ah4ktf42" path="res://Assets/Sprites/Keyboard & Mouse/Double/mouse_left.png" id="2_lm3k8"]
 [ext_resource type="Texture2D" uid="uid://ck0uebakebqwi" path="res://Assets/Sprites/spot the difference/background bagian langit.png" id="3_right_bg"]
 [ext_resource type="Script" uid="uid://ion7ydgfa5k3" path="res://Scripts/SpotTheDifference/distraction_manager.gd" id="4_distraction"]
 [ext_resource type="Script" uid="uid://ceq52yr6ud5up" path="res://Scripts/SpotTheDifference/difference_region.gd" id="5_region"]
 [ext_resource type="Texture2D" uid="uid://bvrpkl6s3j12f" path="res://Assets/Sprites/spot the difference/CP_V1.0.4.png" id="6_tileset"]
 [ext_resource type="Texture2D" uid="uid://bgfkepa5khffq" path="res://Assets/Sprites/spot the difference/dog_front (anim).png" id="7_dog_sheet"]
-[ext_resource type="TileSet" uid="uid://61mgkkn03beo" path="res://Scenes/Microgames/Toilet/toilet_ground_tileset.tres" id="8_ground_tiles"]
+[ext_resource type="TileSet" uid="uid://cnneposm5xej3" path="res://Scenes/Microgames/Toilet/toilet_ground_tileset.tres" id="8_ground_tiles"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_red_building"]
 atlas = ExtResource("6_tileset")
@@ -108,6 +109,7 @@ animations = [{
 
 [node name="SpotTheDifferenceStage" type="Node2D" unique_id=896728720]
 script = ExtResource("1_script")
+control_icon = ExtResource("2_lm3k8")
 forced_combo_index = 5.0
 
 [node name="GameCanvas" type="CanvasLayer" parent="." unique_id=7398686]

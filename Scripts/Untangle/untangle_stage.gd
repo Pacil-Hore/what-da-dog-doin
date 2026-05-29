@@ -23,6 +23,8 @@ signal game_lost
 
 var is_finished: bool = false
 var rotations_in_current_state := 0
+var move_player: AudioStreamPlayer
+var select_player: AudioStreamPlayer
 
 @onready var trail_particles: CPUParticles2D = $SpinTrailParticles
 @onready var victory_particles: CPUParticles2D = $VictoryConfettiParticles
@@ -33,6 +35,16 @@ var rotations_in_current_state := 0
 
 
 func _ready() -> void:
+	move_player = AudioStreamPlayer.new()
+	move_player.stream = preload("res://Assets/SFX/sfx_menu_move4.wav")
+	move_player.bus = &"SFX"
+	add_child(move_player)
+	
+	select_player = AudioStreamPlayer.new()
+	select_player.stream = preload("res://Assets/SFX/sfx_menu_select2.wav")
+	select_player.bus = &"SFX"
+	add_child(select_player)
+
 	state_object.position = state_art_position
 	motion_guide.position = state_art_position
 	if hide_legacy_scene_art:
@@ -254,6 +266,9 @@ func _on_rotation_completed(_total_rotations: int) -> void:
 		var previous_state = state_object.current_state_index
 		state_object.advance_state()
 		
+		if is_instance_valid(select_player):
+			select_player.play()
+			
 		# If the state actually advanced (and the game is not fully won yet)
 		if state_object.current_state_index > previous_state and not state_object.is_completed():
 			_show_state_clear_indicator()
@@ -262,6 +277,9 @@ func _on_rotation_completed(_total_rotations: int) -> void:
 			finish_game(true, win_label_text)
 			return
 		_update_hud() # Update again for new state
+	else:
+		if is_instance_valid(move_player):
+			move_player.play()
 
 
 func _on_motion_progress_changed(progress: float) -> void:

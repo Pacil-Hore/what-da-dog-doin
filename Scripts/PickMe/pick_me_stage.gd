@@ -22,9 +22,15 @@ var trash_cans: Array[PickMeTrashCan] = []
 var is_finished := false
 var round_elapsed := 0.0
 var clue_cued := false
+var click_player: AudioStreamPlayer
 
 
 func _ready() -> void:
+	click_player = AudioStreamPlayer.new()
+	click_player.stream = preload("res://Assets/SFX/sfx_menu_select2.wav")
+	click_player.bus = &"SFX"
+	add_child(click_player)
+
 	for child in trash_cans_parent.get_children():
 		if child is PickMeTrashCan:
 			trash_cans.append(child)
@@ -104,6 +110,9 @@ func finish_game(did_win: bool, _message: String, selected_trash_can: PickMeTras
 
 
 func _on_trash_can_picked(trash_can: PickMeTrashCan) -> void:
+	if is_instance_valid(click_player):
+		click_player.play()
+
 	if trash_can.has_clue:
 		finish_game(true, win_label_text, trash_can)
 	else:
