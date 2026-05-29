@@ -31,6 +31,8 @@ var current_game_is_final: bool = false
 @onready var music_slow = $MusicSlow
 @onready var music_fast = $MusicFast
 @onready var music_final = $MusicFinal
+@onready var music_game_over_jingle = $MusicGameOverJingle
+@onready var music_game_over_loop = $MusicGameOverLoop
 @onready var dog_bark = $DogBark
 @onready var dog_whimper = $DogWhimper
 @onready var win_sound = $WinSound
@@ -71,6 +73,11 @@ func _ready():
 	# Load config from AppManager (set before scene was changed)
 	if AppManager.pending_scenario_games.is_empty():
 		push_error("GameManager: AppManager.pending_scenario_games is empty!")
+
+	if not music_game_over_jingle.finished.is_connected(_on_game_over_jingle_finished):
+		music_game_over_jingle.finished.connect(_on_game_over_jingle_finished)
+	if not music_game_over_loop.finished.is_connected(_on_game_over_loop_finished):
+		music_game_over_loop.finished.connect(_on_game_over_loop_finished)
 	
 	scenario_games = AppManager.pending_scenario_games.duplicate()
 	final_game = AppManager.pending_final_game
@@ -89,6 +96,7 @@ func start_game_loop():
 	games_played = 0
 	speed_multiplier = 1.0
 	Engine.time_scale = speed_multiplier
+	_stop_game_over_music()
 	
 	_round_active = false
 	
@@ -496,6 +504,7 @@ func _show_game_over_screen():
 	music_fast.stop()
 	music_final.stop()
 	_current_music = null
+	_play_game_over_music()
 	timer_bar.hide()
 	feedback_label.hide()
 	
@@ -528,6 +537,24 @@ func _play_fast_music():
 
 func _play_final_music():
 	_crossfade_to(music_final)
+
+func _play_game_over_music():
+	_stop_game_over_music()
+	music_game_over_jingle.play()
+
+func _stop_game_over_music():
+	music_game_over_jingle.stop()
+	music_game_over_loop.stop()
+
+func _on_game_over_jingle_finished():
+	if _active_game_over_screen == null:
+		return
+	music_game_over_loop.play()
+
+func _on_game_over_loop_finished():
+	if _active_game_over_screen == null:
+		return
+	music_game_over_loop.play()
 
 func _crossfade_to(target: AudioStreamPlayer):
 	# Kalau target udah jadi musik aktif, skip

@@ -10,6 +10,8 @@
 [ext_resource type="AudioStream" uid="uid://cvjnyug6g56wn" path="res://Assets/SFX/dog_bark.ogg" id="8_f5c43"]
 [ext_resource type="AudioStream" uid="uid://br3p6qcjp0n0q" path="res://Assets/SFX/dog_whimper.ogg" id="9_8mb02"]
 [ext_resource type="AudioStream" uid="uid://cjtiw40jg53r0" path="res://Assets/SFX/sfx_sounds_pause2_in.wav" id="10_2ykxs"]
+[ext_resource type="AudioStream" uid="uid://blc8f6e6o0bac" path="res://Assets/SFX/Jingle_Lose_00.wav" id="11_losej"]
+[ext_resource type="AudioStream" uid="uid://5oeaud4s34e5" path="res://Assets/BGM/OverworldChiptune_Unlooped_Raw.wav" id="12_over"]
 
 [sub_resource type="Gradient" id="Gradient_tugofwar"]
 offsets = PackedFloat32Array(0, 0.5, 1)
@@ -301,6 +303,14 @@ volume_db = -2.0
 
 [node name="MusicFinal" type="AudioStreamPlayer" parent="." unique_id=206988700]
 stream = ExtResource("7_je8vj")
+volume_db = -1.0
+
+[node name="MusicGameOverJingle" type="AudioStreamPlayer" parent="." unique_id=1229910041]
+stream = ExtResource("11_losej")
+volume_db = -2.0
+
+[node name="MusicGameOverLoop" type="AudioStreamPlayer" parent="." unique_id=209477315]
+stream = ExtResource("12_over")
 volume_db = -1.0
 
 [node name="DogBark" type="AudioStreamPlayer" parent="." unique_id=1664406209]
